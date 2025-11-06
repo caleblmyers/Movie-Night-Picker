@@ -151,4 +151,3 @@ export function CastFilter({ selectedCast, onCastChange }: CastFilterProps) {
     </div>
   );
 }
-

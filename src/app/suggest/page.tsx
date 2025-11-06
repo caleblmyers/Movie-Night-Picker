@@ -101,13 +101,15 @@ export default function SuggestPage() {
           const people = await fetchUniqueItems<Person>({
             count,
             fetchFn: async () => {
-              const result = await apolloClient.query<{ randomPerson: Person }>({
-                query: RANDOM_PERSON,
-                fetchPolicy: "network-only",
-                context: {
-                  fetchOptions: { cache: "no-store" },
-                },
-              });
+              const result = await apolloClient.query<{ randomPerson: Person }>(
+                {
+                  query: RANDOM_PERSON,
+                  fetchPolicy: "network-only",
+                  context: {
+                    fetchOptions: { cache: "no-store" },
+                  },
+                }
+              );
               return result.data?.randomPerson;
             },
           });
@@ -182,9 +184,7 @@ export default function SuggestPage() {
       { round: currentRound, selectedOption: option },
     ]);
 
-    setCurrentRound((prev) =>
-      prev < TOTAL_ROUNDS ? prev + 1 : prev + 1
-    );
+    setCurrentRound((prev) => (prev < TOTAL_ROUNDS ? prev + 1 : prev + 1));
   };
 
   const handleReset = () => {
@@ -205,8 +205,7 @@ export default function SuggestPage() {
     return (
       <ErrorState
         message={
-          error.message ||
-          "Failed to fetch movie suggestion. Please try again."
+          error.message || "Failed to fetch movie suggestion. Please try again."
         }
         onRetry={handleReset}
         retryLabel="Start Over"
@@ -223,10 +222,7 @@ export default function SuggestPage() {
     (currentRound <= TOTAL_ROUNDS && roundOptions.length === 0)
   ) {
     return (
-      <LoadingState
-        message="Loading options..."
-        submessage="Please wait"
-      />
+      <LoadingState message="Loading options..." submessage="Please wait" />
     );
   }
 

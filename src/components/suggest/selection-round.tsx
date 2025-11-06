@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { SelectionOption } from '@/types/suggest';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { SelectionOption } from "@/types/suggest";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface SelectionRoundProps {
   round: number;
@@ -26,16 +26,14 @@ export function SelectionRound({
         <h1 className="text-4xl font-bold tracking-tight text-foreground">
           Round {round} of {totalRounds}
         </h1>
-        <p className="text-lg text-muted-foreground">
-          Choose your preference
-        </p>
+        <p className="text-lg text-muted-foreground">Choose your preference</p>
       </div>
 
       <div
         className={cn(
-          'w-full grid gap-4',
-          isTwoOptions && 'grid-cols-1 sm:grid-cols-2',
-          isFourOptions && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
+          "w-full grid gap-4",
+          isTwoOptions && "grid-cols-1 sm:grid-cols-2",
+          isFourOptions && "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
         )}
       >
         {options.map((option) => (
@@ -44,9 +42,9 @@ export function SelectionRound({
             variant="outline"
             size="lg"
             className={cn(
-              'h-auto min-h-[120px] flex flex-col items-center justify-center gap-2 p-6',
-              'hover:bg-accent hover:scale-105 transition-transform',
-              'text-lg font-medium'
+              "h-auto min-h-[120px] flex flex-col items-center justify-center gap-2 p-6",
+              "hover:bg-accent hover:scale-105 transition-transform",
+              "text-lg font-medium"
             )}
             onClick={() => onSelect(option)}
           >
@@ -60,4 +58,3 @@ export function SelectionRound({
     </div>
   );
 }
-

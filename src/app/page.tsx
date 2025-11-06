@@ -12,7 +12,12 @@ export default function Home() {
           <Button asChild size="lg" className="min-w-[200px] text-lg">
             <Link href="/suggest">Suggest</Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="min-w-[200px] text-lg">
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="min-w-[200px] text-lg"
+          >
             <Link href="/shuffle">Shuffle</Link>
           </Button>
         </div>

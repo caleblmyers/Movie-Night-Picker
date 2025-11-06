@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const SUGGEST_MOVIE = gql`
   query SuggestMovie($preferences: MoviePreferencesInput) {
@@ -114,4 +114,3 @@ export const SHUFFLE_MOVIE = gql`
     }
   }
 `;
-

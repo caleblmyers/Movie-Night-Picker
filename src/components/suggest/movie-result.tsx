@@ -36,7 +36,7 @@ export function MovieResultDisplay({
 
       <div className="w-full bg-card border rounded-lg p-8 shadow-lg">
         <div className="flex flex-col md:flex-row gap-6">
-          <div className="flex-shrink-0 mx-auto md:mx-0">
+          <div className="shrink-0 mx-auto md:mx-0">
             <Image
               src={posterUrl}
               alt={movie.title}
@@ -81,4 +81,3 @@ export function MovieResultDisplay({
     </div>
   );
 }
-

@@ -47,7 +47,9 @@ export default function ShufflePage() {
   }, [selectedGenres, yearRange, selectedCast, shuffleMovie]);
 
   if (loading) {
-    return <LoadingState message="Shuffling..." submessage="Finding your movie..." />;
+    return (
+      <LoadingState message="Shuffling..." submessage="Finding your movie..." />
+    );
   }
 
   if (error) {

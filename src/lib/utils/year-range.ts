@@ -1,7 +1,10 @@
 /**
  * Generates an array of years from a range
  */
-export function generateYearRange(startYear: number, endYear: number): number[] {
+export function generateYearRange(
+  startYear: number,
+  endYear: number
+): number[] {
   return Array.from(
     { length: endYear - startYear + 1 },
     (_, i) => startYear + i
@@ -18,4 +21,3 @@ export function isDefaultYearRange(
 ): boolean {
   return range[0] === minYear && range[1] === maxYear;
 }
-

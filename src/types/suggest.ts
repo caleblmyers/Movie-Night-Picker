@@ -1,4 +1,4 @@
-export type OptionType = 'genre' | 'actor' | 'movie' | 'yearRange';
+export type OptionType = "genre" | "actor" | "movie" | "yearRange";
 
 export interface SelectionOption {
   id: string;
@@ -49,4 +49,3 @@ export interface Person {
   knownForDepartment?: string;
   popularity?: number;
 }
-
