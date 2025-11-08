@@ -4,6 +4,8 @@ import { MovieResult, Movie } from "@/types/suggest";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { SaveMovieButton } from "./save-movie-button";
+import { RatingReviewSection } from "./rating-review-section";
 
 interface MovieResultDisplayProps {
   movie: MovieResult | Movie;
@@ -66,13 +68,17 @@ export function MovieResultDisplay({
               </div>
             )}
             {showActions && (
-              <div className="flex gap-4 pt-4">
-                <Button asChild>
-                  <Link href="/">Start Over</Link>
-                </Button>
-                <Button asChild variant="outline">
-                  <Link href="/suggest">Try Again</Link>
-                </Button>
+              <div className="flex flex-col gap-4 pt-4">
+                <div className="flex gap-4 flex-wrap">
+                  <Button asChild>
+                    <Link href="/">Start Over</Link>
+                  </Button>
+                  <Button asChild variant="outline">
+                    <Link href="/suggest">Try Again</Link>
+                  </Button>
+                  <SaveMovieButton tmdbId={movie.id} />
+                </div>
+                <RatingReviewSection tmdbId={movie.id} />
               </div>
             )}
           </div>

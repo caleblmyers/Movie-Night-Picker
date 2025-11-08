@@ -114,3 +114,107 @@ export const SHUFFLE_MOVIE = gql`
     }
   }
 `;
+
+// Authentication mutations
+export const REGISTER = gql`
+  mutation Register($email: String!, $password: String!) {
+    register(email: $email, password: $password) {
+      token
+      user {
+        id
+        email
+        name
+      }
+    }
+  }
+`;
+
+export const LOGIN = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+      user {
+        id
+        email
+        name
+      }
+    }
+  }
+`;
+
+// User queries
+export const ME = gql`
+  query Me {
+    me {
+      id
+      email
+      name
+    }
+  }
+`;
+
+export const MY_SAVED_MOVIES = gql`
+  query MySavedMovies {
+    mySavedMovies {
+      id
+      tmdbId
+      createdAt
+      rating {
+        id
+        value
+      }
+      review {
+        id
+        content
+      }
+    }
+  }
+`;
+
+// Movie mutations
+export const SAVE_MOVIE = gql`
+  mutation SaveMovie($tmdbId: Int!) {
+    saveMovie(tmdbId: $tmdbId) {
+      id
+      tmdbId
+      createdAt
+    }
+  }
+`;
+
+export const UNSAVE_MOVIE = gql`
+  mutation UnsaveMovie($tmdbId: Int!) {
+    unsaveMovie(tmdbId: $tmdbId) {
+      id
+      tmdbId
+    }
+  }
+`;
+
+// Rating mutations
+export const RATE_MOVIE = gql`
+  mutation RateMovie($tmdbId: Int!, $rating: Int!) {
+    rateMovie(tmdbId: $tmdbId, rating: $rating) {
+      id
+      value
+    }
+  }
+`;
+
+// Review mutations
+export const REVIEW_MOVIE = gql`
+  mutation ReviewMovie($tmdbId: Int!, $content: String!) {
+    reviewMovie(tmdbId: $tmdbId, content: $content) {
+      id
+      content
+    }
+  }
+`;
+
+export const DELETE_REVIEW = gql`
+  mutation DeleteReview($tmdbId: Int!) {
+    deleteReview(tmdbId: $tmdbId) {
+      id
+    }
+  }
+`;
