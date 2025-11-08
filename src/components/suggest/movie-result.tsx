@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import { MovieResult, Movie } from "@/types/suggest";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,16 +15,20 @@ interface MovieResultDisplayProps {
   showActions?: boolean;
 }
 
-export function MovieResultDisplay({
+function MovieResultDisplayComponent({
   movie,
   title = "Your Movie Pick",
   subtitle = "Based on your preferences",
   showActions = true,
 }: MovieResultDisplayProps) {
-  const posterUrl = movie.posterUrl || "/placeholder-poster.jpg";
-  const releaseYear = movie.releaseDate
-    ? new Date(movie.releaseDate).getFullYear()
-    : null;
+  const posterUrl = useMemo(
+    () => movie.posterUrl || "/placeholder-poster.jpg",
+    [movie.posterUrl]
+  );
+  const releaseYear = useMemo(
+    () => (movie.releaseDate ? new Date(movie.releaseDate).getFullYear() : null),
+    [movie.releaseDate]
+  );
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 px-4 py-16 max-w-4xl mx-auto">
@@ -45,7 +50,8 @@ export function MovieResultDisplay({
               width={300}
               height={450}
               className="rounded-lg object-cover"
-              unoptimized
+              priority
+              loading="eager"
             />
           </div>
           <div className="flex-1 space-y-4">
@@ -100,3 +106,5 @@ export function MovieResultDisplay({
     </div>
   );
 }
+
+export const MovieResultDisplay = memo(MovieResultDisplayComponent);

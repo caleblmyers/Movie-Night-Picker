@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import { SelectionOption } from "@/types/suggest";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -25,15 +26,15 @@ function getRoundTitle(round: number): string {
   return titles[round - 1] || "Choose your preference";
 }
 
-export function SelectionRound({
+function SelectionRoundComponent({
   round,
   totalRounds,
   options,
   onSelect,
   onRefresh,
 }: SelectionRoundProps) {
-  const isTwoOptions = options.length === 2;
-  const isFourOptions = options.length === 4;
+  const isTwoOptions = useMemo(() => options.length === 2, [options.length]);
+  const isFourOptions = useMemo(() => options.length === 4, [options.length]);
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 px-4 py-16 max-w-4xl mx-auto">
@@ -90,3 +91,5 @@ export function SelectionRound({
     </div>
   );
 }
+
+export const SelectionRound = memo(SelectionRoundComponent);

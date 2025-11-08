@@ -79,7 +79,7 @@ export function Navbar() {
                   </Button>
                 </Link>
                 <Link href="/register">
-                  <Button className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80">
+                  <Button className="flex items-center gap-2 bg-linear-to-r from-primary to-primary/80">
                     <UserPlus className="h-4 w-4" />
                     <span className="hidden sm:inline">Sign Up</span>
                     <span className="sm:hidden">Sign Up</span>

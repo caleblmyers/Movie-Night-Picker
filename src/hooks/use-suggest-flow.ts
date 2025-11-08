@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { SelectionOption, RoundSelection, MoviePreferences } from "@/types/suggest";
 
 const TOTAL_ROUNDS = 5;
@@ -98,18 +98,21 @@ export function useSuggestFlow() {
     return buildMoviePreferences(selections);
   }, [selections]);
 
-  const handleSelect = (option: SelectionOption) => {
-    setSelections((prev) => [
-      ...prev,
-      { round: currentRound, selectedOption: option },
-    ]);
-    setCurrentRound((prev) => (prev < TOTAL_ROUNDS ? prev + 1 : prev + 1));
-  };
+  const handleSelect = useCallback(
+    (option: SelectionOption) => {
+      setSelections((prev) => [
+        ...prev,
+        { round: currentRound, selectedOption: option },
+      ]);
+      setCurrentRound((prev) => (prev < TOTAL_ROUNDS ? prev + 1 : prev + 1));
+    },
+    [currentRound]
+  );
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setCurrentRound(1);
     setSelections([]);
-  };
+  }, []);
 
   const isComplete = currentRound > TOTAL_ROUNDS && selections.length === TOTAL_ROUNDS;
 

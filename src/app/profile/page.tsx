@@ -9,8 +9,7 @@ import { useSavedMovies } from "@/hooks/use-saved-movies";
 
 export default function ProfilePage() {
   const { data: session } = useSession();
-  const { savedMovies, loading, refetch, isAuthenticated, isLoading } =
-    useSavedMovies();
+  const { savedMovies, refetch, isAuthenticated, isLoading } = useSavedMovies();
 
   if (isLoading) {
     return <LoadingState message="Loading profile..." />;
@@ -21,10 +20,10 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 px-4 py-16">
+    <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20 px-4 py-16">
       <main className="w-full max-w-6xl mx-auto space-y-8">
         <div className="text-center space-y-4">
-          <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold tracking-tight bg-linear-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
             Your Profile
           </h1>
           <div className="space-y-2">

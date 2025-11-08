@@ -10,7 +10,7 @@ export function EmptySavedMovies() {
         Your movie collection is empty. Start building your watchlist!
       </p>
       <div className="flex gap-4 justify-center">
-        <Button asChild className="bg-gradient-to-r from-primary to-primary/80">
+        <Button asChild className="bg-linear-to-r from-primary to-primary/80">
           <Link href="/suggest">Get Suggestions</Link>
         </Button>
         <Button asChild variant="outline">

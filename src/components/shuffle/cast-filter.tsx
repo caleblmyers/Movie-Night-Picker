@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useApolloClient } from "@apollo/client/react";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +32,12 @@ export function CastFilter({ selectedCast, onCastChange }: CastFilterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const apolloClient = useApolloClient();
 
+  // Memoize selected IDs to avoid recreating Set on every render
+  const selectedIds = useMemo(
+    () => new Set(selectedCast.map((c) => c.id)),
+    [selectedCast]
+  );
+
   useEffect(() => {
     if (searchQuery.trim().length < 2) {
       setSearchResults([]);
@@ -47,11 +53,10 @@ export function CastFilter({ selectedCast, onCastChange }: CastFilterProps) {
             query: searchQuery,
             roleType: PersonRoleType.ACTOR, // Filter to actors only
           },
-          fetchPolicy: "network-only",
+          fetchPolicy: "cache-first", // Use cache when available
         });
 
         if (result.data?.searchPeople) {
-          const selectedIds = new Set(selectedCast.map((c) => c.id));
           const filtered = result.data.searchPeople.filter(
             (person) => !selectedIds.has(person.id)
           );
@@ -66,20 +71,26 @@ export function CastFilter({ selectedCast, onCastChange }: CastFilterProps) {
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [searchQuery, apolloClient, selectedCast]);
+  }, [searchQuery, apolloClient, selectedIds]);
 
-  const addCastMember = (person: Person) => {
-    if (!selectedCast.find((p) => p.id === person.id)) {
-      onCastChange([...selectedCast, person]);
-      setSearchQuery("");
-      setSearchResults([]);
-      setIsOpen(false);
-    }
-  };
+  const addCastMember = useCallback(
+    (person: Person) => {
+      if (!selectedIds.has(person.id)) {
+        onCastChange([...selectedCast, person]);
+        setSearchQuery("");
+        setSearchResults([]);
+        setIsOpen(false);
+      }
+    },
+    [selectedCast, selectedIds, onCastChange]
+  );
 
-  const removeCastMember = (personId: number) => {
-    onCastChange(selectedCast.filter((p) => p.id !== personId));
-  };
+  const removeCastMember = useCallback(
+    (personId: number) => {
+      onCastChange(selectedCast.filter((p) => p.id !== personId));
+    },
+    [selectedCast, onCastChange]
+  );
 
   return (
     <div className="space-y-2">

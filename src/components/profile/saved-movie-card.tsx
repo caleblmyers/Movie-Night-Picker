@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo, useCallback } from "react";
 import { useQuery } from "@apollo/client/react";
 import { GET_MOVIE } from "@/lib/graphql";
 import { Movie } from "@/types/suggest";
@@ -13,13 +14,15 @@ interface SavedMovieCardProps {
   onUnsave: () => void;
 }
 
-export function SavedMovieCard({ savedMovie, onUnsave }: SavedMovieCardProps) {
+function SavedMovieCardComponent({ savedMovie, onUnsave }: SavedMovieCardProps) {
   const { data, loading, error } = useQuery<{ getMovie: Movie }>(GET_MOVIE, {
     variables: { id: savedMovie.tmdbId },
     skip: !savedMovie.tmdbId,
+    fetchPolicy: "cache-first", // Use cache when available
+    errorPolicy: "all",
   });
 
-  const handleUnsave = async () => {
+  const handleUnsave = useCallback(async () => {
     try {
       await fetch(`/api/movies/unsave?tmdbId=${savedMovie.tmdbId}`, {
         method: "DELETE",
@@ -28,7 +31,21 @@ export function SavedMovieCard({ savedMovie, onUnsave }: SavedMovieCardProps) {
     } catch {
       // Error is handled silently - user can try again
     }
-  };
+  }, [savedMovie.tmdbId, onUnsave]);
+
+  // Memoize computed values before early returns
+  const movie = data?.getMovie;
+  const moviePosterUrl = movie?.posterUrl;
+  const movieReleaseDate = movie?.releaseDate;
+  
+  const posterUrl = useMemo(
+    () => moviePosterUrl || "/placeholder-poster.jpg",
+    [moviePosterUrl]
+  );
+  const releaseYear = useMemo(
+    () => (movieReleaseDate ? new Date(movieReleaseDate).getFullYear() : null),
+    [movieReleaseDate]
+  );
 
   if (loading) {
     return (
@@ -40,19 +57,13 @@ export function SavedMovieCard({ savedMovie, onUnsave }: SavedMovieCardProps) {
     );
   }
 
-  if (error || !data?.getMovie) {
+  if (error || !movie) {
     return (
       <div className="bg-card border rounded-lg p-4">
         <p className="text-muted-foreground">Failed to load movie</p>
       </div>
     );
   }
-
-  const movie = data.getMovie;
-  const posterUrl = movie.posterUrl || "/placeholder-poster.jpg";
-  const releaseYear = movie.releaseDate
-    ? new Date(movie.releaseDate).getFullYear()
-    : null;
 
   return (
     <div className="bg-card border rounded-lg p-4 space-y-4">
@@ -62,7 +73,7 @@ export function SavedMovieCard({ savedMovie, onUnsave }: SavedMovieCardProps) {
           alt={movie.title}
           fill
           className="object-cover"
-          unoptimized
+          loading="lazy"
         />
       </div>
       <div className="space-y-2">
@@ -108,4 +119,6 @@ export function SavedMovieCard({ savedMovie, onUnsave }: SavedMovieCardProps) {
     </div>
   );
 }
+
+export const SavedMovieCard = memo(SavedMovieCardComponent);
 

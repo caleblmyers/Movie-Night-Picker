@@ -32,29 +32,28 @@ export default function SuggestPage() {
     {
       variables: { preferences },
       skip: !preferences,
+      fetchPolicy: "network-only", // Always fetch fresh results
+      errorPolicy: "all", // Continue rendering even on error
     }
   );
 
-  // Log preferences when they're ready
+  // Debug logging (only in development)
   useEffect(() => {
-    if (preferences) {
+    if (process.env.NODE_ENV === "development" && preferences) {
       console.log("=== Suggest Movie Request ===");
       console.log("Preferences sent:", JSON.stringify(preferences, null, 2));
     }
   }, [preferences]);
 
-  // Log response when data is received
   useEffect(() => {
-    if (data?.suggestMovie) {
+    if (process.env.NODE_ENV === "development" && data?.suggestMovie) {
       console.log("=== Suggest Movie Response ===");
-      console.log("Full Response:", JSON.stringify(data, null, 2));
       console.log("Movie Data:", data.suggestMovie);
     }
   }, [data]);
 
-  // Log errors
   useEffect(() => {
-    if (error) {
+    if (process.env.NODE_ENV === "development" && error) {
       console.error("=== Suggest Movie Error ===");
       console.error("Error:", error);
     }

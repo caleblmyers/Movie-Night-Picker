@@ -5,7 +5,7 @@ import { Shuffle, Sparkles, Star, Heart, MessageSquare } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+    <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20">
       {/* Hero Section */}
       <main className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-4 py-16">
         <div className="text-center space-y-8 max-w-4xl">
@@ -20,7 +20,7 @@ export default function Home() {
                 className="h-12 w-12 object-contain animate-pulse"
                 unoptimized
               />
-              <h1 className="text-7xl md:text-8xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
+              <h1 className="text-7xl md:text-8xl font-bold tracking-tight bg-linear-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
                 Movie Night Picker
               </h1>
               <Image
@@ -42,7 +42,7 @@ export default function Home() {
             <Button
               asChild
               size="lg"
-              className="min-w-[240px] h-16 text-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg shadow-primary/20"
+              className="min-w-[240px] h-16 text-lg bg-linear-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg shadow-primary/20"
             >
               <Link href="/suggest" className="flex items-center gap-2">
                 <Sparkles className="h-5 w-5" />

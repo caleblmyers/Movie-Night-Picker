@@ -5,7 +5,6 @@ import {
   ACTORS_FROM_FEATURED_MOVIES,
   CREW_FROM_FEATURED_MOVIES,
 } from "@/lib/graphql";
-import { SelectionOption } from "@/types/suggest";
 
 /**
  * Genre from backend

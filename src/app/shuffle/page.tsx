@@ -57,12 +57,12 @@ export default function ShufflePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 px-4 py-16">
+    <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20 px-4 py-16">
       <main className="w-full max-w-4xl mx-auto space-y-8">
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">
             <Shuffle className="h-8 w-8 text-primary" />
-            <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
+            <h1 className="text-5xl font-bold tracking-tight bg-linear-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
               Shuffle & Discover
             </h1>
             <Shuffle className="h-8 w-8 text-primary" />
@@ -94,7 +94,7 @@ export default function ShufflePage() {
             <Button 
               onClick={handleShuffle} 
               size="lg" 
-              className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg shadow-primary/20"
+              className="w-full bg-linear-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg shadow-primary/20"
             >
               <Shuffle className="mr-2 h-5 w-5" />
               Shuffle Movie

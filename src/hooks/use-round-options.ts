@@ -1,6 +1,5 @@
 import { useMemo, useState, useCallback } from "react";
-import { SelectionOption } from "@/types/suggest";
-import { SuggestRoundConfig } from "./use-suggest-flow";
+import type { SuggestRoundConfig } from "./use-suggest-flow";
 import { useSelectionOptions } from "./use-selection-options";
 
 /**
@@ -60,6 +59,7 @@ export function useRoundOptions(
     }
 
     return [];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currentRound,
     roundConfig,

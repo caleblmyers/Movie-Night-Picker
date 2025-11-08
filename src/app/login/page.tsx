@@ -50,10 +50,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center px-4 py-16">
+    <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20 flex items-center justify-center px-4 py-16">
       <main className="w-full max-w-md space-y-8">
         <div className="text-center space-y-4">
-          <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold tracking-tight bg-linear-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
             Welcome Back
           </h1>
           <p className="text-muted-foreground text-lg">
