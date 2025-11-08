@@ -2,6 +2,8 @@ import NextAuth from "next-auth";
 import type { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { graphqlRequest } from "@/lib/utils/graphql-client";
+import { LOGIN } from "@/lib/graphql/queries";
+import { print } from "graphql";
 
 export const authOptions: NextAuthConfig = {
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
@@ -21,18 +23,7 @@ export const authOptions: NextAuthConfig = {
           const response = await graphqlRequest<{
             login: { token: string; user: { id: string; email: string; name?: string | null } };
           }>({
-            query: `
-              mutation Login($email: String!, $password: String!) {
-                login(email: $email, password: $password) {
-                  token
-                  user {
-                    id
-                    email
-                    name
-                  }
-                }
-              }
-            `,
+            query: print(LOGIN),
             variables: {
               email: credentials.email,
               password: credentials.password,
@@ -52,7 +43,7 @@ export const authOptions: NextAuthConfig = {
             token,
           };
         } catch (error) {
-          console.error("Auth error:", error);
+          // Silently fail for authentication - don't log sensitive errors
           return null;
         }
       },

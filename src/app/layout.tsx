@@ -4,6 +4,7 @@ import "./globals.css";
 import { ApolloProviderWrapper } from "@/components/providers/apollo-provider";
 import { NextAuthSessionProvider } from "@/components/providers/session-provider";
 import { Navbar } from "@/components/shared/navbar";
+import { Footer } from "@/components/shared/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,12 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
         <NextAuthSessionProvider>
           <ApolloProviderWrapper>
             <Navbar />
-            {children}
+            <main className="flex-1">{children}</main>
+            <Footer />
           </ApolloProviderWrapper>
         </NextAuthSessionProvider>
       </body>

@@ -26,13 +26,10 @@ export default function ProfilePage() {
 
   const fetchSavedMovies = async () => {
     try {
-      const response = await fetch("/api/movies/saved");
-      if (response.ok) {
-        const data = await response.json();
-        setSavedMovies(data);
-      }
+      const data = await fetch("/api/movies/saved").then((res) => res.json());
+      setSavedMovies(data);
     } catch (error) {
-      console.error("Error fetching saved movies:", error);
+      // Error is handled silently - user will see empty state
     } finally {
       setLoading(false);
     }
@@ -136,21 +133,16 @@ function SavedMovieCard({
     skip: !savedMovie.tmdbId,
   });
 
-  const handleUnsave = async () => {
-    try {
-      const response = await fetch(
-        `/api/movies/unsave?tmdbId=${savedMovie.tmdbId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (response.ok) {
-        onUnsave();
-      }
-    } catch (error) {
-      console.error("Error unsaving movie:", error);
-    }
-  };
+         const handleUnsave = async () => {
+           try {
+             await fetch(`/api/movies/unsave?tmdbId=${savedMovie.tmdbId}`, {
+               method: "DELETE",
+             });
+             onUnsave();
+           } catch (error) {
+             // Error is handled silently - user can try again
+           }
+         };
 
   if (loading) {
     return (
@@ -215,6 +207,17 @@ function SavedMovieCard({
           Remove from Saved
         </Button>
         <RatingReviewSection tmdbId={savedMovie.tmdbId} />
+        <p className="text-xs text-muted-foreground pt-2 border-t">
+          Data from{" "}
+          <a
+            href="https://www.themoviedb.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#01b4e4] hover:underline"
+          >
+            TMDB
+          </a>
+        </p>
       </div>
     </div>
   );

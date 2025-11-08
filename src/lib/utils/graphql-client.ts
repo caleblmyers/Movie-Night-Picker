@@ -1,4 +1,5 @@
 import { getGraphQLUrl } from "@/lib/config";
+import { logError } from "./error-handler";
 
 export interface GraphQLResponse<T = unknown> {
   data?: T;
@@ -44,7 +45,7 @@ export async function graphqlRequest<T = unknown>(
 
     return await response.json();
   } catch (error) {
-    console.error("GraphQL request error:", error);
+    logError(error, "GraphQL request");
     throw error;
   }
 }

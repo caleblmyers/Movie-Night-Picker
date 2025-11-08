@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { graphqlRequest, getGraphQLErrorMessage } from "./graphql-client";
 import { requireAuth } from "./auth-session";
+import { logError } from "./error-handler";
 
 export interface ApiHandlerOptions {
   requireAuthentication?: boolean;
@@ -34,7 +35,7 @@ export async function withApiHandler<T>(
       );
     }
 
-    console.error("API handler error:", error);
+    logError(error, "API handler");
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

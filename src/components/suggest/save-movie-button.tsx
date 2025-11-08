@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Heart, HeartOff } from "lucide-react";
+import { apiGet, apiPost, apiDelete } from "@/lib/utils/api-client";
+import { logError } from "@/lib/utils/error-handler";
 
 interface SaveMovieButtonProps {
   tmdbId: number;
@@ -26,14 +28,11 @@ export function SaveMovieButton({ tmdbId }: SaveMovieButtonProps) {
 
   const checkIfSaved = async () => {
     try {
-      const response = await fetch(`/api/movies/saved`);
-      if (response.ok) {
-        const data = await response.json();
-        const saved = data.some((movie: { tmdbId: number }) => movie.tmdbId === tmdbId);
-        setIsSaved(saved);
-      }
+      const data = await apiGet<Array<{ tmdbId: number }>>("/api/movies/saved");
+      const saved = data.some((movie) => movie.tmdbId === tmdbId);
+      setIsSaved(saved);
     } catch (error) {
-      console.error("Error checking saved status:", error);
+      logError(error, "SaveMovieButton.checkIfSaved");
     } finally {
       setChecking(false);
     }
@@ -47,26 +46,14 @@ export function SaveMovieButton({ tmdbId }: SaveMovieButtonProps) {
     setLoading(true);
     try {
       if (isSaved) {
-        const response = await fetch(`/api/movies/unsave?tmdbId=${tmdbId}`, {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          setIsSaved(false);
-        }
+        await apiDelete("/api/movies/unsave", { tmdbId: tmdbId.toString() });
+        setIsSaved(false);
       } else {
-        const response = await fetch("/api/movies/save", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ tmdbId }),
-        });
-        if (response.ok) {
-          setIsSaved(true);
-        }
+        await apiPost("/api/movies/save", { tmdbId });
+        setIsSaved(true);
       }
     } catch (error) {
-      console.error("Error saving/unsaving movie:", error);
+      logError(error, "SaveMovieButton.handleSave");
     } finally {
       setLoading(false);
     }

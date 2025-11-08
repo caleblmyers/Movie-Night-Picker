@@ -54,8 +54,8 @@ export function CastFilter({ selectedCast, onCastChange }: CastFilterProps) {
           );
           setSearchResults(filtered);
         }
-      } catch (error) {
-        console.error("Error searching people:", error);
+      } catch {
+        // Silently fail - user will see empty results
         setSearchResults([]);
       } finally {
         setIsSearching(false);

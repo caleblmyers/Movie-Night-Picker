@@ -67,6 +67,19 @@ export function MovieResultDisplay({
                 </p>
               </div>
             )}
+            <div className="pt-2 border-t text-xs text-muted-foreground">
+              <p>
+                Movie data from{" "}
+                <a
+                  href="https://www.themoviedb.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#01b4e4] hover:underline"
+                >
+                  The Movie Database
+                </a>
+              </p>
+            </div>
             {showActions && (
               <div className="flex flex-col gap-4 pt-4">
                 <div className="flex gap-4 flex-wrap">

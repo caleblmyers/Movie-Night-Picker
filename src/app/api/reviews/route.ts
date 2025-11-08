@@ -1,97 +1,73 @@
 import { NextRequest } from "next/server";
 import { withApiHandler, executeGraphQLMutation, executeGraphQLQuery } from "@/lib/utils/api-helpers";
-import { REVIEW_MOVIE, DELETE_REVIEW } from "@/lib/graphql/queries";
+import { REVIEW_MOVIE, DELETE_REVIEW, REVIEWS } from "@/lib/graphql/queries";
+import { validateTmdbId, validateRequired } from "@/lib/utils/validation";
 import { print } from "graphql";
 
-const MY_REVIEWS_QUERY = `
-  query MyReviews {
-    myReviews {
-      id
-      content
-      savedMovie {
-        tmdbId
-      }
-    }
-  }
-`;
+async function handleReviewMutation(
+  tmdbId: number,
+  content: string,
+  authToken: string
+) {
+  const data = await executeGraphQLMutation<{ reviewMovie: { id: string; content: string } }>(
+    print(REVIEW_MOVIE),
+    { tmdbId, content },
+    authToken
+  );
+
+  return { review: data.reviewMovie };
+}
 
 export async function POST(request: NextRequest) {
   return withApiHandler(async (session) => {
     const body = await request.json();
-    const { tmdbId, content } = body;
+    const tmdbId = validateTmdbId(body.tmdbId);
+    const content = validateRequired(body.content, "Content");
 
-    if (!tmdbId || !content) {
-      throw { status: 400, error: "TMDB ID and content are required" };
-    }
-
-    const data = await executeGraphQLMutation<{ reviewMovie: { id: string; content: string } }>(
-      print(REVIEW_MOVIE),
-      { tmdbId, content },
-      session.authToken
-    );
-
-    return { review: data.reviewMovie };
+    return handleReviewMutation(tmdbId, content, session.authToken);
   });
 }
 
 export async function GET(request: NextRequest) {
   return withApiHandler(async (session) => {
     const { searchParams } = new URL(request.url);
-    const tmdbId = searchParams.get("tmdbId");
+    const tmdbId = validateTmdbId(searchParams.get("tmdbId"));
 
-    if (!tmdbId) {
-      throw { status: 400, error: "TMDB ID is required" };
-    }
-
-    const data = await executeGraphQLQuery<{ myReviews: Array<{
-      id: string;
+    const data = await executeGraphQLQuery<{ reviews: Array<{
+      id: number | string;
+      tmdbId: number;
       content: string;
-      savedMovie: { tmdbId: number };
     }> }>(
-      MY_REVIEWS_QUERY,
+      print(REVIEWS),
       {},
       session.authToken
     );
 
-    const review = data.myReviews?.find(
-      (r) => r.savedMovie?.tmdbId === parseInt(tmdbId, 10)
-    );
+    const review = data.reviews?.find((r) => r.tmdbId === tmdbId) || null;
 
-    return { review: review || null };
+    return { review };
   });
 }
 
 export async function PUT(request: NextRequest) {
   return withApiHandler(async (session) => {
     const body = await request.json();
-    const { tmdbId, content } = body;
+    const tmdbId = validateTmdbId(body.tmdbId);
+    const content = validateRequired(body.content, "Content");
 
-    if (!tmdbId || !content) {
-      throw { status: 400, error: "TMDB ID and content are required" };
-    }
-
-    const data = await executeGraphQLMutation<{ reviewMovie: { id: string; content: string } }>(
-      print(REVIEW_MOVIE),
-      { tmdbId, content },
-      session.authToken
-    );
-
-    return { review: data.reviewMovie };
+    // PUT uses the same mutation as POST (reviewMovie creates or updates)
+    return handleReviewMutation(tmdbId, content, session.authToken);
   });
 }
 
 export async function DELETE(request: NextRequest) {
   return withApiHandler(async (session) => {
     const { searchParams } = new URL(request.url);
-    const tmdbId = searchParams.get("tmdbId");
-
-    if (!tmdbId) {
-      throw { status: 400, error: "TMDB ID is required" };
-    }
+    const tmdbId = validateTmdbId(searchParams.get("tmdbId"));
 
     await executeGraphQLMutation(
       print(DELETE_REVIEW),
-      { tmdbId: parseInt(tmdbId, 10) },
+      { tmdbId },
       session.authToken
     );
 

@@ -86,8 +86,8 @@ export default function SuggestPage() {
           });
 
           setRoundOptions(movies.map(movieToOption));
-        } catch (error) {
-          console.error("Error fetching movies:", error);
+        } catch {
+          // Silently fail - user will see empty options
           setRoundOptions([]);
         } finally {
           setLoadingOptions(false);
@@ -115,8 +115,8 @@ export default function SuggestPage() {
           });
 
           setRoundOptions(people.map(personToOption));
-        } catch (error) {
-          console.error("Error fetching people:", error);
+        } catch {
+          // Silently fail - user will see empty options
           setRoundOptions([]);
         } finally {
           setLoadingOptions(false);
