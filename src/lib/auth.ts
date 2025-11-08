@@ -42,7 +42,7 @@ export const authOptions: NextAuthConfig = {
             name: user.name,
             token,
           };
-        } catch (error) {
+        } catch {
           // Silently fail for authentication - don't log sensitive errors
           return null;
         }

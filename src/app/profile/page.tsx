@@ -28,7 +28,7 @@ export default function ProfilePage() {
     try {
       const data = await fetch("/api/movies/saved").then((res) => res.json());
       setSavedMovies(data);
-    } catch (error) {
+    } catch {
       // Error is handled silently - user will see empty state
     } finally {
       setLoading(false);
@@ -41,7 +41,6 @@ export default function ProfilePage() {
     } else if (status === "unauthenticated") {
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, session?.user?.id]);
 
   if (status === "loading" || loading) {
@@ -139,7 +138,7 @@ function SavedMovieCard({
                method: "DELETE",
              });
              onUnsave();
-           } catch (error) {
+           } catch {
              // Error is handled silently - user can try again
            }
          };

@@ -16,8 +16,7 @@ interface ApiError {
  * Wraps an API handler with common error handling and authentication
  */
 export async function withApiHandler<T>(
-  handler: (session: Awaited<ReturnType<typeof requireAuth>>) => Promise<T>,
-  options: ApiHandlerOptions = {}
+  handler: (session: Awaited<ReturnType<typeof requireAuth>>) => Promise<T>
 ): Promise<NextResponse> {
   try {
     // Authentication is required by default - session is guaranteed to exist
