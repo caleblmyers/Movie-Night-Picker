@@ -13,6 +13,7 @@ import { SelectionOption } from "@/types/suggest";
 interface Genre {
   id: string;
   name: string;
+  icon: string | null;
 }
 
 /**
@@ -21,6 +22,7 @@ interface Genre {
 interface Mood {
   id: string;
   label: string;
+  icon: string | null;
 }
 
 /**
@@ -30,6 +32,7 @@ interface Era {
   id: string;
   label: string;
   value: string;
+  icon: string | null;
 }
 
 /**
@@ -96,6 +99,7 @@ export function useSelectionOptions() {
       type: "genre" as const,
       label: genre.name,
       value: genre.id,
+      icon: genre.icon || undefined,
     }));
   }, [selectionData]);
 
@@ -106,6 +110,7 @@ export function useSelectionOptions() {
       type: "mood" as const,
       label: mood.label,
       value: mood.id,
+      icon: mood.icon || undefined,
     }));
   }, [selectionData]);
 
@@ -116,6 +121,7 @@ export function useSelectionOptions() {
       type: "era" as const,
       label: era.label,
       value: era.value,
+      icon: era.icon || undefined,
     }));
   }, [selectionData]);
 

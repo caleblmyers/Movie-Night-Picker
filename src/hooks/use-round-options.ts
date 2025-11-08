@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { SelectionOption } from "@/types/suggest";
 import { SuggestRoundConfig } from "./use-suggest-flow";
 import { useSelectionOptions } from "./use-selection-options";
@@ -22,6 +22,7 @@ export function useRoundOptions(
 ) {
   const { allGenres, allMoods, allEras, allActors, allCrew, loading: loadingAllOptions } =
     useSelectionOptions();
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const roundOptions = useMemo(() => {
     if (currentRound > totalRounds || loadingAllOptions) {
@@ -69,8 +70,13 @@ export function useRoundOptions(
     allEras,
     allActors,
     allCrew,
+    refreshKey, // Include refreshKey to trigger re-shuffle
   ]);
 
-  return { roundOptions, loadingOptions: loadingAllOptions };
+  const refreshOptions = useCallback(() => {
+    setRefreshKey((prev) => prev + 1);
+  }, []);
+
+  return { roundOptions, loadingOptions: loadingAllOptions, refreshOptions };
 }
 

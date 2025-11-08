@@ -183,15 +183,18 @@ export const MOVIE_SELECTION_OPTIONS = gql`
       genres {
         id
         name
+        icon
       }
       moods {
         id
         label
+        icon
       }
       eras {
         id
         label
         value
+        icon
       }
     }
   }

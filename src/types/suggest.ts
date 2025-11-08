@@ -6,6 +6,7 @@ export interface SelectionOption {
   label: string;
   value: string;
   imageUrl?: string;
+  icon?: string | null; // Iconify icon identifier (e.g., "lucide:smile")
 }
 
 export interface RoundSelection {

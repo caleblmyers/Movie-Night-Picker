@@ -21,7 +21,7 @@ export default function SuggestPage() {
     TOTAL_ROUNDS,
   } = useSuggestFlow();
 
-  const { roundOptions, loadingOptions } = useRoundOptions(
+  const { roundOptions, loadingOptions, refreshOptions } = useRoundOptions(
     currentRound,
     roundConfig,
     TOTAL_ROUNDS
@@ -101,6 +101,7 @@ export default function SuggestPage() {
         totalRounds={TOTAL_ROUNDS}
         options={roundOptions}
         onSelect={handleSelect}
+        onRefresh={refreshOptions}
       />
     );
   }

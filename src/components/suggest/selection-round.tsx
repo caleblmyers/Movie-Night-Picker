@@ -3,12 +3,15 @@
 import { SelectionOption } from "@/types/suggest";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { RefreshCw } from "lucide-react";
+import { Icon } from "@iconify/react";
 
 interface SelectionRoundProps {
   round: number;
   totalRounds: number;
   options: SelectionOption[];
   onSelect: (option: SelectionOption) => void;
+  onRefresh?: () => void;
 }
 
 function getRoundTitle(round: number): string {
@@ -27,6 +30,7 @@ export function SelectionRound({
   totalRounds,
   options,
   onSelect,
+  onRefresh,
 }: SelectionRoundProps) {
   const isTwoOptions = options.length === 2;
   const isFourOptions = options.length === 4;
@@ -59,10 +63,30 @@ export function SelectionRound({
             )}
             onClick={() => onSelect(option)}
           >
+            {option.icon && (
+              <Icon
+                icon={option.icon}
+                width={32}
+                height={32}
+                className="text-foreground"
+              />
+            )}
             <span className="text-center">{option.label}</span>
           </Button>
         ))}
       </div>
+
+      {onRefresh && (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onRefresh}
+          className="mt-4 gap-2 text-muted-foreground hover:text-foreground"
+        >
+          <RefreshCw className="h-4 w-4" />
+          <span>Refresh Options</span>
+        </Button>
+      )}
     </div>
   );
 }
