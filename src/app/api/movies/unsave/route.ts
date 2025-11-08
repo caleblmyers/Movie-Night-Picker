@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { withApiHandler, executeGraphQLMutation } from "@/lib/utils/api-helpers";
-import { UNSAVE_MOVIE } from "@/lib/graphql/queries";
+import { UNSAVE_MOVIE } from "@/lib/graphql";
 import { validateTmdbId } from "@/lib/utils/validation";
 import { print } from "graphql";
 

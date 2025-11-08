@@ -1,5 +1,5 @@
 import { withApiHandler, executeGraphQLQuery } from "@/lib/utils/api-helpers";
-import { SAVED_MOVIES } from "@/lib/graphql/queries";
+import { SAVED_MOVIES } from "@/lib/graphql";
 import { print } from "graphql";
 
 export async function GET() {

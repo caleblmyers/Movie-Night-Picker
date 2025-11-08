@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { useLazyQuery } from "@apollo/client/react";
 import { Button } from "@/components/ui/button";
 import { Shuffle } from "lucide-react";
 import { GenreFilter } from "@/components/shuffle/genre-filter";
@@ -9,43 +7,24 @@ import { YearRangeFilter } from "@/components/shuffle/year-range-filter";
 import { CastFilter } from "@/components/shuffle/cast-filter";
 import { LoadingState } from "@/components/shared/loading-state";
 import { ErrorState } from "@/components/shared/error-state";
-import { SHUFFLE_MOVIE } from "@/lib/graphql/queries";
-import { Movie, Person } from "@/types/suggest";
 import { MovieResultDisplay } from "@/components/suggest/movie-result";
-import { generateYearRange, isDefaultYearRange } from "@/lib/utils/year-range";
-
-const MIN_YEAR = 1950;
-const MAX_YEAR = new Date().getFullYear();
+import { useShuffleMovie } from "@/hooks/use-shuffle-movie";
 
 export default function ShufflePage() {
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const [yearRange, setYearRange] = useState<number[]>([MIN_YEAR, MAX_YEAR]);
-  const [selectedCast, setSelectedCast] = useState<Person[]>([]);
-
-  const [shuffleMovie, { data, loading, error }] = useLazyQuery<{
-    shuffleMovie: Movie;
-  }>(SHUFFLE_MOVIE, {
-    fetchPolicy: "network-only",
-  });
-
-  const handleShuffle = useCallback(() => {
-    const genres = selectedGenres.length > 0 ? selectedGenres : undefined;
-    const years = !isDefaultYearRange(yearRange, MIN_YEAR, MAX_YEAR)
-      ? generateYearRange(yearRange[0], yearRange[1])
-      : undefined;
-    const cast =
-      selectedCast.length > 0
-        ? selectedCast.map((person) => person.id)
-        : undefined;
-
-    shuffleMovie({
-      variables: {
-        genres,
-        yearRange: years,
-        cast,
-      },
-    });
-  }, [selectedGenres, yearRange, selectedCast, shuffleMovie]);
+  const {
+    selectedGenres,
+    setSelectedGenres,
+    yearRange,
+    setYearRange,
+    selectedCast,
+    setSelectedCast,
+    handleShuffle,
+    movie,
+    loading,
+    error,
+    MIN_YEAR,
+    MAX_YEAR,
+  } = useShuffleMovie();
 
   if (loading) {
     return (
@@ -62,7 +41,7 @@ export default function ShufflePage() {
     );
   }
 
-  if (data?.shuffleMovie) {
+  if (movie) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
         <main className="w-full max-w-4xl space-y-4">
@@ -71,7 +50,7 @@ export default function ShufflePage() {
               Shuffle Again
             </Button>
           </div>
-          <MovieResultDisplay movie={data.shuffleMovie} />
+          <MovieResultDisplay movie={movie} />
         </main>
       </div>
     );

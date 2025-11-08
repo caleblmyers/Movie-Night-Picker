@@ -1,4 +1,4 @@
-export type OptionType = "genre" | "actor" | "movie" | "yearRange";
+export type OptionType = "genre" | "mood" | "era" | "actor" | "director";
 
 export interface SelectionOption {
   id: string;
@@ -15,8 +15,21 @@ export interface RoundSelection {
 
 export interface MoviePreferences {
   genres?: string[];
-  actors?: number[];
+  mood?: string;
+  era?: string;
+  actors?: number[]; // Filters to actors only (automatically filtered by backend)
+  directors?: number[]; // Deprecated: use crew instead
+  crew?: number[]; // Filters to directors/writers only (automatically filtered by backend)
   yearRange?: number[];
+}
+
+/**
+ * Person role type for filtering people search
+ */
+export enum PersonRoleType {
+  ACTOR = "ACTOR", // Actors only
+  CREW = "CREW", // Directors/writers only
+  BOTH = "BOTH", // All people
 }
 
 export interface MovieResult {

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AUTH_TOKEN_KEY, PASSWORD_MIN_LENGTH } from "@/lib/config";
 import { graphqlRequest } from "@/lib/utils/graphql-client";
-import { REGISTER } from "@/lib/graphql/queries";
+import { REGISTER } from "@/lib/graphql";
 import { print } from "graphql";
 
 export default function RegisterPage() {

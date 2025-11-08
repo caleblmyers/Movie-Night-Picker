@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { withApiHandler, executeGraphQLMutation, executeGraphQLQuery } from "@/lib/utils/api-helpers";
-import { REVIEW_MOVIE, DELETE_REVIEW, REVIEWS } from "@/lib/graphql/queries";
+import { REVIEW_MOVIE, DELETE_REVIEW, REVIEWS } from "@/lib/graphql";
 import { validateTmdbId, validateRequired } from "@/lib/utils/validation";
 import { print } from "graphql";
 

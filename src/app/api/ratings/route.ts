@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { withApiHandler, executeGraphQLMutation, executeGraphQLQuery } from "@/lib/utils/api-helpers";
-import { RATE_MOVIE, RATINGS } from "@/lib/graphql/queries";
+import { RATE_MOVIE, RATINGS } from "@/lib/graphql";
 import { validateTmdbId, validateRating, validateRequired } from "@/lib/utils/validation";
 import { RATING_MIN, RATING_MAX } from "@/lib/config";
 import { print } from "graphql";

@@ -11,6 +11,17 @@ interface SelectionRoundProps {
   onSelect: (option: SelectionOption) => void;
 }
 
+function getRoundTitle(round: number): string {
+  const titles = [
+    "Pick a Genre",
+    "Choose a Mood",
+    "Select an Era",
+    "Pick an Actor",
+    "Choose a Director",
+  ];
+  return titles[round - 1] || "Choose your preference";
+}
+
 export function SelectionRound({
   round,
   totalRounds,
@@ -26,7 +37,7 @@ export function SelectionRound({
         <h1 className="text-4xl font-bold tracking-tight text-foreground">
           Round {round} of {totalRounds}
         </h1>
-        <p className="text-lg text-muted-foreground">Choose your preference</p>
+        <p className="text-lg text-muted-foreground">{getRoundTitle(round)}</p>
       </div>
 
       <div
@@ -48,9 +59,6 @@ export function SelectionRound({
             )}
             onClick={() => onSelect(option)}
           >
-            <span className="text-xs uppercase tracking-wider text-muted-foreground">
-              {option.type}
-            </span>
             <span className="text-center">{option.label}</span>
           </Button>
         ))}

@@ -17,8 +17,8 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { ChevronsUpDown, X } from "lucide-react";
-import { SEARCH_PEOPLE } from "@/lib/graphql/queries";
-import { Person } from "@/types/suggest";
+import { SEARCH_PEOPLE } from "@/lib/graphql";
+import { Person, PersonRoleType } from "@/types/suggest";
 
 interface CastFilterProps {
   selectedCast: Person[];
@@ -43,7 +43,10 @@ export function CastFilter({ selectedCast, onCastChange }: CastFilterProps) {
       try {
         const result = await apolloClient.query<{ searchPeople: Person[] }>({
           query: SEARCH_PEOPLE,
-          variables: { query: searchQuery },
+          variables: { 
+            query: searchQuery,
+            roleType: PersonRoleType.ACTOR, // Filter to actors only
+          },
           fetchPolicy: "network-only",
         });
 

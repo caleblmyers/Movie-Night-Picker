@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import type { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { graphqlRequest } from "@/lib/utils/graphql-client";
-import { LOGIN } from "@/lib/graphql/queries";
+import { LOGIN } from "@/lib/graphql";
 import { print } from "graphql";
 
 export const authOptions: NextAuthConfig = {
