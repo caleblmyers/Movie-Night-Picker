@@ -3,9 +3,10 @@
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { AUTH_TOKEN_KEY } from "@/lib/config";
-import { Film, User, LogOut, LogIn, UserPlus } from "lucide-react";
+import { User, LogOut, LogIn, UserPlus } from "lucide-react";
 
 export function Navbar() {
   const { data: session, status } = useSession();
@@ -23,13 +24,20 @@ export function Navbar() {
     <nav className="border-b bg-background/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link 
-            href="/" 
-            className="flex items-center gap-2 text-2xl font-bold text-foreground hover:text-primary transition-colors"
-          >
-            <Film className="h-6 w-6 text-primary" />
-            <span>Movie Night Picker</span>
-          </Link>
+                 <Link 
+                   href="/" 
+                   className="flex items-center gap-2 text-2xl font-bold text-foreground hover:text-primary transition-colors"
+                 >
+                   <Image
+                     src="/icon.png"
+                     alt="Movie Night Picker"
+                     width={32}
+                     height={32}
+                     className="h-8 w-8 object-contain"
+                     unoptimized
+                   />
+                   <span>Movie Night Picker</span>
+                 </Link>
 
           <div className="flex items-center gap-3">
             <Link href="/suggest">

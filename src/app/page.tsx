@@ -1,6 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Film, Shuffle, Sparkles, Star, Heart, MessageSquare } from "lucide-react";
+import { Shuffle, Sparkles, Star, Heart, MessageSquare } from "lucide-react";
 
 export default function Home() {
   return (
@@ -11,11 +12,25 @@ export default function Home() {
           {/* Main Title with Theater Vibe */}
           <div className="space-y-4">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <Film className="h-12 w-12 text-primary animate-pulse" />
+              <Image
+                src="/icon.png"
+                alt="Movie Night Picker"
+                width={64}
+                height={64}
+                className="h-12 w-12 object-contain animate-pulse"
+                unoptimized
+              />
               <h1 className="text-7xl md:text-8xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
                 Movie Night Picker
               </h1>
-              <Sparkles className="h-12 w-12 text-primary animate-pulse" />
+              <Image
+                src="/icon.png"
+                alt="Movie Night Picker"
+                width={64}
+                height={64}
+                className="h-12 w-12 object-contain animate-pulse"
+                unoptimized
+              />
             </div>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
               Your personal movie curator for the perfect night in
