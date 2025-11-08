@@ -53,19 +53,19 @@ export default function ProfilePage() {
 
   if (status === "unauthenticated") {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">
-            Please Sign In
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center px-4 py-16">
+        <div className="text-center space-y-6 max-w-md">
+          <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
+            Join the Show
           </h1>
-          <p className="text-muted-foreground">
-            You need to be signed in to view your profile.
+          <p className="text-muted-foreground text-lg">
+            Sign in to view your saved movies, ratings, and reviews
           </p>
-          <div className="flex gap-4 justify-center">
-            <Button asChild>
+          <div className="flex gap-4 justify-center pt-4">
+            <Button asChild size="lg" className="bg-gradient-to-r from-primary to-primary/80">
               <Link href="/login">Sign In</Link>
             </Button>
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" size="lg">
               <Link href="/register">Sign Up</Link>
             </Button>
           </div>
@@ -75,15 +75,15 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
-      <main className="w-full max-w-6xl space-y-8">
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 px-4 py-16">
+      <main className="w-full max-w-6xl mx-auto space-y-8">
+        <div className="text-center space-y-4">
+          <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
             Your Profile
           </h1>
-          <div className="space-y-1">
-            <p className="text-lg text-foreground">
-              {session?.user?.name || "User"}
+          <div className="space-y-2">
+            <p className="text-xl text-foreground font-medium">
+              {session?.user?.name || "Movie Enthusiast"}
             </p>
             <p className="text-muted-foreground">{session?.user?.email}</p>
           </div>
@@ -93,13 +93,18 @@ export default function ProfilePage() {
           <div>
             <h2 className="text-2xl font-bold mb-4">Saved Movies</h2>
             {savedMovies.length === 0 ? (
-              <div className="bg-card border rounded-lg p-8 text-center">
-                <p className="text-muted-foreground mb-4">
-                  You haven&apos;t saved any movies yet.
+              <div className="bg-card/50 backdrop-blur-sm border rounded-lg p-12 text-center space-y-6">
+                <p className="text-muted-foreground text-lg">
+                  Your movie collection is empty. Start building your watchlist!
                 </p>
-                <Button asChild>
-                  <Link href="/suggest">Find a Movie</Link>
-                </Button>
+                <div className="flex gap-4 justify-center">
+                  <Button asChild className="bg-gradient-to-r from-primary to-primary/80">
+                    <Link href="/suggest">Get Suggestions</Link>
+                  </Button>
+                  <Button asChild variant="outline">
+                    <Link href="/shuffle">Shuffle Movies</Link>
+                  </Button>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

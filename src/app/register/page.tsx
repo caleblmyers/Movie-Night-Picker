@@ -75,18 +75,18 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 flex items-center justify-center px-4 py-16">
       <main className="w-full max-w-md space-y-8">
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">
-            Sign Up
+        <div className="text-center space-y-4">
+          <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
+            Join the Show
           </h1>
-          <p className="text-muted-foreground">
-            Create an account to save movies and write reviews
+          <p className="text-muted-foreground text-lg">
+            Create your free account to save movies, rate favorites, and share reviews
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 bg-card border rounded-lg p-6">
+        <form onSubmit={handleSubmit} className="space-y-4 bg-card/50 backdrop-blur-sm border rounded-lg p-6 shadow-lg">
           {error && (
             <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm">
               {error}

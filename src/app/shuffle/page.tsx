@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { useLazyQuery } from "@apollo/client/react";
 import { Button } from "@/components/ui/button";
+import { Shuffle } from "lucide-react";
 import { GenreFilter } from "@/components/shuffle/genre-filter";
 import { YearRangeFilter } from "@/components/shuffle/year-range-filter";
 import { CastFilter } from "@/components/shuffle/cast-filter";
@@ -77,19 +78,22 @@ export default function ShufflePage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
-      <main className="w-full max-w-4xl space-y-8">
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">
-            Shuffle Mode
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            Filter by genre, year range, and cast before randomizing. Get a
-            random movie selection based on your preferences.
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20 px-4 py-16">
+      <main className="w-full max-w-4xl mx-auto space-y-8">
+        <div className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-3">
+            <Shuffle className="h-8 w-8 text-primary" />
+            <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
+              Shuffle & Discover
+            </h1>
+            <Shuffle className="h-8 w-8 text-primary" />
+          </div>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Filter by genre, year range, and cast before randomizing. Let us surprise you with a perfect movie pick!
           </p>
         </div>
 
-        <div className="space-y-6 bg-card border rounded-lg p-6">
+        <div className="space-y-6 bg-card/50 backdrop-blur-sm border rounded-lg p-6 shadow-lg">
           <GenreFilter
             selectedGenres={selectedGenres}
             onGenresChange={setSelectedGenres}
@@ -108,7 +112,12 @@ export default function ShufflePage() {
           />
 
           <div className="pt-4">
-            <Button onClick={handleShuffle} size="lg" className="w-full">
+            <Button 
+              onClick={handleShuffle} 
+              size="lg" 
+              className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg shadow-primary/20"
+            >
+              <Shuffle className="mr-2 h-5 w-5" />
               Shuffle Movie
             </Button>
           </div>
