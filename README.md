@@ -2,6 +2,25 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js 18+ installed
+- Backend API running (default: http://localhost:4000)
+
+### Environment Setup
+
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env.local
+   ```
+
+2. Edit `.env.local` and configure the following variables:
+   - `BACKEND_API_URL`: The base URL of your backend API (e.g., `http://localhost:4000`)
+   - `NEXT_PUBLIC_BACKEND_API_URL`: Same as above, but accessible in the browser
+   - `AUTH_SECRET`: A random secret for NextAuth.js (generate with `openssl rand -base64 32`)
+
+### Running the Development Server
+
 First, run the development server:
 
 ```bash
