@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { CrewMember } from "@/types/suggest";
 import { User } from "lucide-react";
 
@@ -11,7 +12,10 @@ interface CrewMemberCardProps {
  */
 export function CrewMemberCard({ member }: CrewMemberCardProps) {
   return (
-    <div className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-2">
+    <Link
+      href={`/person/${member.id}`}
+      className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-2 transition-opacity hover:opacity-80"
+    >
       {member.profileUrl ? (
         <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full bg-muted">
           <Image
@@ -28,7 +32,7 @@ export function CrewMemberCard({ member }: CrewMemberCardProps) {
         </div>
       )}
       <span className="text-sm text-foreground">{member.name}</span>
-    </div>
+    </Link>
   );
 }
 

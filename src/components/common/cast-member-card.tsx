@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { CastMember } from "@/types/suggest";
 import { User } from "lucide-react";
 
@@ -11,7 +12,10 @@ interface CastMemberCardProps {
  */
 export function CastMemberCard({ actor }: CastMemberCardProps) {
   return (
-    <div className="flex flex-col items-center space-y-2 text-center">
+    <Link
+      href={`/person/${actor.id}`}
+      className="flex flex-col items-center space-y-2 text-center transition-opacity hover:opacity-80"
+    >
       <div className="relative h-20 w-20 overflow-hidden rounded-full bg-muted">
         {actor.profileUrl ? (
           <Image
@@ -33,7 +37,7 @@ export function CastMemberCard({ actor }: CastMemberCardProps) {
           <p className="text-xs text-muted-foreground">{actor.character}</p>
         )}
       </div>
-    </div>
+    </Link>
   );
 }
 

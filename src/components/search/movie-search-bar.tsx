@@ -3,10 +3,10 @@
 import { useState, useRef, useEffect } from "react";
 import { useQuery } from "@apollo/client/react";
 import { useRouter } from "next/navigation";
-import { Search, X, Film } from "lucide-react";
+import { Search, X, Film, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { SEARCH_MOVIES } from "@/lib/graphql";
+import { SEARCH_MOVIES, SEARCH_PEOPLE } from "@/lib/graphql";
 import { useDebounce } from "@/hooks/use-debounce";
 import Image from "next/image";
 
@@ -22,9 +22,16 @@ interface SearchMovie {
   }>;
 }
 
+interface SearchPerson {
+  id: number;
+  name: string;
+  profileUrl?: string | null;
+  knownForDepartment?: string | null;
+}
+
 const MIN_QUERY_LENGTH = 2;
 const DEBOUNCE_DELAY = 300;
-const SEARCH_LIMIT = 10;
+const SEARCH_LIMIT = 5; // Reduced since we're showing both movies and people
 
 export function MovieSearchBar() {
   const [query, setQuery] = useState("");
@@ -35,7 +42,7 @@ export function MovieSearchBar() {
 
   const shouldSearch = debouncedQuery.trim().length >= MIN_QUERY_LENGTH;
 
-  const { data, loading, error } = useQuery<{ searchMovies: SearchMovie[] }>(
+  const { data: moviesData, loading: moviesLoading, error: moviesError } = useQuery<{ searchMovies: SearchMovie[] }>(
     SEARCH_MOVIES,
     {
       variables: {
@@ -47,7 +54,23 @@ export function MovieSearchBar() {
     }
   );
 
-  const movies = data?.searchMovies || [];
+  const { data: peopleData, loading: peopleLoading, error: peopleError } = useQuery<{ searchPeople: SearchPerson[] }>(
+    SEARCH_PEOPLE,
+    {
+      variables: {
+        query: debouncedQuery,
+        limit: SEARCH_LIMIT,
+      },
+      skip: !shouldSearch,
+      fetchPolicy: "cache-first",
+    }
+  );
+
+  const movies = moviesData?.searchMovies || [];
+  const people = peopleData?.searchPeople || [];
+  const loading = moviesLoading || peopleLoading;
+  const error = moviesError || peopleError;
+  const hasResults = movies.length > 0 || people.length > 0;
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -70,6 +93,12 @@ export function MovieSearchBar() {
     setQuery("");
     setIsOpen(false);
     router.push(`/movie/${movieId}`);
+  };
+
+  const handlePersonClick = (personId: number) => {
+    setQuery("");
+    setIsOpen(false);
+    router.push(`/person/${personId}`);
   };
 
   const handleInputChange = (value: string) => {
@@ -96,7 +125,7 @@ export function MovieSearchBar() {
           value={query}
           onChange={(e) => handleInputChange(e.target.value)}
           onFocus={() => setIsOpen(true)}
-          placeholder="Search movies..."
+          placeholder="Search movies and people..."
           className="pl-9 pr-9 w-full"
         />
         {query && (
@@ -122,68 +151,122 @@ export function MovieSearchBar() {
 
           {error && (
             <div className="p-4 text-center text-sm text-destructive">
-              Error searching movies. Please try again.
+              Error searching. Please try again.
             </div>
           )}
 
-          {!loading && !error && movies.length === 0 && (
+          {!loading && !error && !hasResults && (
             <div className="p-4 text-center text-sm text-muted-foreground">
-              No movies found
+              No results found
             </div>
           )}
 
-          {!loading && !error && movies.length > 0 && (
+          {!loading && !error && hasResults && (
             <div className="py-2">
-              {movies.map((movie, index) => (
-                <button
-                  key={movie.id}
-                  onClick={() => handleMovieClick(movie.id)}
-                  className="w-full px-4 py-3 hover:bg-accent transition-colors text-left flex items-center gap-3 group"
-                >
-                  <div className="relative shrink-0 h-18 w-12 overflow-hidden rounded bg-muted">
-                    {movie.posterUrl ? (
-                      <Image
-                        src={movie.posterUrl}
-                        alt={movie.title}
-                        fill
-                        sizes="48px"
-                        className="object-cover"
-                        priority={index === 0}
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Film className="h-6 w-6 text-muted-foreground" />
+              {/* Movies Section */}
+              {movies.length > 0 && (
+                <>
+                  <div className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Movies
+                  </div>
+                  {movies.map((movie, index) => (
+                    <button
+                      key={movie.id}
+                      onClick={() => handleMovieClick(movie.id)}
+                      className="w-full px-4 py-3 hover:bg-accent transition-colors text-left flex items-center gap-3 group"
+                    >
+                      <div className="relative shrink-0 h-18 w-12 overflow-hidden rounded bg-muted">
+                        {movie.posterUrl ? (
+                          <Image
+                            src={movie.posterUrl}
+                            alt={movie.title}
+                            fill
+                            sizes="48px"
+                            className="object-cover"
+                            priority={index === 0}
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <Film className="h-6 w-6 text-muted-foreground" />
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-medium text-foreground group-hover:text-primary transition-colors truncate">
-                      {movie.title}
-                    </div>
-                    <div className="text-xs text-muted-foreground flex items-center gap-2 mt-1">
-                      {releaseYear(movie.releaseDate) && (
-                        <span>{releaseYear(movie.releaseDate)}</span>
-                      )}
-                      {movie.voteAverage !== null && movie.voteAverage !== undefined && (
-                        <>
-                          {releaseYear(movie.releaseDate) && <span>•</span>}
-                          <span>{movie.voteAverage.toFixed(1)}/10</span>
-                        </>
-                      )}
-                      {movie.genres && movie.genres.length > 0 && (
-                        <>
-                          {(releaseYear(movie.releaseDate) || movie.voteAverage !== null) && (
-                            <span>•</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-foreground group-hover:text-primary transition-colors truncate">
+                          {movie.title}
+                        </div>
+                        <div className="text-xs text-muted-foreground flex items-center gap-2 mt-1">
+                          {releaseYear(movie.releaseDate) && (
+                            <span>{releaseYear(movie.releaseDate)}</span>
                           )}
-                          <span className="truncate">
-                            {movie.genres.slice(0, 2).map((g) => g.name).join(", ")}
-                          </span>
-                        </>
-                      )}
-                    </div>
+                          {movie.voteAverage !== null && movie.voteAverage !== undefined && (
+                            <>
+                              {releaseYear(movie.releaseDate) && <span>•</span>}
+                              <span>{movie.voteAverage.toFixed(1)}/10</span>
+                            </>
+                          )}
+                          {movie.genres && movie.genres.length > 0 && (
+                            <>
+                              {(releaseYear(movie.releaseDate) || movie.voteAverage !== null) && (
+                                <span>•</span>
+                              )}
+                              <span className="truncate">
+                                {movie.genres.slice(0, 2).map((g) => g.name).join(", ")}
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </>
+              )}
+
+              {/* People Section */}
+              {people.length > 0 && (
+                <>
+                  {movies.length > 0 && (
+                    <div className="border-t my-1" />
+                  )}
+                  <div className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    People
                   </div>
-                </button>
-              ))}
+                  {people.map((person, index) => (
+                    <button
+                      key={person.id}
+                      onClick={() => handlePersonClick(person.id)}
+                      className="w-full px-4 py-3 hover:bg-accent transition-colors text-left flex items-center gap-3 group"
+                    >
+                      <div className="relative shrink-0 h-12 w-12 overflow-hidden rounded-full bg-muted">
+                        {person.profileUrl ? (
+                          <Image
+                            src={person.profileUrl}
+                            alt={person.name}
+                            fill
+                            sizes="48px"
+                            className="object-cover"
+                            priority={index === 0 && movies.length === 0}
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <User className="h-6 w-6 text-muted-foreground" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-foreground group-hover:text-primary transition-colors truncate">
+                          {person.name}
+                        </div>
+                        {person.knownForDepartment && (
+                          <div className="text-xs text-muted-foreground truncate mt-1">
+                            {person.knownForDepartment}
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </>
+              )}
             </div>
           )}
         </div>

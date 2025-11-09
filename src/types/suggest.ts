@@ -196,6 +196,13 @@ export interface Person {
   placeOfBirth?: string;
   knownForDepartment?: string;
   popularity?: number;
+  movies?: Array<{
+    id: number;
+    title: string;
+    posterUrl?: string | null;
+    releaseDate?: string | null;
+    voteAverage?: number | null;
+  }>;
 }
 
 export interface User {

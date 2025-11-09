@@ -2,6 +2,8 @@ import { gql } from "@apollo/client";
 
 /**
  * Get a single person by TMDB ID
+ * Includes movies where the person has credits (cast and crew combined, duplicates removed)
+ * Movies are sorted by release date (newest first)
  */
 export const GET_PERSON = gql`
   query GetPerson($id: Int!) {
@@ -14,6 +16,13 @@ export const GET_PERSON = gql`
       placeOfBirth
       knownForDepartment
       popularity
+      movies {
+        id
+        title
+        posterUrl
+        releaseDate
+        voteAverage
+      }
     }
   }
 `;
