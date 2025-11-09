@@ -16,6 +16,9 @@ export const SUGGEST_MOVIE = gql`
 
 /**
  * Get a single movie by TMDB ID
+ * Automatically includes credits (cast and crew) for detail pages
+ * Cast is limited to top 20 members
+ * Crew is filtered to directors, writers, and producers (top 15)
  */
 export const GET_MOVIE = gql`
   ${MOVIE_FRAGMENT}
@@ -48,12 +51,21 @@ export const GET_MOVIE = gql`
 
 /**
  * Search movies by query string
+ * Supports smart, case-insensitive partial matching
+ * Results are cached for 5 minutes on the backend
  */
 export const SEARCH_MOVIES = gql`
-  ${MOVIE_FRAGMENT}
-  query SearchMovies($query: String!) {
-    searchMovies(query: $query) {
-      ...MovieFields
+  query SearchMovies($query: String!, $limit: Int) {
+    searchMovies(query: $query, limit: $limit) {
+      id
+      title
+      posterUrl
+      releaseDate
+      voteAverage
+      genres {
+        id
+        name
+      }
     }
   }
 `;

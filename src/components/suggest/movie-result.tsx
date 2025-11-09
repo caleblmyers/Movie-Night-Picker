@@ -42,7 +42,7 @@ function MovieResultDisplayComponent({
         )}
       </div>
 
-      <div className="w-full bg-card border rounded-lg p-8 shadow-lg">
+      <div className="w-full bg-card border rounded-lg p-6 md:p-8 shadow-lg">
         <div className="flex flex-col md:flex-row gap-6">
           <div className="shrink-0 mx-auto md:mx-0">
             <Image
@@ -50,54 +50,54 @@ function MovieResultDisplayComponent({
               alt={movie.title}
               width={300}
               height={450}
-              className="rounded-lg object-cover"
+              className="rounded-lg object-cover shadow-md"
               priority
               loading="eager"
             />
           </div>
-          <div className="flex-1 space-y-4">
-            <div>
-              <h2 className="text-3xl font-bold text-foreground mb-2">
+          <div className="flex-1 space-y-5">
+            <div className="space-y-2">
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
                 {movie.title}
               </h2>
               {releaseYear && (
-                <p className="text-muted-foreground">{releaseYear}</p>
+                <p className="text-sm md:text-base text-muted-foreground">{releaseYear}</p>
               )}
             </div>
             {movie.overview && (
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
+              <div className="space-y-2">
+                <h3 className="text-base md:text-lg font-semibold text-foreground">
                   Overview
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                   {movie.overview}
                 </p>
               </div>
             )}
             {movie.trailer && movie.trailer.key && movie.trailer.url && (
-              <div className="pt-4 border-t">
-                <h3 className="text-lg font-semibold text-foreground mb-3">
+              <div className="space-y-3 pt-4 border-t">
+                <h3 className="text-base md:text-lg font-semibold text-foreground">
                   Trailer
                 </h3>
                 <MovieTrailerDisplay trailer={movie.trailer} />
               </div>
             )}
-            <div className="pt-2 border-t text-xs text-muted-foreground">
-              <p>
+            <div className="pt-3 border-t">
+              <p className="text-xs text-muted-foreground">
                 Movie data from{" "}
                 <a
                   href="https://www.themoviedb.org"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#01b4e4] hover:underline"
+                  className="text-[#01b4e4] hover:underline transition-colors"
                 >
                   The Movie Database
                 </a>
               </p>
             </div>
             {showActions && (
-              <div className="flex flex-col gap-4 pt-4">
-                <div className="flex gap-4 flex-wrap">
+              <div className="flex flex-col gap-4 pt-4 border-t">
+                <div className="flex flex-wrap gap-3">
                   <Button asChild>
                     <Link href="/">Start Over</Link>
                   </Button>

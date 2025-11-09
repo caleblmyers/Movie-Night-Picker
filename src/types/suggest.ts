@@ -11,6 +11,37 @@ export interface MovieTrailer {
   url: string; // Full URL to play the trailer
 }
 
+/**
+ * Genre information
+ */
+export interface Genre {
+  id: number;
+  name: string;
+  icon?: string | null;
+}
+
+/**
+ * Cast member information
+ */
+export interface CastMember {
+  id: number;
+  name: string;
+  character?: string | null;
+  profileUrl?: string | null;
+  order?: number | null;
+}
+
+/**
+ * Crew member information
+ */
+export interface CrewMember {
+  id: number;
+  name: string;
+  job?: string | null;
+  department?: string | null;
+  profileUrl?: string | null;
+}
+
 export interface SelectionOption {
   id: string;
   type: OptionType;
@@ -52,6 +83,7 @@ export interface MovieResult {
   releaseDate?: string;
   voteAverage?: number;
   voteCount?: number;
+  runtime?: number;
   isSaved?: boolean;
   rating?: {
     id: number | string;
@@ -68,7 +100,10 @@ export interface MovieResult {
     description?: string;
     isPublic: boolean;
   }>;
+  genres?: Genre[];
   trailer?: MovieTrailer | null;
+  cast?: CastMember[];
+  crew?: CrewMember[];
 }
 
 export interface Movie {
@@ -79,6 +114,7 @@ export interface Movie {
   releaseDate?: string;
   voteAverage?: number;
   voteCount?: number;
+  runtime?: number;
   isSaved?: boolean;
   rating?: {
     id: number | string;
@@ -95,7 +131,10 @@ export interface Movie {
     description?: string;
     isPublic: boolean;
   }>;
+  genres?: Genre[];
   trailer?: MovieTrailer | null;
+  cast?: CastMember[];
+  crew?: CrewMember[];
   reviews?: Array<{
     id: number | string;
     content: string;

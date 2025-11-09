@@ -38,7 +38,7 @@ function MovieTrailerComponent({ trailer, className }: MovieTrailerProps) {
   if (isPlaying) {
     return (
       <div className={className}>
-        <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-black">
+        <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-black shadow-md">
           <iframe
             src={embedUrl}
             title={trailer.name || "Movie Trailer"}
@@ -53,37 +53,39 @@ function MovieTrailerComponent({ trailer, className }: MovieTrailerProps) {
 
   return (
     <div className={className}>
-      <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted group cursor-pointer">
+      <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted group cursor-pointer shadow-md">
         {thumbnailUrl && !imageError ? (
           <Image
             src={thumbnailUrl}
             alt={trailer.name || "Trailer thumbnail"}
             fill
-            className="object-cover"
+            className="object-cover transition-transform group-hover:scale-105"
             onError={() => setImageError(true)}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-primary/5">
+          <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-primary/20 to-primary/5">
             <Play className="h-16 w-16 text-primary opacity-50" />
           </div>
         )}
         <button
           onClick={() => setIsPlaying(true)}
-          className="absolute inset-0 w-full h-full flex items-center justify-center bg-black/40 group-hover:bg-black/50 transition-colors"
+          className="absolute inset-0 w-full h-full flex items-center justify-center bg-black/40 group-hover:bg-black/50 transition-colors duration-200"
           aria-label="Play trailer"
         >
           <div className="flex flex-col items-center gap-2">
-            <div className="rounded-full bg-primary/90 p-4 group-hover:bg-primary transition-colors">
+            <div className="rounded-full bg-primary/90 p-4 group-hover:bg-primary group-hover:scale-110 transition-all duration-200">
               <Play className="h-8 w-8 text-primary-foreground fill-primary-foreground" />
             </div>
-            <p className="text-sm font-medium text-white">
-              {trailer.name || "Watch Trailer"}
-            </p>
+            {trailer.name && (
+              <p className="text-sm font-medium text-white drop-shadow-lg">
+                {trailer.name}
+              </p>
+            )}
           </div>
         </button>
       </div>
       {trailer.url && (
-        <div className="mt-2">
+        <div className="mt-3">
           <Button
             variant="outline"
             size="sm"

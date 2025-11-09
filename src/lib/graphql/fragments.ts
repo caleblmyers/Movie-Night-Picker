@@ -13,6 +13,7 @@ export const MOVIE_FRAGMENT = gql`
     releaseDate
     voteAverage
     voteCount
+    runtime
     isSaved
     rating {
       id
@@ -29,12 +30,31 @@ export const MOVIE_FRAGMENT = gql`
       description
       isPublic
     }
+    genres {
+      id
+      name
+      icon
+    }
     trailer {
       key
       site
       name
       type
       url
+    }
+    cast {
+      id
+      name
+      character
+      profileUrl
+      order
+    }
+    crew {
+      id
+      name
+      job
+      department
+      profileUrl
     }
   }
 `;
