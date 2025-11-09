@@ -134,20 +134,21 @@ export function MovieSearchBar() {
 
           {!loading && !error && movies.length > 0 && (
             <div className="py-2">
-              {movies.map((movie) => (
+              {movies.map((movie, index) => (
                 <button
                   key={movie.id}
                   onClick={() => handleMovieClick(movie.id)}
                   className="w-full px-4 py-3 hover:bg-accent transition-colors text-left flex items-center gap-3 group"
                 >
-                  <div className="relative shrink-0 w-12 h-18 bg-muted rounded overflow-hidden">
+                  <div className="relative shrink-0 h-18 w-12 overflow-hidden rounded bg-muted">
                     {movie.posterUrl ? (
                       <Image
                         src={movie.posterUrl}
                         alt={movie.title}
                         fill
-                        className="object-cover"
                         sizes="48px"
+                        className="object-cover"
+                        priority={index === 0}
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">

@@ -98,6 +98,12 @@ export const SHUFFLE_MOVIE = gql`
     $minVoteCount: Int
     $runtimeRange: [Int!]
     $originalLanguage: String
+    $watchProviders: String
+    $excludeGenres: [Int!]
+    $excludeCast: [Int!]
+    $excludeCrew: [Int!]
+    $popularityRange: [Float!]
+    $originCountries: [String!]
   ) {
     shuffleMovie(
       genres: $genres
@@ -108,6 +114,12 @@ export const SHUFFLE_MOVIE = gql`
       minVoteCount: $minVoteCount
       runtimeRange: $runtimeRange
       originalLanguage: $originalLanguage
+      watchProviders: $watchProviders
+      excludeGenres: $excludeGenres
+      excludeCast: $excludeCast
+      excludeCrew: $excludeCrew
+      popularityRange: $popularityRange
+      originCountries: $originCountries
     ) {
       ...MovieFields
     }

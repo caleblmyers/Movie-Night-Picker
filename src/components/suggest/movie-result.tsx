@@ -35,7 +35,7 @@ function MovieResultDisplayComponent({
       </div>
 
       <CardContainer className="w-full">
-        <MovieCard movie={movie} showOverview showGenres={false} />
+        <MovieCard movie={movie} showOverview showGenres={false} priority={true} />
         
         <div className="space-y-5 mt-5">
           {movie.trailer && movie.trailer.key && movie.trailer.url && (

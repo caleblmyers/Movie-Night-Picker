@@ -4,7 +4,6 @@ import { useParams } from "next/navigation";
 import { useQuery } from "@apollo/client/react";
 import { GET_MOVIE } from "@/lib/graphql";
 import { Movie } from "@/types/suggest";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { SaveMovieButton } from "@/components/suggest/save-movie-button";
 import { MovieTrailerDisplay } from "@/components/suggest/movie-trailer";
@@ -13,18 +12,11 @@ import { LoadingState } from "@/components/shared/loading-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { CardContainer } from "@/components/common/card-container";
 import { SectionHeader } from "@/components/common/section-header";
-import { GenreBadge } from "@/components/common/genre-badge";
+import { MovieCard } from "@/components/common/movie-card";
 import { CastMemberCard } from "@/components/common/cast-member-card";
 import { CrewMemberCard } from "@/components/common/crew-member-card";
-import {
-  Calendar,
-  Clock,
-  Star,
-  ExternalLink,
-  User,
-  Film,
-  Users,
-} from "lucide-react";
+import { Clock, User, Film, Users } from "lucide-react";
+import { TMDBLinkButton } from "@/components/common/tmdb-link-button";
 import Link from "next/link";
 
 export default function MovieDetailPage() {
@@ -66,10 +58,6 @@ export default function MovieDetailPage() {
     );
   }
 
-  const releaseYear = movie.releaseDate
-    ? new Date(movie.releaseDate).getFullYear()
-    : null;
-
   const formatRuntime = (minutes?: number | null) => {
     if (!minutes) return null;
     const hours = Math.floor(minutes / 60);
@@ -94,91 +82,20 @@ export default function MovieDetailPage() {
 
         {/* Main Movie Info */}
         <CardContainer>
-          <div className="flex flex-col md:flex-row gap-6">
-            {/* Poster */}
-            <div className="shrink-0 mx-auto md:mx-0">
-              <Image
-                src={movie.posterUrl || "/placeholder-poster.jpg"}
-                alt={movie.title}
-                width={300}
-                height={450}
-                className="rounded-lg object-cover shadow-md"
-                priority
-              />
+          <MovieCard movie={movie} showOverview showGenres priority={true} />
+          
+          {/* Runtime Display (not in MovieCard) */}
+          {movie.runtime && (
+            <div className="flex items-center gap-1.5 pt-4 border-t text-sm text-muted-foreground">
+              <Clock className="h-4 w-4" />
+              <span>{formatRuntime(movie.runtime)}</span>
             </div>
+          )}
 
-            {/* Movie Details */}
-            <div className="flex-1 space-y-5">
-              <div className="space-y-3">
-                <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                  {movie.title}
-                </h1>
-
-                <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                  {releaseYear && (
-                    <div className="flex items-center gap-1.5">
-                      <Calendar className="h-4 w-4" />
-                      <span>{releaseYear}</span>
-                    </div>
-                  )}
-                  {movie.runtime && (
-                    <div className="flex items-center gap-1.5">
-                      <Clock className="h-4 w-4" />
-                      <span>{formatRuntime(movie.runtime)}</span>
-                    </div>
-                  )}
-                  {movie.voteAverage !== undefined && (
-                    <div className="flex items-center gap-1.5">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="font-medium">
-                        {movie.voteAverage.toFixed(1)}
-                      </span>
-                      <span>/10</span>
-                      {movie.voteCount !== undefined && (
-                        <span className="text-xs">
-                          ({movie.voteCount.toLocaleString()} votes)
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                {movie.genres && movie.genres.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {movie.genres.map((genre) => (
-                      <GenreBadge key={genre.id} genre={genre} />
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {movie.overview && (
-                <div className="space-y-2">
-                  <h2 className="text-lg font-semibold text-foreground">
-                    Overview
-                  </h2>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {movie.overview}
-                  </p>
-                </div>
-              )}
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap gap-3 pt-4 border-t">
-                <SaveMovieButton tmdbId={movie.id} />
-                <Button asChild variant="outline">
-                  <a
-                    href={`https://www.themoviedb.org/movie/${movie.id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    View on TMDB
-                  </a>
-                </Button>
-              </div>
-            </div>
+          {/* Action Buttons */}
+          <div className="flex flex-wrap gap-3 pt-4 border-t">
+            <SaveMovieButton tmdbId={movie.id} />
+            <TMDBLinkButton movieId={movie.id} />
           </div>
         </CardContainer>
 

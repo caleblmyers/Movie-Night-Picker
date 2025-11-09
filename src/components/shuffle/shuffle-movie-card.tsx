@@ -7,7 +7,7 @@ import { SaveMovieButton } from "@/components/suggest/save-movie-button";
 import { MovieTrailerDisplay } from "@/components/suggest/movie-trailer";
 import { CardContainer } from "@/components/common/card-container";
 import { MovieCard } from "@/components/common/movie-card";
-import { ExternalLink } from "lucide-react";
+import { TMDBLinkButton } from "@/components/common/tmdb-link-button";
 
 interface ShuffleMovieCardProps {
   movie: Movie;
@@ -15,11 +15,9 @@ interface ShuffleMovieCardProps {
 }
 
 function ShuffleMovieCardComponent({ movie, onShuffleAgain }: ShuffleMovieCardProps) {
-  const tmdbUrl = `https://www.themoviedb.org/movie/${movie.id}`;
-
   return (
     <CardContainer className="w-full">
-      <MovieCard movie={movie} showOverview showGenres={false} />
+      <MovieCard movie={movie} showOverview showGenres={false} priority={true} />
       
       <div className="space-y-5 mt-5">
         {movie.trailer && movie.trailer.key && movie.trailer.url && (
@@ -35,17 +33,7 @@ function ShuffleMovieCardComponent({ movie, onShuffleAgain }: ShuffleMovieCardPr
           <Button onClick={onShuffleAgain} variant="default" className="flex-1 min-w-[140px]">
             Pick Another Random Movie
           </Button>
-          <Button asChild variant="outline" className="flex-1 min-w-[140px]">
-            <a
-              href={tmdbUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2"
-            >
-              <ExternalLink className="h-4 w-4" />
-              View on TMDB
-            </a>
-          </Button>
+          <TMDBLinkButton movieId={movie.id} className="flex-1 min-w-[140px]" />
           <SaveMovieButton tmdbId={movie.id} />
         </div>
       </div>

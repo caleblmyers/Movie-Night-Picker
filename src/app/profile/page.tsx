@@ -41,11 +41,12 @@ export default function ProfilePage() {
               <EmptySavedMovies />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {savedMovies.map((savedMovie) => (
+                {savedMovies.map((savedMovie, index) => (
                   <SavedMovieCard
                     key={savedMovie.id}
                     savedMovie={savedMovie}
                     onUnsave={refetch}
+                    priority={index === 0}
                   />
                 ))}
               </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import Image from "next/image";
 import type { MovieTrailer } from "@/types/suggest";
 import { Play, ExternalLink } from "lucide-react";
@@ -14,6 +14,7 @@ interface MovieTrailerProps {
 function MovieTrailerComponent({ trailer, className }: MovieTrailerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
 
   // Generate YouTube embed URL
   const getEmbedUrl = () => {
@@ -24,25 +25,28 @@ function MovieTrailerComponent({ trailer, className }: MovieTrailerProps) {
     return trailer.url;
   };
 
-  // Generate thumbnail URL for YouTube
-  const getThumbnailUrl = () => {
+  // Initialize thumbnail URL on mount with fallback strategy
+  useEffect(() => {
     if (trailer.site === "YouTube" && trailer.key) {
-      return `https://img.youtube.com/vi/${trailer.key}/maxresdefault.jpg`;
+      // Try hqdefault first (more reliable), then maxresdefault if available
+      // hqdefault is more widely available than maxresdefault
+      setThumbnailUrl(`https://img.youtube.com/vi/${trailer.key}/hqdefault.jpg`);
+      setImageError(false);
+    } else {
+      setThumbnailUrl(null);
     }
-    return null;
-  };
+  }, [trailer.site, trailer.key]);
 
-  const thumbnailUrl = getThumbnailUrl();
   const embedUrl = getEmbedUrl();
 
   if (isPlaying) {
     return (
       <div className={className}>
-        <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-black shadow-md">
+        <div className="relative w-full aspect-video overflow-hidden rounded-lg bg-black shadow-md">
           <iframe
             src={embedUrl}
             title={trailer.name || "Movie Trailer"}
-            className="w-full h-full"
+            className="h-full w-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
@@ -62,7 +66,37 @@ function MovieTrailerComponent({ trailer, className }: MovieTrailerProps) {
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-transform group-hover:scale-105"
-            onError={() => setImageError(true)}
+            onError={() => {
+              // If hqdefault fails, try other YouTube thumbnail formats
+              if (thumbnailUrl?.includes("img.youtube.com")) {
+                const formats = ["mqdefault", "sddefault", "default"];
+                const currentFormat = thumbnailUrl.match(/\/(\w+)\.jpg$/)?.[1];
+                const currentIndex = formats.indexOf(currentFormat || "");
+                
+                if (currentIndex < formats.length - 1) {
+                  const nextFormat = formats[currentIndex + 1];
+                  const fallbackUrl = thumbnailUrl.replace(
+                    `/${currentFormat}.jpg`,
+                    `/${nextFormat}.jpg`
+                  );
+                  
+                  const testImg = new Image();
+                  testImg.onload = () => {
+                    setThumbnailUrl(fallbackUrl);
+                    setImageError(false);
+                  };
+                  testImg.onerror = () => {
+                    setImageError(true);
+                  };
+                  testImg.src = fallbackUrl;
+                } else {
+                  setImageError(true);
+                }
+              } else {
+                setImageError(true);
+              }
+            }}
+            unoptimized
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-primary/20 to-primary/5">

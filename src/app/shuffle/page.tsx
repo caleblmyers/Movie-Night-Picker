@@ -10,6 +10,12 @@ import { VoteAverageFilter } from "@/components/shuffle/vote-average-filter";
 import { VoteCountFilter } from "@/components/shuffle/vote-count-filter";
 import { RuntimeFilter } from "@/components/shuffle/runtime-filter";
 import { LanguageFilter } from "@/components/shuffle/language-filter";
+import { StreamingFilter } from "@/components/shuffle/streaming-filter";
+import { ExcludeGenreFilter } from "@/components/shuffle/exclude-genre-filter";
+import { ExcludeCastFilter } from "@/components/shuffle/exclude-cast-filter";
+import { ExcludeCrewFilter } from "@/components/shuffle/exclude-crew-filter";
+import { PopularityFilter } from "@/components/shuffle/popularity-filter";
+import { CountryFilter } from "@/components/shuffle/country-filter";
 import { LoadingState } from "@/components/shared/loading-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { ShuffleMovieCard } from "@/components/shuffle/shuffle-movie-card";
@@ -34,6 +40,18 @@ export default function ShufflePage() {
     setRuntimeRange,
     originalLanguage,
     setOriginalLanguage,
+    selectedProviders,
+    setSelectedProviders,
+    excludeGenres,
+    setExcludeGenres,
+    excludeCast,
+    setExcludeCast,
+    excludeCrew,
+    setExcludeCrew,
+    popularityRange,
+    setPopularityRange,
+    originCountries,
+    setOriginCountries,
     handleShuffle,
     handleReset,
     movie,
@@ -103,6 +121,11 @@ export default function ShufflePage() {
               onGenresChange={setSelectedGenres}
             />
 
+            <ExcludeGenreFilter
+              selectedGenres={excludeGenres}
+              onGenresChange={setExcludeGenres}
+            />
+
             <YearRangeFilter
               yearRange={yearRange}
               onYearRangeChange={setYearRange}
@@ -115,9 +138,19 @@ export default function ShufflePage() {
               onCastChange={setSelectedCast}
             />
 
+            <ExcludeCastFilter
+              selectedCast={excludeCast}
+              onCastChange={setExcludeCast}
+            />
+
             <CrewFilter
               selectedCrew={selectedCrew}
               onCrewChange={setSelectedCrew}
+            />
+
+            <ExcludeCrewFilter
+              selectedCrew={excludeCrew}
+              onCrewChange={setExcludeCrew}
             />
 
             <VoteAverageFilter
@@ -130,6 +163,11 @@ export default function ShufflePage() {
               onVoteCountChange={setMinVoteCount}
             />
 
+            <PopularityFilter
+              popularityRange={popularityRange}
+              onPopularityRangeChange={setPopularityRange}
+            />
+
             <RuntimeFilter
               runtimeRange={runtimeRange}
               onRuntimeRangeChange={setRuntimeRange}
@@ -138,6 +176,16 @@ export default function ShufflePage() {
             <LanguageFilter
               language={originalLanguage}
               onLanguageChange={setOriginalLanguage}
+            />
+
+            <StreamingFilter
+              selectedProviders={selectedProviders}
+              onProvidersChange={setSelectedProviders}
+            />
+
+            <CountryFilter
+              selectedCountries={originCountries}
+              onCountriesChange={setOriginCountries}
             />
           </div>
 

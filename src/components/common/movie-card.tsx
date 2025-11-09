@@ -11,6 +11,7 @@ interface MovieCardProps {
   showGenres?: boolean;
   posterSize?: { width: number; height: number };
   className?: string;
+  priority?: boolean;
 }
 
 /**
@@ -23,6 +24,7 @@ export const MovieCard = memo(function MovieCard({
   showGenres = false,
   posterSize = { width: 300, height: 450 },
   className = "",
+  priority = false,
 }: MovieCardProps) {
   const posterUrl = useMemo(
     () => movie.posterUrl || "/placeholder-poster.jpg",
@@ -44,7 +46,8 @@ export const MovieCard = memo(function MovieCard({
           width={posterSize.width}
           height={posterSize.height}
           className="rounded-lg object-cover shadow-md"
-          priority
+          priority={priority}
+          sizes="(max-width: 768px) 100vw, 300px"
         />
       </div>
 

@@ -8,14 +8,16 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { RatingReviewSection } from "@/components/suggest/rating-review-section";
 import { MovieTrailerDisplay } from "@/components/suggest/movie-trailer";
+import { CardContainer } from "@/components/common/card-container";
 import { SavedMovie } from "@/hooks/use-saved-movies";
 
 interface SavedMovieCardProps {
   savedMovie: SavedMovie;
   onUnsave: () => void;
+  priority?: boolean;
 }
 
-function SavedMovieCardComponent({ savedMovie, onUnsave }: SavedMovieCardProps) {
+function SavedMovieCardComponent({ savedMovie, onUnsave, priority = false }: SavedMovieCardProps) {
   const { data, loading, error } = useQuery<{ getMovie: Movie }>(GET_MOVIE, {
     variables: { id: savedMovie.tmdbId },
     skip: !savedMovie.tmdbId,
@@ -50,31 +52,33 @@ function SavedMovieCardComponent({ savedMovie, onUnsave }: SavedMovieCardProps) 
 
   if (loading) {
     return (
-      <div className="bg-card border rounded-lg p-4 animate-pulse">
+      <CardContainer className="animate-pulse">
         <div className="h-64 bg-muted rounded mb-4" />
         <div className="h-4 bg-muted rounded w-3/4 mb-2" />
         <div className="h-4 bg-muted rounded w-1/2" />
-      </div>
+      </CardContainer>
     );
   }
 
   if (error || !movie) {
     return (
-      <div className="bg-card border rounded-lg p-4">
+      <CardContainer>
         <p className="text-muted-foreground">Failed to load movie</p>
-      </div>
+      </CardContainer>
     );
   }
 
   return (
-    <div className="bg-card border rounded-lg p-4 space-y-4">
+    <CardContainer className="space-y-4">
       <div className="relative aspect-2/3 w-full overflow-hidden rounded-lg">
         <Image
           src={posterUrl}
           alt={movie.title}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover"
-          loading="lazy"
+          priority={priority}
+          loading={priority ? undefined : "lazy"}
         />
       </div>
       <div className="space-y-2">
@@ -123,7 +127,7 @@ function SavedMovieCardComponent({ savedMovie, onUnsave }: SavedMovieCardProps) 
           </a>
         </p>
       </div>
-    </div>
+    </CardContainer>
   );
 }
 

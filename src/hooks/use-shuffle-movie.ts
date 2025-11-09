@@ -6,6 +6,8 @@ import { isDefaultYearRange } from "@/lib/utils/year-range";
 
 const MIN_YEAR = 1950;
 const MAX_YEAR = new Date().getFullYear();
+const MIN_POPULARITY = 0;
+const MAX_POPULARITY = 1000;
 
 /**
  * Hook for managing shuffle movie functionality
@@ -19,6 +21,12 @@ export function useShuffleMovie() {
   const [minVoteCount, setMinVoteCount] = useState<number>(0);
   const [runtimeRange, setRuntimeRange] = useState<number[]>([0, 300]);
   const [originalLanguage, setOriginalLanguage] = useState<string>("any");
+  const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+  const [excludeGenres, setExcludeGenres] = useState<string[]>([]);
+  const [excludeCast, setExcludeCast] = useState<Person[]>([]);
+  const [excludeCrew, setExcludeCrew] = useState<Person[]>([]);
+  const [popularityRange, setPopularityRange] = useState<number[]>([MIN_POPULARITY, MAX_POPULARITY]);
+  const [originCountries, setOriginCountries] = useState<string[]>([]);
 
   const [shuffleMovie, { data, loading, error }] = useLazyQuery<{
     shuffleMovie: Movie | null;
@@ -48,6 +56,24 @@ export function useShuffleMovie() {
       ? runtimeRange
       : undefined;
     const language = originalLanguage && originalLanguage !== "any" ? originalLanguage : undefined;
+    const watchProviders = selectedProviders.length > 0
+      ? selectedProviders.join(",")
+      : undefined;
+    const excludeGenresInt = excludeGenres.length > 0
+      ? excludeGenres.map(id => parseInt(id, 10)).filter(id => !isNaN(id))
+      : undefined;
+    const excludeCastIds = excludeCast.length > 0
+      ? excludeCast.map((person) => person.id)
+      : undefined;
+    const excludeCrewIds = excludeCrew.length > 0
+      ? excludeCrew.map((person) => person.id)
+      : undefined;
+    const popularity = (popularityRange[0] !== MIN_POPULARITY || popularityRange[1] !== MAX_POPULARITY)
+      ? [popularityRange[0], popularityRange[1]]
+      : undefined;
+    const countries = originCountries.length > 0
+      ? originCountries
+      : undefined;
 
     shuffleMovie({
       variables: {
@@ -59,6 +85,12 @@ export function useShuffleMovie() {
         minVoteCount: voteCount,
         runtimeRange: runtime,
         originalLanguage: language,
+        watchProviders,
+        excludeGenres: excludeGenresInt,
+        excludeCast: excludeCastIds,
+        excludeCrew: excludeCrewIds,
+        popularityRange: popularity,
+        originCountries: countries,
       },
     });
   }, [
@@ -70,6 +102,12 @@ export function useShuffleMovie() {
     minVoteCount,
     runtimeRange,
     originalLanguage,
+    selectedProviders,
+    excludeGenres,
+    excludeCast,
+    excludeCrew,
+    popularityRange,
+    originCountries,
     shuffleMovie,
   ]);
 
@@ -82,6 +120,12 @@ export function useShuffleMovie() {
     setMinVoteCount(0);
     setRuntimeRange([0, 300]);
     setOriginalLanguage("any");
+    setSelectedProviders([]);
+    setExcludeGenres([]);
+    setExcludeCast([]);
+    setExcludeCrew([]);
+    setPopularityRange([MIN_POPULARITY, MAX_POPULARITY]);
+    setOriginCountries([]);
   }, []);
 
   return {
@@ -101,6 +145,18 @@ export function useShuffleMovie() {
     setRuntimeRange,
     originalLanguage,
     setOriginalLanguage,
+    selectedProviders,
+    setSelectedProviders,
+    excludeGenres,
+    setExcludeGenres,
+    excludeCast,
+    setExcludeCast,
+    excludeCrew,
+    setExcludeCrew,
+    popularityRange,
+    setPopularityRange,
+    originCountries,
+    setOriginCountries,
     handleShuffle,
     handleReset,
     movie: data?.shuffleMovie || undefined,
