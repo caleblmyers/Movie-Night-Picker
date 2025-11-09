@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState, useEffect } from "react";
+import { memo, useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import type { MovieTrailer } from "@/types/suggest";
 import { Play, ExternalLink } from "lucide-react";
@@ -14,7 +14,23 @@ interface MovieTrailerProps {
 function MovieTrailerComponent({ trailer, className }: MovieTrailerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+  const [fallbackFormat, setFallbackFormat] = useState<string | null>(null);
+  
+  // Compute thumbnail URL from props - no state needed for this
+  const thumbnailUrl = useMemo(() => {
+    if (trailer.site === "YouTube" && trailer.key) {
+      // Use fallback format if set, otherwise start with hqdefault
+      const format = fallbackFormat || "hqdefault";
+      return `https://img.youtube.com/vi/${trailer.key}/${format}.jpg`;
+    }
+    return null;
+  }, [trailer.site, trailer.key, fallbackFormat]);
+
+  // Reset fallback format and error state when trailer changes
+  useEffect(() => {
+    setFallbackFormat(null);
+    setImageError(false);
+  }, [trailer.site, trailer.key]);
 
   // Generate YouTube embed URL
   const getEmbedUrl = () => {
@@ -24,18 +40,6 @@ function MovieTrailerComponent({ trailer, className }: MovieTrailerProps) {
     // For other platforms, use the provided URL
     return trailer.url;
   };
-
-  // Initialize thumbnail URL on mount with fallback strategy
-  useEffect(() => {
-    if (trailer.site === "YouTube" && trailer.key) {
-      // Try hqdefault first (more reliable), then maxresdefault if available
-      // hqdefault is more widely available than maxresdefault
-      setThumbnailUrl(`https://img.youtube.com/vi/${trailer.key}/hqdefault.jpg`);
-      setImageError(false);
-    } else {
-      setThumbnailUrl(null);
-    }
-  }, [trailer.site, trailer.key]);
 
   const embedUrl = getEmbedUrl();
 
@@ -67,28 +71,17 @@ function MovieTrailerComponent({ trailer, className }: MovieTrailerProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-transform group-hover:scale-105"
             onError={() => {
-              // If hqdefault fails, try other YouTube thumbnail formats
-              if (thumbnailUrl?.includes("img.youtube.com")) {
-                const formats = ["mqdefault", "sddefault", "default"];
-                const currentFormat = thumbnailUrl.match(/\/(\w+)\.jpg$/)?.[1];
-                const currentIndex = formats.indexOf(currentFormat || "");
+              // If current format fails, try other YouTube thumbnail formats
+              if (thumbnailUrl?.includes("img.youtube.com") && trailer.key) {
+                const formats = ["hqdefault", "mqdefault", "sddefault", "default"];
+                const currentFormat = fallbackFormat || "hqdefault";
+                const currentIndex = formats.indexOf(currentFormat);
                 
                 if (currentIndex < formats.length - 1) {
                   const nextFormat = formats[currentIndex + 1];
-                  const fallbackUrl = thumbnailUrl.replace(
-                    `/${currentFormat}.jpg`,
-                    `/${nextFormat}.jpg`
-                  );
-                  
-                  const testImg = new Image();
-                  testImg.onload = () => {
-                    setThumbnailUrl(fallbackUrl);
-                    setImageError(false);
-                  };
-                  testImg.onerror = () => {
-                    setImageError(true);
-                  };
-                  testImg.src = fallbackUrl;
+                  // Update fallback format, which will trigger useMemo to recompute thumbnailUrl
+                  setFallbackFormat(nextFormat);
+                  setImageError(false);
                 } else {
                   setImageError(true);
                 }

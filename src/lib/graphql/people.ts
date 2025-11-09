@@ -20,19 +20,35 @@ export const GET_PERSON = gql`
 
 /**
  * Search people by query string with optional role type filter
+ * Optimized for autocomplete use cases
+ * 
+ * Features:
+ * - Debounced search (300-500ms recommended on frontend)
+ * - Minimum query length: 2-3 characters
+ * - Limit: 10-15 for autocomplete dropdowns, 20-100 for full results
+ * - Caching: Backend caches results for 5 minutes
+ * - Fuzzy matching: TMDB handles partial/case-insensitive matching automatically
+ * 
  * roleType: ACTOR (actors only), CREW (directors/writers only), BOTH (all)
+ * limit: Maximum number of results (default: 20, max: 100)
+ * options: Optional TMDB options (region, language, etc.)
  */
 export const SEARCH_PEOPLE = gql`
-  query SearchPeople($query: String!, $roleType: PersonRoleType) {
-    searchPeople(query: $query, roleType: $roleType) {
+  query SearchPeople(
+    $query: String!
+    $roleType: PersonRoleType
+    $limit: Int
+    $options: TMDBOptionsInput
+  ) {
+    searchPeople(query: $query, roleType: $roleType, limit: $limit, options: $options) {
       id
       name
-      biography
       profileUrl
-      birthday
-      placeOfBirth
       knownForDepartment
       popularity
+      biography
+      birthday
+      placeOfBirth
     }
   }
 `;
