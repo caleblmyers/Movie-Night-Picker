@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useQuery } from "@apollo/client/react";
 import { SelectionRound } from "@/components/suggest/selection-round";
 import { MovieResultDisplay } from "@/components/suggest/movie-result";
@@ -37,27 +36,6 @@ export default function SuggestPage() {
     }
   );
 
-  // Debug logging (only in development)
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development" && preferences) {
-      console.log("=== Suggest Movie Request ===");
-      console.log("Preferences sent:", JSON.stringify(preferences, null, 2));
-    }
-  }, [preferences]);
-
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development" && data?.suggestMovie) {
-      console.log("=== Suggest Movie Response ===");
-      console.log("Movie Data:", data.suggestMovie);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development" && error) {
-      console.error("=== Suggest Movie Error ===");
-      console.error("Error:", error);
-    }
-  }, [error]);
 
   if (preferences && loading) {
     return (

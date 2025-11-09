@@ -77,8 +77,26 @@ export const RANDOM_MOVIE = gql`
  */
 export const SHUFFLE_MOVIE = gql`
   ${MOVIE_FRAGMENT}
-  query ShuffleMovie($genres: [String!], $yearRange: [Int!], $cast: [Int!], $crew: [Int!]) {
-    shuffleMovie(genres: $genres, yearRange: $yearRange, cast: $cast, crew: $crew) {
+  query ShuffleMovie(
+    $genres: [Int!]
+    $yearRange: [Int!]
+    $cast: [Int!]
+    $crew: [Int!]
+    $minVoteAverage: Float
+    $minVoteCount: Int
+    $runtimeRange: [Int!]
+    $originalLanguage: String
+  ) {
+    shuffleMovie(
+      genres: $genres
+      yearRange: $yearRange
+      cast: $cast
+      crew: $crew
+      minVoteAverage: $minVoteAverage
+      minVoteCount: $minVoteCount
+      runtimeRange: $runtimeRange
+      originalLanguage: $originalLanguage
+    ) {
       ...MovieFields
     }
   }

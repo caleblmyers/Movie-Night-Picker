@@ -5,9 +5,15 @@ import { Shuffle } from "lucide-react";
 import { GenreFilter } from "@/components/shuffle/genre-filter";
 import { YearRangeFilter } from "@/components/shuffle/year-range-filter";
 import { CastFilter } from "@/components/shuffle/cast-filter";
+import { CrewFilter } from "@/components/shuffle/crew-filter";
+import { VoteAverageFilter } from "@/components/shuffle/vote-average-filter";
+import { VoteCountFilter } from "@/components/shuffle/vote-count-filter";
+import { RuntimeFilter } from "@/components/shuffle/runtime-filter";
+import { LanguageFilter } from "@/components/shuffle/language-filter";
 import { LoadingState } from "@/components/shared/loading-state";
 import { ErrorState } from "@/components/shared/error-state";
-import { MovieResultDisplay } from "@/components/suggest/movie-result";
+import { ShuffleMovieCard } from "@/components/shuffle/shuffle-movie-card";
+import { NoResults } from "@/components/shuffle/no-results";
 import { useShuffleMovie } from "@/hooks/use-shuffle-movie";
 
 export default function ShufflePage() {
@@ -18,8 +24,20 @@ export default function ShufflePage() {
     setYearRange,
     selectedCast,
     setSelectedCast,
+    selectedCrew,
+    setSelectedCrew,
+    minVoteAverage,
+    setMinVoteAverage,
+    minVoteCount,
+    setMinVoteCount,
+    runtimeRange,
+    setRuntimeRange,
+    originalLanguage,
+    setOriginalLanguage,
     handleShuffle,
+    handleReset,
     movie,
+    hasSearched,
     loading,
     error,
     MIN_YEAR,
@@ -43,14 +61,20 @@ export default function ShufflePage() {
 
   if (movie) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
-        <main className="w-full max-w-4xl space-y-4">
-          <div className="flex justify-center">
-            <Button variant="outline" onClick={handleShuffle}>
-              Shuffle Again
-            </Button>
-          </div>
-          <MovieResultDisplay movie={movie} />
+      <div className="min-h-screen bg-background px-4 py-16">
+        <main className="w-full max-w-4xl mx-auto space-y-4">
+          <ShuffleMovieCard movie={movie} onShuffleAgain={handleShuffle} />
+        </main>
+      </div>
+    );
+  }
+
+  // Handle no results case (backend returns null when no matches found)
+  if (hasSearched && !loading && !error && !movie) {
+    return (
+      <div className="min-h-screen bg-background px-4 py-16">
+        <main className="w-full max-w-4xl mx-auto">
+          <NoResults onReset={handleReset} />
         </main>
       </div>
     );
@@ -68,36 +92,70 @@ export default function ShufflePage() {
             <Shuffle className="h-8 w-8 text-primary" />
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Filter by genre, year range, and cast before randomizing. Let us surprise you with a perfect movie pick!
+            Set your preferences and discover a random movie that matches your criteria. All filters are optional!
           </p>
         </div>
 
         <div className="space-y-6 bg-card/50 backdrop-blur-sm border rounded-lg p-6 shadow-lg">
-          <GenreFilter
-            selectedGenres={selectedGenres}
-            onGenresChange={setSelectedGenres}
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <GenreFilter
+              selectedGenres={selectedGenres}
+              onGenresChange={setSelectedGenres}
+            />
 
-          <YearRangeFilter
-            yearRange={yearRange}
-            onYearRangeChange={setYearRange}
-            minYear={MIN_YEAR}
-            maxYear={MAX_YEAR}
-          />
+            <YearRangeFilter
+              yearRange={yearRange}
+              onYearRangeChange={setYearRange}
+              minYear={MIN_YEAR}
+              maxYear={MAX_YEAR}
+            />
 
-          <CastFilter
-            selectedCast={selectedCast}
-            onCastChange={setSelectedCast}
-          />
+            <CastFilter
+              selectedCast={selectedCast}
+              onCastChange={setSelectedCast}
+            />
 
-          <div className="pt-4">
+            <CrewFilter
+              selectedCrew={selectedCrew}
+              onCrewChange={setSelectedCrew}
+            />
+
+            <VoteAverageFilter
+              minVoteAverage={minVoteAverage}
+              onVoteAverageChange={setMinVoteAverage}
+            />
+
+            <VoteCountFilter
+              minVoteCount={minVoteCount}
+              onVoteCountChange={setMinVoteCount}
+            />
+
+            <RuntimeFilter
+              runtimeRange={runtimeRange}
+              onRuntimeRangeChange={setRuntimeRange}
+            />
+
+            <LanguageFilter
+              language={originalLanguage}
+              onLanguageChange={setOriginalLanguage}
+            />
+          </div>
+
+          <div className="pt-4 flex gap-4">
             <Button 
               onClick={handleShuffle} 
               size="lg" 
-              className="w-full bg-linear-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg shadow-primary/20"
+              className="flex-1 bg-linear-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg shadow-primary/20"
             >
               <Shuffle className="mr-2 h-5 w-5" />
               Shuffle Movie
+            </Button>
+            <Button 
+              onClick={handleReset} 
+              size="lg" 
+              variant="outline"
+            >
+              Reset Filters
             </Button>
           </div>
         </div>
