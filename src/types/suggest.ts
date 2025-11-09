@@ -1,5 +1,16 @@
 export type OptionType = "genre" | "mood" | "era" | "actor" | "director";
 
+/**
+ * Movie trailer information
+ */
+export interface MovieTrailer {
+  key: string; // YouTube video ID or platform key
+  site: string; // "YouTube", "Vimeo", etc.
+  name?: string; // Trailer name/title
+  type?: string; // "Trailer" or "Teaser"
+  url: string; // Full URL to play the trailer
+}
+
 export interface SelectionOption {
   id: string;
   type: OptionType;
@@ -57,6 +68,7 @@ export interface MovieResult {
     description?: string;
     isPublic: boolean;
   }>;
+  trailer?: MovieTrailer | null;
 }
 
 export interface Movie {
@@ -83,6 +95,7 @@ export interface Movie {
     description?: string;
     isPublic: boolean;
   }>;
+  trailer?: MovieTrailer | null;
   reviews?: Array<{
     id: number | string;
     content: string;

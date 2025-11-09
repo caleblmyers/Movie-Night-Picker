@@ -42,6 +42,12 @@ export function buildMoviePreferences(
 
   selections.forEach((selection) => {
     const { type, value } = selection.selectedOption;
+    
+    // Skip "Any" selections - they don't store preferences
+    if (value === "__ANY__") {
+      return;
+    }
+    
     switch (type) {
       case "genre":
         prefs.genres?.push(value);

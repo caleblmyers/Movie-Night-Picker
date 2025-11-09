@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SaveMovieButton } from "./save-movie-button";
 import { RatingReviewSection } from "./rating-review-section";
+import { MovieTrailerDisplay } from "./movie-trailer";
 
 interface MovieResultDisplayProps {
   movie: MovieResult | Movie;
@@ -71,6 +72,14 @@ function MovieResultDisplayComponent({
                 <p className="text-muted-foreground leading-relaxed">
                   {movie.overview}
                 </p>
+              </div>
+            )}
+            {movie.trailer && movie.trailer.key && movie.trailer.url && (
+              <div className="pt-4 border-t">
+                <h3 className="text-lg font-semibold text-foreground mb-3">
+                  Trailer
+                </h3>
+                <MovieTrailerDisplay trailer={movie.trailer} />
               </div>
             )}
             <div className="pt-2 border-t text-xs text-muted-foreground">

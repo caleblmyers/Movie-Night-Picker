@@ -29,6 +29,13 @@ export const MOVIE_FRAGMENT = gql`
       description
       isPublic
     }
+    trailer {
+      key
+      site
+      name
+      type
+      url
+    }
   }
 `;
 

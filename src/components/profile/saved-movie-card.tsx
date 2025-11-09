@@ -7,6 +7,7 @@ import { Movie } from "@/types/suggest";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { RatingReviewSection } from "@/components/suggest/rating-review-section";
+import { MovieTrailerDisplay } from "@/components/suggest/movie-trailer";
 import { SavedMovie } from "@/hooks/use-saved-movies";
 
 interface SavedMovieCardProps {
@@ -94,6 +95,12 @@ function SavedMovieCardComponent({ savedMovie, onUnsave }: SavedMovieCardProps) 
           </div>
         )}
       </div>
+      {movie.trailer && movie.trailer.key && movie.trailer.url && (
+        <div className="pt-2 border-t">
+          <h4 className="text-sm font-semibold text-foreground mb-2">Trailer</h4>
+          <MovieTrailerDisplay trailer={movie.trailer} />
+        </div>
+      )}
       <div className="space-y-2">
         <Button
           variant="outline"
