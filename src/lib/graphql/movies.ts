@@ -4,6 +4,7 @@ import { MOVIE_FRAGMENT } from "./fragments";
 /**
  * Suggest a movie based on user preferences
  * Uses progressive fallback automatically if no results found
+ * Supports collection filtering: inCollections, excludeCollections, notInAnyCollection
  */
 export const SUGGEST_MOVIE = gql`
   ${MOVIE_FRAGMENT}
@@ -86,6 +87,7 @@ export const RANDOM_MOVIE = gql`
  * Shuffle/random movie with filters
  * cast: Filters to actors only (automatically filtered by backend)
  * crew: Filters to directors/writers only (automatically filtered by backend)
+ * Supports collection filtering: inCollections, excludeCollections, notInAnyCollection
  */
 export const SHUFFLE_MOVIE = gql`
   ${MOVIE_FRAGMENT}
@@ -104,6 +106,9 @@ export const SHUFFLE_MOVIE = gql`
     $excludeCrew: [Int!]
     $popularityRange: [Float!]
     $originCountries: [String!]
+    $inCollections: [Int!]
+    $excludeCollections: [Int!]
+    $notInAnyCollection: Boolean
   ) {
     shuffleMovie(
       genres: $genres
@@ -120,6 +125,9 @@ export const SHUFFLE_MOVIE = gql`
       excludeCrew: $excludeCrew
       popularityRange: $popularityRange
       originCountries: $originCountries
+      inCollections: $inCollections
+      excludeCollections: $excludeCollections
+      notInAnyCollection: $notInAnyCollection
     ) {
       ...MovieFields
     }

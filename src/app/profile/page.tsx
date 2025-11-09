@@ -6,6 +6,9 @@ import { SavedMovieCard } from "@/components/profile/saved-movie-card";
 import { UnauthenticatedProfile } from "@/components/profile/unauthenticated-profile";
 import { EmptySavedMovies } from "@/components/profile/empty-saved-movies";
 import { useSavedMovies } from "@/hooks/use-saved-movies";
+import { Button } from "@/components/ui/button";
+import { Folder } from "lucide-react";
+import Link from "next/link";
 
 export default function ProfilePage() {
   const { data: session } = useSession();
@@ -35,8 +38,16 @@ export default function ProfilePage() {
         </div>
 
         <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold">Saved Movies</h2>
+            <Button variant="outline" asChild>
+              <Link href="/collections">
+                <Folder className="h-4 w-4 mr-2" />
+                View Collections
+              </Link>
+            </Button>
+          </div>
           <div>
-            <h2 className="text-2xl font-bold mb-4">Saved Movies</h2>
             {savedMovies.length === 0 ? (
               <EmptySavedMovies />
             ) : (

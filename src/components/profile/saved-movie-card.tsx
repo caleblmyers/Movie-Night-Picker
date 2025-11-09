@@ -5,6 +5,7 @@ import { useQuery } from "@apollo/client/react";
 import { GET_MOVIE } from "@/lib/graphql";
 import { Movie } from "@/types/suggest";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { RatingReviewSection } from "@/components/suggest/rating-review-section";
 import { MovieTrailerDisplay } from "@/components/suggest/movie-trailer";
@@ -70,19 +71,25 @@ function SavedMovieCardComponent({ savedMovie, onUnsave, priority = false }: Sav
 
   return (
     <CardContainer className="space-y-4">
-      <div className="relative aspect-2/3 w-full overflow-hidden rounded-lg">
-        <Image
-          src={posterUrl}
-          alt={movie.title}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover"
-          priority={priority}
-          loading={priority ? undefined : "lazy"}
-        />
-      </div>
+      <Link href={`/movie/${movie.id}`} className="block group">
+        <div className="relative aspect-2/3 w-full overflow-hidden rounded-lg transition-opacity group-hover:opacity-80">
+          <Image
+            src={posterUrl}
+            alt={movie.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+            priority={priority}
+            loading={priority ? undefined : "lazy"}
+          />
+        </div>
+      </Link>
       <div className="space-y-2">
-        <h3 className="font-bold text-lg">{movie.title}</h3>
+        <Link href={`/movie/${movie.id}`} className="block group">
+          <h3 className="font-bold text-lg text-foreground transition-colors group-hover:text-primary">
+            {movie.title}
+          </h3>
+        </Link>
         {releaseYear && (
           <p className="text-sm text-muted-foreground">{releaseYear}</p>
         )}

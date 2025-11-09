@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { AUTH_TOKEN_KEY } from "@/lib/config";
-import { User, LogOut, LogIn, UserPlus } from "lucide-react";
+import { User, LogOut, LogIn, UserPlus, Folder } from "lucide-react";
 import { MovieSearchBar } from "@/components/search/movie-search-bar";
 
 export function Navbar() {
@@ -60,6 +60,12 @@ export function Navbar() {
               <div className="h-9 w-20 animate-pulse bg-muted rounded-md" />
             ) : session ? (
               <>
+                <Link href="/collections">
+                  <Button variant="ghost" className="hidden sm:flex items-center gap-2">
+                    <Folder className="h-4 w-4" />
+                    Collections
+                  </Button>
+                </Link>
                 <Link href="/profile">
                   <Button variant="ghost" className="flex items-center gap-2">
                     <User className="h-4 w-4" />

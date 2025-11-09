@@ -64,6 +64,9 @@ export interface MoviePreferences {
   directors?: number[]; // Deprecated: use crew instead
   crew?: number[]; // Filters to directors/writers only (automatically filtered by backend)
   yearRange?: number[];
+  inCollections?: number[]; // Only include movies from specified collections
+  excludeCollections?: number[]; // Exclude movies from specified collections
+  notInAnyCollection?: boolean; // Only include movies not in any collection
 }
 
 /**
@@ -159,6 +162,42 @@ export interface Movie {
   }>;
 }
 
+export interface CollectionInsights {
+  totalMovies: number;
+  uniqueGenres: number;
+  moviesByGenre: Array<{
+    genre: {
+      id: number;
+      name: string;
+    };
+    count: number;
+  }>;
+  uniqueActors: number;
+  topActors: Array<{
+    person: {
+      id: number;
+      name: string;
+      profileUrl?: string | null;
+    };
+    count: number;
+  }>;
+  uniqueCrew: number;
+  topCrew: Array<{
+    person: {
+      id: number;
+      name: string;
+      profileUrl?: string | null;
+    };
+    count: number;
+  }>;
+  yearRange: {
+    min: number | null;
+    max: number | null;
+  };
+  averageRuntime: number | null;
+  averageVoteAverage: number | null;
+}
+
 export interface Collection {
   id: number;
   name: string;
@@ -178,6 +217,7 @@ export interface Collection {
     movie?: Movie;
   }>;
   movieCount: number;
+  insights?: CollectionInsights;
 }
 
 export interface CollectionMovie {

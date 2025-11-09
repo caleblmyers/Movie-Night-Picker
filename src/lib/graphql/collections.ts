@@ -35,6 +35,7 @@ export const COLLECTIONS = gql`
 
 /**
  * Get a single collection by ID
+ * Includes insights/analytics about the collection
  */
 export const GET_COLLECTION = gql`
   query GetCollection($id: Int!) {
@@ -64,6 +65,41 @@ export const GET_COLLECTION = gql`
         }
       }
       movieCount
+      insights {
+        totalMovies
+        uniqueGenres
+        moviesByGenre {
+          genre {
+            id
+            name
+          }
+          count
+        }
+        uniqueActors
+        topActors {
+          person {
+            id
+            name
+            profileUrl
+          }
+          count
+        }
+        uniqueCrew
+        topCrew {
+          person {
+            id
+            name
+            profileUrl
+          }
+          count
+        }
+        yearRange {
+          min
+          max
+        }
+        averageRuntime
+        averageVoteAverage
+      }
     }
   }
 `;

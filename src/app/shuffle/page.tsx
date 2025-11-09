@@ -16,6 +16,8 @@ import { ExcludeCastFilter } from "@/components/shuffle/exclude-cast-filter";
 import { ExcludeCrewFilter } from "@/components/shuffle/exclude-crew-filter";
 import { PopularityFilter } from "@/components/shuffle/popularity-filter";
 import { CountryFilter } from "@/components/shuffle/country-filter";
+import { CollectionFilter } from "@/components/shuffle/collection-filter";
+import { ExcludeCollectionFilter } from "@/components/shuffle/exclude-collection-filter";
 import { LoadingState } from "@/components/shared/loading-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { ShuffleMovieCard } from "@/components/shuffle/shuffle-movie-card";
@@ -52,6 +54,12 @@ export default function ShufflePage() {
     setPopularityRange,
     originCountries,
     setOriginCountries,
+    inCollections,
+    setInCollections,
+    excludeCollections,
+    setExcludeCollections,
+    notInAnyCollection,
+    setNotInAnyCollection,
     handleShuffle,
     handleReset,
     movie,
@@ -187,6 +195,33 @@ export default function ShufflePage() {
               selectedCountries={originCountries}
               onCountriesChange={setOriginCountries}
             />
+
+            <CollectionFilter
+              selectedCollections={inCollections}
+              onCollectionsChange={setInCollections}
+            />
+
+            <ExcludeCollectionFilter
+              selectedCollections={excludeCollections}
+              onCollectionsChange={setExcludeCollections}
+            />
+          </div>
+
+          {/* Not in Any Collection Checkbox */}
+          <div className="flex items-center space-x-2 pt-2 border-t">
+            <input
+              type="checkbox"
+              id="notInAnyCollection"
+              checked={notInAnyCollection}
+              onChange={(e) => setNotInAnyCollection(e.target.checked)}
+              className="h-4 w-4 rounded border-input bg-background text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer"
+            />
+            <label
+              htmlFor="notInAnyCollection"
+              className="text-sm font-medium text-foreground cursor-pointer"
+            >
+              Only include movies not in any collection
+            </label>
           </div>
 
           <div className="pt-4 flex gap-4">

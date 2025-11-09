@@ -27,6 +27,9 @@ export function useShuffleMovie() {
   const [excludeCrew, setExcludeCrew] = useState<Person[]>([]);
   const [popularityRange, setPopularityRange] = useState<number[]>([MIN_POPULARITY, MAX_POPULARITY]);
   const [originCountries, setOriginCountries] = useState<string[]>([]);
+  const [inCollections, setInCollections] = useState<number[]>([]);
+  const [excludeCollections, setExcludeCollections] = useState<number[]>([]);
+  const [notInAnyCollection, setNotInAnyCollection] = useState<boolean>(false);
 
   const [shuffleMovie, { data, loading, error }] = useLazyQuery<{
     shuffleMovie: Movie | null;
@@ -74,6 +77,13 @@ export function useShuffleMovie() {
     const countries = originCountries.length > 0
       ? originCountries
       : undefined;
+    const includeCollections = inCollections.length > 0
+      ? inCollections
+      : undefined;
+    const excludeCollectionsIds = excludeCollections.length > 0
+      ? excludeCollections
+      : undefined;
+    const notInAny = notInAnyCollection ? true : undefined;
 
     shuffleMovie({
       variables: {
@@ -91,6 +101,9 @@ export function useShuffleMovie() {
         excludeCrew: excludeCrewIds,
         popularityRange: popularity,
         originCountries: countries,
+        inCollections: includeCollections,
+        excludeCollections: excludeCollectionsIds,
+        notInAnyCollection: notInAny,
       },
     });
   }, [
@@ -108,6 +121,9 @@ export function useShuffleMovie() {
     excludeCrew,
     popularityRange,
     originCountries,
+    inCollections,
+    excludeCollections,
+    notInAnyCollection,
     shuffleMovie,
   ]);
 
@@ -126,6 +142,9 @@ export function useShuffleMovie() {
     setExcludeCrew([]);
     setPopularityRange([MIN_POPULARITY, MAX_POPULARITY]);
     setOriginCountries([]);
+    setInCollections([]);
+    setExcludeCollections([]);
+    setNotInAnyCollection(false);
   }, []);
 
   return {
@@ -157,6 +176,12 @@ export function useShuffleMovie() {
     setPopularityRange,
     originCountries,
     setOriginCountries,
+    inCollections,
+    setInCollections,
+    excludeCollections,
+    setExcludeCollections,
+    notInAnyCollection,
+    setNotInAnyCollection,
     handleShuffle,
     handleReset,
     movie: data?.shuffleMovie || undefined,

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { SaveMovieButton } from "@/components/suggest/save-movie-button";
 import { MovieTrailerDisplay } from "@/components/suggest/movie-trailer";
 import { RatingReviewSection } from "@/components/suggest/rating-review-section";
+import { AddToCollectionButton } from "@/components/collections/add-to-collection-button";
 import { LoadingState } from "@/components/shared/loading-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { CardContainer } from "@/components/common/card-container";
@@ -95,6 +96,10 @@ export default function MovieDetailPage() {
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-3 pt-4 border-t">
             <SaveMovieButton tmdbId={movie.id} />
+            <AddToCollectionButton 
+              tmdbId={movie.id} 
+              currentCollections={movie.inCollections}
+            />
             <TMDBLinkButton movieId={movie.id} />
           </div>
         </CardContainer>
