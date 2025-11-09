@@ -88,6 +88,7 @@ export const RANDOM_MOVIE = gql`
  * cast: Filters to actors only (automatically filtered by backend)
  * crew: Filters to directors/writers only (automatically filtered by backend)
  * Supports collection filtering: inCollections, excludeCollections, notInAnyCollection
+ * Supports keyword filtering: keywordIds (TMDB keyword IDs)
  */
 export const SHUFFLE_MOVIE = gql`
   ${MOVIE_FRAGMENT}
@@ -109,6 +110,7 @@ export const SHUFFLE_MOVIE = gql`
     $inCollections: [Int!]
     $excludeCollections: [Int!]
     $notInAnyCollection: Boolean
+    $keywordIds: [Int!]
   ) {
     shuffleMovie(
       genres: $genres
@@ -128,6 +130,7 @@ export const SHUFFLE_MOVIE = gql`
       inCollections: $inCollections
       excludeCollections: $excludeCollections
       notInAnyCollection: $notInAnyCollection
+      keywordIds: $keywordIds
     ) {
       ...MovieFields
     }

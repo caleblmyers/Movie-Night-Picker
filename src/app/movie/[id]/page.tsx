@@ -16,7 +16,7 @@ import { SectionHeader } from "@/components/common/section-header";
 import { MovieCard } from "@/components/common/movie-card";
 import { CastMemberCard } from "@/components/common/cast-member-card";
 import { CrewMemberCard } from "@/components/common/crew-member-card";
-import { Clock, User, Film, Users } from "lucide-react";
+import { Clock, User, Film, Users, Tag } from "lucide-react";
 import { TMDBLinkButton } from "@/components/common/tmdb-link-button";
 import Link from "next/link";
 
@@ -90,6 +90,26 @@ export default function MovieDetailPage() {
             <div className="flex items-center gap-1.5 pt-4 border-t text-sm text-muted-foreground">
               <Clock className="h-4 w-4" />
               <span>{formatRuntime(movie.runtime)}</span>
+            </div>
+          )}
+
+          {/* Keywords */}
+          {movie.keywords && movie.keywords.length > 0 && (
+            <div className="pt-4 border-t space-y-3">
+              <div className="flex items-center gap-2">
+                <Tag className="h-4 w-4 text-muted-foreground" />
+                <h3 className="text-sm font-semibold text-foreground">Keywords</h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {movie.keywords.map((keyword) => (
+                  <span
+                    key={keyword.id}
+                    className="inline-flex items-center px-2.5 py-1 rounded-md text-sm bg-secondary text-secondary-foreground border border-border"
+                  >
+                    {keyword.name}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
 

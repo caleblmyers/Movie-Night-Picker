@@ -56,6 +56,10 @@ export const MOVIE_FRAGMENT = gql`
       department
       profileUrl
     }
+    keywords {
+      id
+      name
+    }
   }
 `;
 

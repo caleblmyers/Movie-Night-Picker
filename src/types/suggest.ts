@@ -67,6 +67,7 @@ export interface MoviePreferences {
   inCollections?: number[]; // Only include movies from specified collections
   excludeCollections?: number[]; // Exclude movies from specified collections
   notInAnyCollection?: boolean; // Only include movies not in any collection
+  keywordIds?: number[]; // TMDB keyword IDs for thematic filtering (e.g., superhero, time travel)
 }
 
 /**
@@ -138,6 +139,10 @@ export interface Movie {
   trailer?: MovieTrailer | null;
   cast?: CastMember[];
   crew?: CrewMember[];
+  keywords?: Array<{
+    id: number;
+    name: string;
+  }>;
   reviews?: Array<{
     id: number | string;
     content: string;

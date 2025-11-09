@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { useLazyQuery } from "@apollo/client/react";
 import { SHUFFLE_MOVIE } from "@/lib/graphql";
 import { Movie, Person } from "@/types/suggest";
+import { Keyword } from "@/lib/graphql/keywords";
 import { isDefaultYearRange } from "@/lib/utils/year-range";
 
 const MIN_YEAR = 1950;
@@ -30,6 +31,7 @@ export function useShuffleMovie() {
   const [inCollections, setInCollections] = useState<number[]>([]);
   const [excludeCollections, setExcludeCollections] = useState<number[]>([]);
   const [notInAnyCollection, setNotInAnyCollection] = useState<boolean>(false);
+  const [selectedKeywords, setSelectedKeywords] = useState<Keyword[]>([]);
 
   const [shuffleMovie, { data, loading, error }] = useLazyQuery<{
     shuffleMovie: Movie | null;
@@ -84,6 +86,9 @@ export function useShuffleMovie() {
       ? excludeCollections
       : undefined;
     const notInAny = notInAnyCollection ? true : undefined;
+    const keywordIds = selectedKeywords.length > 0
+      ? selectedKeywords.map((k) => k.id)
+      : undefined;
 
     shuffleMovie({
       variables: {
@@ -104,6 +109,7 @@ export function useShuffleMovie() {
         inCollections: includeCollections,
         excludeCollections: excludeCollectionsIds,
         notInAnyCollection: notInAny,
+        keywordIds,
       },
     });
   }, [
@@ -124,6 +130,7 @@ export function useShuffleMovie() {
     inCollections,
     excludeCollections,
     notInAnyCollection,
+    selectedKeywords,
     shuffleMovie,
   ]);
 
@@ -145,6 +152,7 @@ export function useShuffleMovie() {
     setInCollections([]);
     setExcludeCollections([]);
     setNotInAnyCollection(false);
+    setSelectedKeywords([]);
   }, []);
 
   return {
@@ -182,6 +190,8 @@ export function useShuffleMovie() {
     setExcludeCollections,
     notInAnyCollection,
     setNotInAnyCollection,
+    selectedKeywords,
+    setSelectedKeywords,
     handleShuffle,
     handleReset,
     movie: data?.shuffleMovie || undefined,

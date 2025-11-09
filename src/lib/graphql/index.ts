@@ -68,3 +68,7 @@ export {
   REMOVE_MOVIE_FROM_COLLECTION,
 } from "./collections";
 
+// Keywords
+export { SEARCH_KEYWORDS } from "./keywords";
+export type { Keyword } from "./keywords";
+

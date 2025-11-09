@@ -18,6 +18,7 @@ import { PopularityFilter } from "@/components/shuffle/popularity-filter";
 import { CountryFilter } from "@/components/shuffle/country-filter";
 import { CollectionFilter } from "@/components/shuffle/collection-filter";
 import { ExcludeCollectionFilter } from "@/components/shuffle/exclude-collection-filter";
+import { KeywordFilter } from "@/components/shuffle/keyword-filter";
 import { LoadingState } from "@/components/shared/loading-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { ShuffleMovieCard } from "@/components/shuffle/shuffle-movie-card";
@@ -60,6 +61,8 @@ export default function ShufflePage() {
     setExcludeCollections,
     notInAnyCollection,
     setNotInAnyCollection,
+    selectedKeywords,
+    setSelectedKeywords,
     handleShuffle,
     handleReset,
     movie,
@@ -204,6 +207,11 @@ export default function ShufflePage() {
             <ExcludeCollectionFilter
               selectedCollections={excludeCollections}
               onCollectionsChange={setExcludeCollections}
+            />
+
+            <KeywordFilter
+              selectedKeywords={selectedKeywords}
+              onKeywordsChange={setSelectedKeywords}
             />
           </div>
 
