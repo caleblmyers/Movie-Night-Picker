@@ -22,12 +22,12 @@ export function Navbar() {
   };
 
   return (
-    <nav className="border-b bg-background/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+    <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur-sm shadow-sm">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-4">
           <Link 
             href="/" 
-            className="flex items-center gap-2 text-2xl font-bold text-foreground hover:text-primary transition-colors shrink-0"
+            className="flex items-center gap-2 shrink-0 text-2xl font-bold text-foreground transition-colors hover:text-primary"
           >
             <Image
               src="/icon.png"
@@ -40,7 +40,7 @@ export function Navbar() {
             <span className="hidden sm:inline">Movie Night Picker</span>
           </Link>
 
-          <div className="flex-1 max-w-md mx-4 hidden md:block">
+          <div className="hidden md:block flex-1 max-w-md mx-4">
             <MovieSearchBar />
           </div>
 

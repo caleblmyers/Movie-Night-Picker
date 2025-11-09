@@ -68,7 +68,7 @@ function SavedMovieCardComponent({ savedMovie, onUnsave }: SavedMovieCardProps) 
 
   return (
     <div className="bg-card border rounded-lg p-4 space-y-4">
-      <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg">
+      <div className="relative aspect-2/3 w-full overflow-hidden rounded-lg">
         <Image
           src={posterUrl}
           alt={movie.title}

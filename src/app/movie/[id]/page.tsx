@@ -11,6 +11,11 @@ import { MovieTrailerDisplay } from "@/components/suggest/movie-trailer";
 import { RatingReviewSection } from "@/components/suggest/rating-review-section";
 import { LoadingState } from "@/components/shared/loading-state";
 import { ErrorState } from "@/components/shared/error-state";
+import { CardContainer } from "@/components/common/card-container";
+import { SectionHeader } from "@/components/common/section-header";
+import { GenreBadge } from "@/components/common/genre-badge";
+import { CastMemberCard } from "@/components/common/cast-member-card";
+import { CrewMemberCard } from "@/components/common/crew-member-card";
 import {
   Calendar,
   Clock,
@@ -88,7 +93,7 @@ export default function MovieDetailPage() {
         </Button>
 
         {/* Main Movie Info */}
-        <div className="bg-card border rounded-lg p-6 md:p-8 shadow-lg">
+        <CardContainer>
           <div className="flex flex-col md:flex-row gap-6">
             {/* Poster */}
             <div className="shrink-0 mx-auto md:mx-0">
@@ -141,12 +146,7 @@ export default function MovieDetailPage() {
                 {movie.genres && movie.genres.length > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {movie.genres.map((genre) => (
-                      <span
-                        key={genre.id}
-                        className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm"
-                      >
-                        {genre.name}
-                      </span>
+                      <GenreBadge key={genre.id} genre={genre} />
                     ))}
                   </div>
                 )}
@@ -180,170 +180,90 @@ export default function MovieDetailPage() {
               </div>
             </div>
           </div>
-        </div>
+        </CardContainer>
 
         {/* Trailer */}
         {movie.trailer && movie.trailer.key && movie.trailer.url && (
-          <div className="bg-card border rounded-lg p-6 md:p-8 shadow-lg space-y-4">
-            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <Film className="h-6 w-6" />
-              Trailer
-            </h2>
-            <MovieTrailerDisplay trailer={movie.trailer} />
-          </div>
+          <CardContainer>
+            <div className="space-y-4">
+              <SectionHeader icon={<Film className="h-6 w-6" />}>
+                Trailer
+              </SectionHeader>
+              <MovieTrailerDisplay trailer={movie.trailer} />
+            </div>
+          </CardContainer>
         )}
 
         {/* Cast */}
         {movie.cast && movie.cast.length > 0 && (
-          <div className="bg-card border rounded-lg p-6 md:p-8 shadow-lg space-y-4">
-            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <Users className="h-6 w-6" />
-              Cast
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {movie.cast.slice(0, 20).map((actor) => (
-                <div
-                  key={actor.id}
-                  className="flex flex-col items-center text-center space-y-2"
-                >
-                  <div className="relative w-20 h-20 rounded-full overflow-hidden bg-muted">
-                    {actor.profileUrl ? (
-                      <Image
-                        src={actor.profileUrl}
-                        alt={actor.name}
-                        fill
-                        className="object-cover"
-                        sizes="80px"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <User className="h-8 w-8 text-muted-foreground" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium text-foreground">
-                      {actor.name}
-                    </p>
-                    {actor.character && (
-                      <p className="text-xs text-muted-foreground">
-                        {actor.character}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ))}
+          <CardContainer>
+            <div className="space-y-4">
+              <SectionHeader icon={<Users className="h-6 w-6" />}>
+                Cast
+              </SectionHeader>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {movie.cast.slice(0, 20).map((actor) => (
+                  <CastMemberCard key={actor.id} actor={actor} />
+                ))}
+              </div>
             </div>
-          </div>
+          </CardContainer>
         )}
 
         {/* Crew */}
         {movie.crew && movie.crew.length > 0 && (
-          <div className="bg-card border rounded-lg p-6 md:p-8 shadow-lg space-y-6">
-            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <User className="h-6 w-6" />
-              Crew
-            </h2>
+          <CardContainer>
+            <div className="space-y-6">
+              <SectionHeader icon={<User className="h-6 w-6" />}>
+                Crew
+              </SectionHeader>
 
-            {directors.length > 0 && (
-              <div className="space-y-3">
-                <h3 className="text-lg font-semibold text-foreground">
-                  Directors
-                </h3>
-                <div className="flex flex-wrap gap-3">
-                  {directors.map((director) => (
-                    <div
-                      key={director.id}
-                      className="flex items-center gap-2 px-3 py-2 bg-secondary rounded-lg"
-                    >
-                      {director.profileUrl && (
-                        <div className="relative w-8 h-8 rounded-full overflow-hidden bg-muted">
-                          <Image
-                            src={director.profileUrl}
-                            alt={director.name}
-                            fill
-                            className="object-cover"
-                            sizes="32px"
-                          />
-                        </div>
-                      )}
-                      <span className="text-sm text-foreground">
-                        {director.name}
-                      </span>
-                    </div>
-                  ))}
+              {directors.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Directors
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    {directors.map((director) => (
+                      <CrewMemberCard key={director.id} member={director} />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {writers.length > 0 && (
-              <div className="space-y-3">
-                <h3 className="text-lg font-semibold text-foreground">
-                  Writers
-                </h3>
-                <div className="flex flex-wrap gap-3">
-                  {writers.map((writer) => (
-                    <div
-                      key={writer.id}
-                      className="flex items-center gap-2 px-3 py-2 bg-secondary rounded-lg"
-                    >
-                      {writer.profileUrl && (
-                        <div className="relative w-8 h-8 rounded-full overflow-hidden bg-muted">
-                          <Image
-                            src={writer.profileUrl}
-                            alt={writer.name}
-                            fill
-                            className="object-cover"
-                            sizes="32px"
-                          />
-                        </div>
-                      )}
-                      <span className="text-sm text-foreground">
-                        {writer.name}
-                      </span>
-                    </div>
-                  ))}
+              {writers.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Writers
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    {writers.map((writer) => (
+                      <CrewMemberCard key={writer.id} member={writer} />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {producers.length > 0 && (
-              <div className="space-y-3">
-                <h3 className="text-lg font-semibold text-foreground">
-                  Producers
-                </h3>
-                <div className="flex flex-wrap gap-3">
-                  {producers.map((producer) => (
-                    <div
-                      key={producer.id}
-                      className="flex items-center gap-2 px-3 py-2 bg-secondary rounded-lg"
-                    >
-                      {producer.profileUrl && (
-                        <div className="relative w-8 h-8 rounded-full overflow-hidden bg-muted">
-                          <Image
-                            src={producer.profileUrl}
-                            alt={producer.name}
-                            fill
-                            className="object-cover"
-                            sizes="32px"
-                          />
-                        </div>
-                      )}
-                      <span className="text-sm text-foreground">
-                        {producer.name}
-                      </span>
-                    </div>
-                  ))}
+              {producers.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Producers
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    {producers.map((producer) => (
+                      <CrewMemberCard key={producer.id} member={producer} />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          </CardContainer>
         )}
 
         {/* Rating & Review Section */}
-        <div className="bg-card border rounded-lg p-6 md:p-8 shadow-lg">
+        <CardContainer>
           <RatingReviewSection tmdbId={movie.id} />
-        </div>
+        </CardContainer>
       </div>
     </div>
   );

@@ -2,10 +2,10 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="border-t bg-background/95 backdrop-blur-sm mt-auto">
+    <footer className="mt-auto border-t bg-background/95 backdrop-blur-sm">
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col items-center justify-center gap-4 text-center">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-sm text-muted-foreground">
+          <div className="flex flex-col items-center justify-center gap-2 text-sm text-muted-foreground sm:flex-row">
             <span>This product uses the</span>
             <Link
               href="https://www.themoviedb.org"

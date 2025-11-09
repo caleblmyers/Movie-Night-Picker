@@ -8,7 +8,7 @@ export default function Home() {
     <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20">
       {/* Hero Section */}
       <main className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-4 py-16">
-        <div className="text-center space-y-8 max-w-4xl">
+        <div className="max-w-4xl space-y-8 text-center">
           {/* Main Title with Theater Vibe */}
           <div className="space-y-4">
             <div className="flex items-center justify-center gap-3 mb-4">
@@ -63,10 +63,10 @@ export default function Home() {
           </div>
 
           {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-16">
-            <div className="bg-card/50 backdrop-blur-sm border rounded-lg p-6 space-y-3 hover:border-primary/50 transition-colors">
+          <div className="grid grid-cols-1 gap-6 pt-16 md:grid-cols-3">
+            <div className="space-y-3 rounded-lg border bg-card/50 p-6 backdrop-blur-sm transition-colors hover:border-primary/50">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 rounded-lg">
+                <div className="rounded-lg bg-primary/10 p-2">
                   <Sparkles className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="text-lg font-semibold">Smart Suggestions</h3>
@@ -76,9 +76,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="bg-card/50 backdrop-blur-sm border rounded-lg p-6 space-y-3 hover:border-primary/50 transition-colors">
+            <div className="space-y-3 rounded-lg border bg-card/50 p-6 backdrop-blur-sm transition-colors hover:border-primary/50">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 rounded-lg">
+                <div className="rounded-lg bg-primary/10 p-2">
                   <Shuffle className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="text-lg font-semibold">Random Discovery</h3>
@@ -88,9 +88,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="bg-card/50 backdrop-blur-sm border rounded-lg p-6 space-y-3 hover:border-primary/50 transition-colors">
+            <div className="space-y-3 rounded-lg border bg-card/50 p-6 backdrop-blur-sm transition-colors hover:border-primary/50">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 rounded-lg">
+                <div className="rounded-lg bg-primary/10 p-2">
                   <Heart className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="text-lg font-semibold">Save & Review</h3>

@@ -53,28 +53,31 @@ function MovieTrailerComponent({ trailer, className }: MovieTrailerProps) {
 
   return (
     <div className={className}>
-      <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted group cursor-pointer shadow-md">
+      {/* Layout → spacing → visual → states */}
+      <div className="group relative w-full aspect-video overflow-hidden rounded-lg bg-muted shadow-md cursor-pointer">
         {thumbnailUrl && !imageError ? (
           <Image
             src={thumbnailUrl}
             alt={trailer.name || "Trailer thumbnail"}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-transform group-hover:scale-105"
             onError={() => setImageError(true)}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-primary/20 to-primary/5">
+          <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-primary/20 to-primary/5">
             <Play className="h-16 w-16 text-primary opacity-50" />
           </div>
         )}
+        {/* Layout → spacing → visual → states */}
         <button
           onClick={() => setIsPlaying(true)}
-          className="absolute inset-0 w-full h-full flex items-center justify-center bg-black/40 group-hover:bg-black/50 transition-colors duration-200"
+          className="absolute inset-0 flex h-full w-full items-center justify-center bg-black/40 transition-colors duration-200 group-hover:bg-black/50"
           aria-label="Play trailer"
         >
           <div className="flex flex-col items-center gap-2">
-            <div className="rounded-full bg-primary/90 p-4 group-hover:bg-primary group-hover:scale-110 transition-all duration-200">
-              <Play className="h-8 w-8 text-primary-foreground fill-primary-foreground" />
+            <div className="rounded-full bg-primary/90 p-4 transition-all duration-200 group-hover:scale-110 group-hover:bg-primary">
+              <Play className="h-8 w-8 fill-primary-foreground text-primary-foreground" />
             </div>
             {trailer.name && (
               <p className="text-sm font-medium text-white drop-shadow-lg">
