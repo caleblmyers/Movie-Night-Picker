@@ -172,41 +172,6 @@ export const DISCOVER_MOVIES = gql`
   }
 `;
 
-/**
- * Save a movie to user's saved list
- */
-export const SAVE_MOVIE = gql`
-  mutation SaveMovie($tmdbId: Int!) {
-    saveMovie(tmdbId: $tmdbId) {
-      id
-      tmdbId
-      createdAt
-      movie {
-        id
-        title
-        posterUrl
-        releaseDate
-      }
-      rating {
-        id
-        value
-      }
-      review {
-        id
-        content
-      }
-    }
-  }
-`;
-
-/**
- * Remove a movie from user's saved list
- */
-export const UNSAVE_MOVIE = gql`
-  mutation UnsaveMovie($tmdbId: Int!) {
-    unsaveMovie(tmdbId: $tmdbId)
-  }
-`;
 
 /**
  * Get movies currently playing in theaters

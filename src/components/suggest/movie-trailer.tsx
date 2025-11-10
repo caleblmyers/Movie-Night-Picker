@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState, useMemo, useRef } from "react";
+import { memo, useState, useMemo } from "react";
 import Image from "next/image";
 import type { MovieTrailer } from "@/types/suggest";
 import { Play, ExternalLink } from "lucide-react";

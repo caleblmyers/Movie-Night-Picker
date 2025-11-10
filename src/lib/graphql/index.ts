@@ -29,8 +29,6 @@ export {
   MOVIE_SELECTION_OPTIONS,
   ACTORS_FROM_FEATURED_MOVIES,
   CREW_FROM_FEATURED_MOVIES,
-  SAVE_MOVIE,
-  UNSAVE_MOVIE,
 } from "./movies";
 
 // People
@@ -51,7 +49,6 @@ export {
 // User
 export {
   ME,
-  SAVED_MOVIES,
   RATINGS,
   REVIEWS,
   RATE_MOVIE,

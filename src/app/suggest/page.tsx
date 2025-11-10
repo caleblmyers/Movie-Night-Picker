@@ -37,11 +37,6 @@ export default function SuggestPage() {
     }
   );
 
-  // Log the selected movie IDs being sent
-  if (isComplete && selectedMovieIds.length > 0) {
-    console.log("SuggestMovie selectedMovieIds:", selectedMovieIds);
-  }
-
   // Show final result when all rounds are complete and query completes
   if (isComplete && loading) {
     return (

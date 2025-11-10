@@ -10,25 +10,6 @@ export const ME = gql`
       email
       name
       createdAt
-      savedMovies {
-        id
-        tmdbId
-        createdAt
-        movie {
-          id
-          title
-          posterUrl
-          releaseDate
-        }
-        rating {
-          id
-          value
-        }
-        review {
-          id
-          content
-        }
-      }
       ratings {
         id
         tmdbId
@@ -59,39 +40,6 @@ export const ME = gql`
         description
         isPublic
         movieCount
-      }
-    }
-  }
-`;
-
-/**
- * Get user's saved movies
- */
-export const SAVED_MOVIES = gql`
-  query SavedMovies {
-    savedMovies {
-      id
-      tmdbId
-      createdAt
-      movie {
-        id
-        title
-        overview
-        posterUrl
-        releaseDate
-        voteAverage
-      }
-      rating {
-        id
-        value
-        createdAt
-        updatedAt
-      }
-      review {
-        id
-        content
-        createdAt
-        updatedAt
       }
     }
   }

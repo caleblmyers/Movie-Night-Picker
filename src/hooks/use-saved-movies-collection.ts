@@ -15,7 +15,7 @@ export function useSavedMoviesCollection() {
   const savedMoviesCollection = useMemo(() => {
     if (!data?.collections) return null;
     return data.collections.find((c) => c.name === SAVED_MOVIES_COLLECTION_NAME) || null;
-  }, [data?.collections]);
+  }, [data]);
 
   return {
     savedMoviesCollection,
@@ -29,7 +29,7 @@ export function useSavedMoviesCollection() {
  * Hook to add/remove movies from the Saved Movies collection
  */
 export function useSaveMovieToCollection() {
-  const { savedMoviesCollection, refetch } = useSavedMoviesCollection();
+  const { savedMoviesCollection } = useSavedMoviesCollection();
 
   const [addMovie, { loading: adding }] = useMutation(ADD_MOVIE_TO_COLLECTION, {
     refetchQueries: [{ query: COLLECTIONS }],

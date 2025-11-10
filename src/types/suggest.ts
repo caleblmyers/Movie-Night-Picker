@@ -263,19 +263,9 @@ export interface User {
   email: string;
   name: string;
   createdAt: string;
-  savedMovies?: SavedMovie[];
   ratings?: Rating[];
   reviews?: Review[];
   collections?: Collection[];
-}
-
-export interface SavedMovie {
-  id: number | string; // GraphQL returns Int but may be serialized as string
-  tmdbId: number;
-  createdAt: string;
-  movie?: Movie;
-  rating?: Rating;
-  review?: Review;
 }
 
 export interface Rating {

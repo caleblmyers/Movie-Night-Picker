@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Heart, HeartOff } from "lucide-react";
@@ -13,17 +13,16 @@ interface SaveMovieButtonProps {
 export function SaveMovieButton({ tmdbId }: SaveMovieButtonProps) {
   const { data: session } = useSession();
   const { isInCollection, toggleMovie, loading, savedMoviesCollection } = useSaveMovieToCollection();
-  const [isSaved, setIsSaved] = useState(false);
-  const [checking, setChecking] = useState(true);
 
-  useEffect(() => {
-    if (session?.user?.id && savedMoviesCollection) {
-      setIsSaved(isInCollection(tmdbId));
-      setChecking(false);
-    } else if (!session?.user?.id) {
-      setChecking(false);
+  // Derive state instead of using setState in effect
+  const isSaved = useMemo(() => {
+    if (!session?.user?.id || !savedMoviesCollection) {
+      return false;
     }
-  }, [session?.user?.id, tmdbId, savedMoviesCollection, isInCollection]);
+    return isInCollection(tmdbId);
+  }, [session?.user?.id, savedMoviesCollection, isInCollection, tmdbId]);
+
+  const checking = !session?.user?.id || !savedMoviesCollection;
 
   const handleSave = async () => {
     if (!session?.user?.id || !savedMoviesCollection) {
@@ -31,7 +30,6 @@ export function SaveMovieButton({ tmdbId }: SaveMovieButtonProps) {
     }
 
     await toggleMovie(tmdbId);
-    setIsSaved(!isSaved);
   };
 
   if (!session) {

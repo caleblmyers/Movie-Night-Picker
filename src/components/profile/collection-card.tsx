@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { memo, useState, useRef, useEffect, useCallback } from "react";
 import { Collection } from "@/types/suggest";
 import { CardContainer } from "@/components/common/card-container";
 import { ChevronLeft, ChevronRight, Film } from "lucide-react";
@@ -12,19 +12,19 @@ interface CollectionCardProps {
   collection: Collection;
 }
 
-export function CollectionCard({ collection }: CollectionCardProps) {
+function CollectionCardComponent({ collection }: CollectionCardProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
   const movies = collection.movies || [];
 
-  const checkScrollability = () => {
+  const checkScrollability = useCallback(() => {
     if (!scrollRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
     setCanScrollLeft(scrollLeft > 0);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-  };
+  }, []);
 
   useEffect(() => {
     checkScrollability();
@@ -38,9 +38,9 @@ export function CollectionCard({ collection }: CollectionCardProps) {
         window.removeEventListener("resize", checkScrollability);
       };
     }
-  }, [movies.length]);
+  }, [checkScrollability, movies.length]);
 
-  const scroll = (direction: "left" | "right") => {
+  const scroll = useCallback((direction: "left" | "right") => {
     if (!scrollRef.current) return;
     const scrollAmount = 200;
     const newScrollLeft =
@@ -48,7 +48,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
         ? scrollRef.current.scrollLeft - scrollAmount
         : scrollRef.current.scrollLeft + scrollAmount;
     scrollRef.current.scrollTo({ left: newScrollLeft, behavior: "smooth" });
-  };
+  }, []);
 
   return (
     <CardContainer className="space-y-4">
@@ -151,4 +151,6 @@ export function CollectionCard({ collection }: CollectionCardProps) {
     </CardContainer>
   );
 }
+
+export const CollectionCard = memo(CollectionCardComponent);
 
