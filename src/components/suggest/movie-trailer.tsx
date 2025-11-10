@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState, useMemo, useEffect } from "react";
+import { memo, useState, useMemo, useRef } from "react";
 import Image from "next/image";
 import type { MovieTrailer } from "@/types/suggest";
 import { Play, ExternalLink } from "lucide-react";
@@ -12,11 +12,19 @@ interface MovieTrailerProps {
 }
 
 function MovieTrailerComponent({ trailer, className }: MovieTrailerProps) {
+  // Create a unique key for the trailer to force remount when it changes
+  const trailerKey = `${trailer.site}-${trailer.key}`;
+  
+  // Use a separate component for the thumbnail to reset state when key changes
+  return <MovieTrailerThumbnail key={trailerKey} trailer={trailer} className={className} />;
+}
+
+function MovieTrailerThumbnail({ trailer, className }: MovieTrailerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [fallbackFormat, setFallbackFormat] = useState<string | null>(null);
   
-  // Compute thumbnail URL from props - no state needed for this
+  // Compute thumbnail URL from props
   const thumbnailUrl = useMemo(() => {
     if (trailer.site === "YouTube" && trailer.key) {
       // Use fallback format if set, otherwise start with hqdefault
@@ -25,12 +33,6 @@ function MovieTrailerComponent({ trailer, className }: MovieTrailerProps) {
     }
     return null;
   }, [trailer.site, trailer.key, fallbackFormat]);
-
-  // Reset fallback format and error state when trailer changes
-  useEffect(() => {
-    setFallbackFormat(null);
-    setImageError(false);
-  }, [trailer.site, trailer.key]);
 
   // Generate YouTube embed URL
   const getEmbedUrl = () => {

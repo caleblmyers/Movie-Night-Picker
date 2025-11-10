@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Collection } from "@/types/suggest";
-import { FolderPlus, Check, X } from "lucide-react";
+import { FolderPlus, Check } from "lucide-react";
 import { CardContainer } from "@/components/common/card-container";
 
 interface AddToCollectionButtonProps {

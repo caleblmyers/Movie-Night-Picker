@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLazyQuery } from "@apollo/client/react";
 import { SEARCH_KEYWORDS } from "@/lib/graphql";
 import { Keyword } from "@/lib/graphql/keywords";
@@ -46,19 +46,22 @@ export function KeywordFilter({
 
   const [searchKeywords, { data, loading }] = useLazyQuery<{
     searchKeywords: Keyword[];
-  }>(SEARCH_KEYWORDS, {
-    variables: { 
-      query: debouncedQuery,
-      limit: limit > 100 ? 100 : limit, // Enforce max limit
-    },
-    skip: debouncedQuery.trim().length < MIN_QUERY_LENGTH,
-  });
+  }>(SEARCH_KEYWORDS);
+
+  // Trigger search when debounced query changes
+  useEffect(() => {
+    if (debouncedQuery.trim().length >= MIN_QUERY_LENGTH) {
+      searchKeywords({
+        variables: {
+          query: debouncedQuery,
+          limit: limit > 100 ? 100 : limit, // Enforce max limit
+        },
+      });
+    }
+  }, [debouncedQuery, limit, searchKeywords]);
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
-    if (value.trim().length >= MIN_QUERY_LENGTH) {
-      searchKeywords();
-    }
   };
 
   const toggleKeyword = (keyword: Keyword) => {

@@ -6,12 +6,10 @@ import { Collection } from "@/types/suggest";
 import { LoadingState } from "@/components/shared/loading-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { CardContainer } from "@/components/common/card-container";
-import { SectionHeader } from "@/components/common/section-header";
 import { CreateCollectionDialog } from "@/components/collections/create-collection-dialog";
 import { Folder, Film, Calendar } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 
 export default function CollectionsPage() {
   const { data, loading, error, refetch } = useQuery<{ collections: Collection[] }>(COLLECTIONS);

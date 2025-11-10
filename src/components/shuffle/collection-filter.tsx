@@ -49,10 +49,6 @@ export function CollectionFilter({
     );
   };
 
-  const selectedCollectionNames = selectedCollections
-    .map((id) => collections.find((c) => c.id === id)?.name)
-    .filter(Boolean) as string[];
-
   const badgeClassName = variant === "exclude"
     ? "bg-destructive/20 text-destructive"
     : "bg-secondary text-secondary-foreground";
