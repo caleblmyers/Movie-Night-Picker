@@ -16,6 +16,7 @@ export { MOVIE_FRAGMENT } from "./fragments";
 // Movies
 export {
   SUGGEST_MOVIE,
+  SUGGEST_MOVIE_ROUND,
   GET_MOVIE,
   SEARCH_MOVIES,
   RANDOM_MOVIE,

@@ -67,7 +67,7 @@ export const MovieCard = memo(function MovieCard({
                 <span>{releaseYear}</span>
               </div>
             )}
-            {movie.voteAverage !== undefined && (
+            {movie.voteAverage !== undefined && movie.voteAverage !== null && (
               <div className="flex items-center gap-1.5">
                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                 <span className="font-medium">{movie.voteAverage.toFixed(1)}</span>

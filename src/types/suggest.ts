@@ -56,6 +56,14 @@ export interface RoundSelection {
   selectedOption: SelectionOption;
 }
 
+/**
+ * Selection of a movie from a round
+ */
+export interface MovieSelection {
+  round: number;
+  movie: Movie;
+}
+
 export interface MoviePreferences {
   genres?: string[];
   mood?: string;

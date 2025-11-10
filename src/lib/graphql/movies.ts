@@ -2,14 +2,28 @@ import { gql } from "@apollo/client";
 import { MOVIE_FRAGMENT } from "./fragments";
 
 /**
- * Suggest a movie based on user preferences
+ * Suggest a movie based on selected movie IDs
+ * Backend automatically extracts and aggregates preferences from selected movies
  * Uses progressive fallback automatically if no results found
- * Supports collection filtering: inCollections, excludeCollections, notInAnyCollection
  */
 export const SUGGEST_MOVIE = gql`
   ${MOVIE_FRAGMENT}
-  query SuggestMovie($preferences: MoviePreferencesInput) {
-    suggestMovie(preferences: $preferences) {
+  query SuggestMovie($selectedMovieIds: [Int!]!) {
+    suggestMovie(selectedMovieIds: $selectedMovieIds) {
+      ...MovieFields
+    }
+  }
+`;
+
+/**
+ * Get 4 movies for a specific round of the suggest flow
+ * Each round presents movies representing different category combinations
+ * (genres, moods, eras, keywords, year ranges, actors, directors, etc.)
+ */
+export const SUGGEST_MOVIE_ROUND = gql`
+  ${MOVIE_FRAGMENT}
+  query SuggestMovieRound($round: Int!) {
+    suggestMovieRound(round: $round) {
       ...MovieFields
     }
   }
