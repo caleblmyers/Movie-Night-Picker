@@ -21,9 +21,10 @@ import { Plus } from "lucide-react";
 
 interface CreateCollectionDialogProps {
   onCollectionCreated?: () => void;
+  children?: React.ReactNode;
 }
 
-export function CreateCollectionDialog({ onCollectionCreated }: CreateCollectionDialogProps) {
+export function CreateCollectionDialog({ onCollectionCreated, children }: CreateCollectionDialogProps) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -56,10 +57,12 @@ export function CreateCollectionDialog({ onCollectionCreated }: CreateCollection
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Plus className="h-4 w-4 mr-2" />
-          Create Collection
-        </Button>
+        {children || (
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            Create Collection
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <form onSubmit={handleSubmit}>

@@ -1,26 +1,39 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { useQuery } from "@apollo/client/react";
 import { LoadingState } from "@/components/shared/loading-state";
-import { SavedMovieCard } from "@/components/profile/saved-movie-card";
+import { ErrorState } from "@/components/shared/error-state";
 import { UnauthenticatedProfile } from "@/components/profile/unauthenticated-profile";
-import { EmptySavedMovies } from "@/components/profile/empty-saved-movies";
-import { useSavedMovies } from "@/hooks/use-saved-movies";
+import { CollectionCard } from "@/components/profile/collection-card";
+import { COLLECTIONS } from "@/lib/graphql";
+import { Collection } from "@/types/suggest";
 import { Button } from "@/components/ui/button";
-import { Folder } from "lucide-react";
-import Link from "next/link";
+import { FolderPlus } from "lucide-react";
+import { CreateCollectionDialog } from "@/components/collections/create-collection-dialog";
 
 export default function ProfilePage() {
   const { data: session } = useSession();
-  const { savedMovies, refetch, isAuthenticated, isLoading } = useSavedMovies();
+  const { data, loading, error, refetch } = useQuery<{ collections: Collection[] }>(COLLECTIONS);
 
-  if (isLoading) {
+  if (loading) {
     return <LoadingState message="Loading profile..." />;
   }
 
-  if (!isAuthenticated) {
+  if (error) {
+    return (
+      <ErrorState
+        message={error.message || "Failed to load collections. Please try again."}
+        onRetry={() => refetch()}
+      />
+    );
+  }
+
+  if (!session) {
     return <UnauthenticatedProfile />;
   }
+
+  const collections = data?.collections || [];
 
   return (
     <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20 px-4 py-16">
@@ -39,26 +52,29 @@ export default function ProfilePage() {
 
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Saved Movies</h2>
-            <Button variant="outline" asChild>
-              <Link href="/collections">
-                <Folder className="h-4 w-4 mr-2" />
-                View Collections
-              </Link>
-            </Button>
+            <h2 className="text-2xl font-bold">My Collections</h2>
+            <CreateCollectionDialog onCollectionCreated={() => refetch()}>
+              <Button variant="outline">
+                <FolderPlus className="h-4 w-4 mr-2" />
+                Create Collection
+              </Button>
+            </CreateCollectionDialog>
           </div>
           <div>
-            {savedMovies.length === 0 ? (
-              <EmptySavedMovies />
+            {collections.length === 0 ? (
+              <div className="text-center py-12 bg-card border rounded-lg">
+                <p className="text-muted-foreground mb-4">No collections yet</p>
+                <CreateCollectionDialog onCollectionCreated={() => refetch()}>
+                  <Button>
+                    <FolderPlus className="h-4 w-4 mr-2" />
+                    Create Your First Collection
+                  </Button>
+                </CreateCollectionDialog>
+              </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {savedMovies.map((savedMovie, index) => (
-                  <SavedMovieCard
-                    key={savedMovie.id}
-                    savedMovie={savedMovie}
-                    onUnsave={refetch}
-                    priority={index === 0}
-                  />
+              <div className="grid grid-cols-1 gap-6">
+                {collections.map((collection) => (
+                  <CollectionCard key={collection.id} collection={collection} />
                 ))}
               </div>
             )}
