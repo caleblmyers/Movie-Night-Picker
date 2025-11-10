@@ -1,8 +1,7 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useLazyQuery } from "@apollo/client/react";
 import { SHUFFLE_MOVIE } from "@/lib/graphql";
 import { Movie, Person } from "@/types/suggest";
-import { Keyword } from "@/lib/graphql/keywords";
 import { isDefaultYearRange } from "@/lib/utils/year-range";
 
 const MIN_YEAR = 1950;
@@ -31,7 +30,6 @@ export function useShuffleMovie() {
   const [inCollections, setInCollections] = useState<number[]>([]);
   const [excludeCollections, setExcludeCollections] = useState<number[]>([]);
   const [notInAnyCollection, setNotInAnyCollection] = useState<boolean>(false);
-  const [selectedKeywords, setSelectedKeywords] = useState<Keyword[]>([]);
 
   const [shuffleMovie, { data, loading, error }] = useLazyQuery<{
     shuffleMovie: Movie | null;
@@ -40,7 +38,8 @@ export function useShuffleMovie() {
     errorPolicy: "all", // Continue even if there's an error (e.g., no matches)
   });
 
-  const handleShuffle = useCallback(() => {
+  // Memoize variables object to avoid recreating on every render
+  const shuffleVariables = useMemo(() => {
     const genres = selectedGenres.length > 0 
       ? selectedGenres.map(id => parseInt(id, 10)).filter(id => !isNaN(id))
       : undefined;
@@ -86,32 +85,26 @@ export function useShuffleMovie() {
       ? excludeCollections
       : undefined;
     const notInAny = notInAnyCollection ? true : undefined;
-    const keywordIds = selectedKeywords.length > 0
-      ? selectedKeywords.map((k) => k.id)
-      : undefined;
 
-    shuffleMovie({
-      variables: {
-        genres,
-        yearRange: years,
-        cast,
-        crew,
-        minVoteAverage: voteAvg,
-        minVoteCount: voteCount,
-        runtimeRange: runtime,
-        originalLanguage: language,
-        watchProviders,
-        excludeGenres: excludeGenresInt,
-        excludeCast: excludeCastIds,
-        excludeCrew: excludeCrewIds,
-        popularityRange: popularity,
-        originCountries: countries,
-        inCollections: includeCollections,
-        excludeCollections: excludeCollectionsIds,
-        notInAnyCollection: notInAny,
-        keywordIds,
-      },
-    });
+    return {
+      genres,
+      yearRange: years,
+      cast,
+      crew,
+      minVoteAverage: voteAvg,
+      minVoteCount: voteCount,
+      runtimeRange: runtime,
+      originalLanguage: language,
+      watchProviders,
+      excludeGenres: excludeGenresInt,
+      excludeCast: excludeCastIds,
+      excludeCrew: excludeCrewIds,
+      popularityRange: popularity,
+      originCountries: countries,
+      inCollections: includeCollections,
+      excludeCollections: excludeCollectionsIds,
+      notInAnyCollection: notInAny,
+    };
   }, [
     selectedGenres,
     yearRange,
@@ -130,9 +123,11 @@ export function useShuffleMovie() {
     inCollections,
     excludeCollections,
     notInAnyCollection,
-    selectedKeywords,
-    shuffleMovie,
   ]);
+
+  const handleShuffle = useCallback(() => {
+    shuffleMovie({ variables: shuffleVariables });
+  }, [shuffleMovie, shuffleVariables]);
 
   const handleReset = useCallback(() => {
     setSelectedGenres([]);
@@ -152,7 +147,6 @@ export function useShuffleMovie() {
     setInCollections([]);
     setExcludeCollections([]);
     setNotInAnyCollection(false);
-    setSelectedKeywords([]);
   }, []);
 
   return {
@@ -190,8 +184,6 @@ export function useShuffleMovie() {
     setExcludeCollections,
     notInAnyCollection,
     setNotInAnyCollection,
-    selectedKeywords,
-    setSelectedKeywords,
     handleShuffle,
     handleReset,
     movie: data?.shuffleMovie || undefined,

@@ -21,7 +21,7 @@ function getRoundTitle(round: number): string {
     "Choose a Mood",
     "Select an Era",
     "Pick an Actor",
-    "Choose a Director",
+    "Pick Another Actor",
   ];
   return titles[round - 1] || "Choose your preference";
 }

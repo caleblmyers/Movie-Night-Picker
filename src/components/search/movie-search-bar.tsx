@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useQuery } from "@apollo/client/react";
 import { useRouter } from "next/navigation";
 import { Search, X, Film, User } from "lucide-react";
@@ -66,11 +66,11 @@ export function MovieSearchBar() {
     }
   );
 
-  const movies = moviesData?.searchMovies || [];
-  const people = peopleData?.searchPeople || [];
+  const movies = useMemo(() => moviesData?.searchMovies || [], [moviesData?.searchMovies]);
+  const people = useMemo(() => peopleData?.searchPeople || [], [peopleData?.searchPeople]);
   const loading = moviesLoading || peopleLoading;
   const error = moviesError || peopleError;
-  const hasResults = movies.length > 0 || people.length > 0;
+  const hasResults = useMemo(() => movies.length > 0 || people.length > 0, [movies.length, people.length]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -89,32 +89,32 @@ export function MovieSearchBar() {
     };
   }, [isOpen]);
 
-  const handleMovieClick = (movieId: number) => {
+  const handleMovieClick = useCallback((movieId: number) => {
     setQuery("");
     setIsOpen(false);
     router.push(`/movie/${movieId}`);
-  };
+  }, [router]);
 
-  const handlePersonClick = (personId: number) => {
+  const handlePersonClick = useCallback((personId: number) => {
     setQuery("");
     setIsOpen(false);
     router.push(`/person/${personId}`);
-  };
+  }, [router]);
 
-  const handleInputChange = (value: string) => {
+  const handleInputChange = useCallback((value: string) => {
     setQuery(value);
     setIsOpen(true);
-  };
+  }, []);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setQuery("");
     setIsOpen(false);
-  };
+  }, []);
 
-  const releaseYear = (date?: string | null) => {
+  const releaseYear = useCallback((date?: string | null) => {
     if (!date) return null;
     return new Date(date).getFullYear();
-  };
+  }, []);
 
   return (
     <div ref={searchRef} className="relative w-full max-w-md">

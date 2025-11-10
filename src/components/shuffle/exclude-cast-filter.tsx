@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Person } from "@/types/suggest";
 import { PersonRoleType } from "@/types/suggest";
 import { PersonSearchInput } from "@/components/common/person-search-input";
@@ -9,7 +10,7 @@ interface ExcludeCastFilterProps {
   onCastChange: (cast: Person[]) => void;
 }
 
-export function ExcludeCastFilter({
+function ExcludeCastFilterComponent({
   selectedCast,
   onCastChange,
 }: ExcludeCastFilterProps) {
@@ -26,4 +27,6 @@ export function ExcludeCastFilter({
     />
   );
 }
+
+export const ExcludeCastFilter = memo(ExcludeCastFilterComponent);
 

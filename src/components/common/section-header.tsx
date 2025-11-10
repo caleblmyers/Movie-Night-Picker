@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
@@ -11,7 +11,7 @@ interface SectionHeaderProps {
  * Reusable section header component with consistent styling
  * Standardizes typography, spacing, and icon alignment
  */
-export function SectionHeader({ icon, children, className }: SectionHeaderProps) {
+function SectionHeaderComponent({ icon, children, className }: SectionHeaderProps) {
   return (
     <h2
       className={cn(
@@ -24,4 +24,6 @@ export function SectionHeader({ icon, children, className }: SectionHeaderProps)
     </h2>
   );
 }
+
+export const SectionHeader = memo(SectionHeaderComponent);
 

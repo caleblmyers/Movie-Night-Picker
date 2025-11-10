@@ -17,7 +17,7 @@ export function getRoundConfig(round: number): SuggestRoundConfig {
     { type: "mood", count: 4 }, // Round 2: 4 moods
     { type: "era", count: 4 }, // Round 3: 4 era options
     { type: "actor", count: 4 }, // Round 4: 4 actors
-    { type: "director", count: 4 }, // Round 5: 4 directors
+    { type: "actor", count: 4 }, // Round 5: 4 actors
   ];
 
   return roundConfigs[round - 1] || { type: "genre", count: 4 };
@@ -67,14 +67,6 @@ export function buildMoviePreferences(
         }
         break;
       }
-      case "director": {
-        const directorId = parseInt(value, 10);
-        if (!isNaN(directorId)) {
-          // Use crew instead of directors (backend filters to directors/writers only)
-          prefs.crew?.push(directorId);
-        }
-        break;
-      }
     }
   });
 
@@ -110,7 +102,7 @@ export function useSuggestFlow() {
         ...prev,
         { round: currentRound, selectedOption: option },
       ]);
-      setCurrentRound((prev) => (prev < TOTAL_ROUNDS ? prev + 1 : prev + 1));
+      setCurrentRound((prev) => Math.min(prev + 1, TOTAL_ROUNDS + 1));
     },
     [currentRound]
   );

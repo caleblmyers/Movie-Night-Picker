@@ -63,15 +63,16 @@ export const SEARCH_PEOPLE = gql`
 `;
 
 /**
- * Get a random person
+ * Get a random actor from any source (source is randomized)
+ * If source is not provided, backend randomly selects from available sources
  */
-export const RANDOM_PERSON = gql`
-  query RandomPerson {
-    randomPerson {
+export const RANDOM_ACTOR_FROM_SOURCE = gql`
+  query RandomActorFromSource($options: TMDBOptionsInput, $source: PersonSource) {
+    randomActorFromSource(options: $options, source: $source) {
       id
       name
-      biography
       profileUrl
+      biography
       birthday
       placeOfBirth
       knownForDepartment
@@ -79,6 +80,12 @@ export const RANDOM_PERSON = gql`
     }
   }
 `;
+
+/**
+ * @deprecated Use RANDOM_ACTOR_FROM_SOURCE instead
+ * Kept for backward compatibility
+ */
+export const RANDOM_PERSON = RANDOM_ACTOR_FROM_SOURCE;
 
 /**
  * Get trending people with optional role type filter

@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Person } from "@/types/suggest";
 import { PersonRoleType } from "@/types/suggest";
 import { PersonSearchInput } from "@/components/common/person-search-input";
@@ -9,7 +10,7 @@ interface ExcludeCrewFilterProps {
   onCrewChange: (crew: Person[]) => void;
 }
 
-export function ExcludeCrewFilter({
+function ExcludeCrewFilterComponent({
   selectedCrew,
   onCrewChange,
 }: ExcludeCrewFilterProps) {
@@ -26,4 +27,6 @@ export function ExcludeCrewFilter({
     />
   );
 }
+
+export const ExcludeCrewFilter = memo(ExcludeCrewFilterComponent);
 

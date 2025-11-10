@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Shuffle } from "lucide-react";
+import { Shuffle, ChevronDown, ChevronUp } from "lucide-react";
 import { GenreFilter } from "@/components/shuffle/genre-filter";
 import { YearRangeFilter } from "@/components/shuffle/year-range-filter";
 import { CastFilter } from "@/components/shuffle/cast-filter";
@@ -18,7 +19,6 @@ import { PopularityFilter } from "@/components/shuffle/popularity-filter";
 import { CountryFilter } from "@/components/shuffle/country-filter";
 import { CollectionFilter } from "@/components/shuffle/collection-filter";
 import { ExcludeCollectionFilter } from "@/components/shuffle/exclude-collection-filter";
-import { KeywordFilter } from "@/components/shuffle/keyword-filter";
 import { LoadingState } from "@/components/shared/loading-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { ShuffleMovieCard } from "@/components/shuffle/shuffle-movie-card";
@@ -26,6 +26,8 @@ import { NoResults } from "@/components/shuffle/no-results";
 import { useShuffleMovie } from "@/hooks/use-shuffle-movie";
 
 export default function ShufflePage() {
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  
   const {
     selectedGenres,
     setSelectedGenres,
@@ -61,8 +63,6 @@ export default function ShufflePage() {
     setExcludeCollections,
     notInAnyCollection,
     setNotInAnyCollection,
-    selectedKeywords,
-    setSelectedKeywords,
     handleShuffle,
     handleReset,
     movie,
@@ -126,110 +126,132 @@ export default function ShufflePage() {
         </div>
 
         <div className="space-y-6 bg-card/50 backdrop-blur-sm border rounded-lg p-6 shadow-lg">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <GenreFilter
-              selectedGenres={selectedGenres}
-              onGenresChange={setSelectedGenres}
-            />
+          {/* Core Filters - Always Visible */}
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold text-foreground">Core Filters</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <GenreFilter
+                selectedGenres={selectedGenres}
+                onGenresChange={setSelectedGenres}
+              />
 
-            <ExcludeGenreFilter
-              selectedGenres={excludeGenres}
-              onGenresChange={setExcludeGenres}
-            />
+              <YearRangeFilter
+                yearRange={yearRange}
+                onYearRangeChange={setYearRange}
+                minYear={MIN_YEAR}
+                maxYear={MAX_YEAR}
+              />
 
-            <YearRangeFilter
-              yearRange={yearRange}
-              onYearRangeChange={setYearRange}
-              minYear={MIN_YEAR}
-              maxYear={MAX_YEAR}
-            />
+              <CastFilter
+                selectedCast={selectedCast}
+                onCastChange={setSelectedCast}
+              />
 
-            <CastFilter
-              selectedCast={selectedCast}
-              onCastChange={setSelectedCast}
-            />
-
-            <ExcludeCastFilter
-              selectedCast={excludeCast}
-              onCastChange={setExcludeCast}
-            />
-
-            <CrewFilter
-              selectedCrew={selectedCrew}
-              onCrewChange={setSelectedCrew}
-            />
-
-            <ExcludeCrewFilter
-              selectedCrew={excludeCrew}
-              onCrewChange={setExcludeCrew}
-            />
-
-            <VoteAverageFilter
-              minVoteAverage={minVoteAverage}
-              onVoteAverageChange={setMinVoteAverage}
-            />
-
-            <VoteCountFilter
-              minVoteCount={minVoteCount}
-              onVoteCountChange={setMinVoteCount}
-            />
-
-            <PopularityFilter
-              popularityRange={popularityRange}
-              onPopularityRangeChange={setPopularityRange}
-            />
-
-            <RuntimeFilter
-              runtimeRange={runtimeRange}
-              onRuntimeRangeChange={setRuntimeRange}
-            />
-
-            <LanguageFilter
-              language={originalLanguage}
-              onLanguageChange={setOriginalLanguage}
-            />
-
-            <StreamingFilter
-              selectedProviders={selectedProviders}
-              onProvidersChange={setSelectedProviders}
-            />
-
-            <CountryFilter
-              selectedCountries={originCountries}
-              onCountriesChange={setOriginCountries}
-            />
-
-            <CollectionFilter
-              selectedCollections={inCollections}
-              onCollectionsChange={setInCollections}
-            />
-
-            <ExcludeCollectionFilter
-              selectedCollections={excludeCollections}
-              onCollectionsChange={setExcludeCollections}
-            />
-
-            <KeywordFilter
-              selectedKeywords={selectedKeywords}
-              onKeywordsChange={setSelectedKeywords}
-            />
+              <CrewFilter
+                selectedCrew={selectedCrew}
+                onCrewChange={setSelectedCrew}
+              />
+            </div>
           </div>
 
-          {/* Not in Any Collection Checkbox */}
-          <div className="flex items-center space-x-2 pt-2 border-t">
-            <input
-              type="checkbox"
-              id="notInAnyCollection"
-              checked={notInAnyCollection}
-              onChange={(e) => setNotInAnyCollection(e.target.checked)}
-              className="h-4 w-4 rounded border-input bg-background text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer"
-            />
-            <label
-              htmlFor="notInAnyCollection"
-              className="text-sm font-medium text-foreground cursor-pointer"
+          {/* Advanced Filters - Collapsible */}
+          <div className="space-y-4 pt-4 border-t">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+              className="w-full justify-between p-0 h-auto font-normal"
             >
-              Only include movies not in any collection
-            </label>
+              <span className="text-sm font-medium text-foreground">
+                Advanced Filters
+              </span>
+              {showAdvancedFilters ? (
+                <ChevronUp className="h-4 w-4 text-muted-foreground" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              )}
+            </Button>
+
+            {showAdvancedFilters && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                <ExcludeGenreFilter
+                  selectedGenres={excludeGenres}
+                  onGenresChange={setExcludeGenres}
+                />
+
+                <ExcludeCastFilter
+                  selectedCast={excludeCast}
+                  onCastChange={setExcludeCast}
+                />
+
+                <ExcludeCrewFilter
+                  selectedCrew={excludeCrew}
+                  onCrewChange={setExcludeCrew}
+                />
+
+                <VoteAverageFilter
+                  minVoteAverage={minVoteAverage}
+                  onVoteAverageChange={setMinVoteAverage}
+                />
+
+                <VoteCountFilter
+                  minVoteCount={minVoteCount}
+                  onVoteCountChange={setMinVoteCount}
+                />
+
+                <RuntimeFilter
+                  runtimeRange={runtimeRange}
+                  onRuntimeRangeChange={setRuntimeRange}
+                />
+
+                <LanguageFilter
+                  language={originalLanguage}
+                  onLanguageChange={setOriginalLanguage}
+                />
+
+                <PopularityFilter
+                  popularityRange={popularityRange}
+                  onPopularityRangeChange={setPopularityRange}
+                />
+
+                <StreamingFilter
+                  selectedProviders={selectedProviders}
+                  onProvidersChange={setSelectedProviders}
+                />
+
+                <CountryFilter
+                  selectedCountries={originCountries}
+                  onCountriesChange={setOriginCountries}
+                />
+
+                <CollectionFilter
+                  selectedCollections={inCollections}
+                  onCollectionsChange={setInCollections}
+                />
+
+                <ExcludeCollectionFilter
+                  selectedCollections={excludeCollections}
+                  onCollectionsChange={setExcludeCollections}
+                />
+
+                {/* Not in Any Collection Checkbox */}
+                <div className="flex items-center space-x-2 md:col-span-2">
+                  <input
+                    type="checkbox"
+                    id="notInAnyCollection"
+                    checked={notInAnyCollection}
+                    onChange={(e) => setNotInAnyCollection(e.target.checked)}
+                    className="h-4 w-4 rounded border-input bg-background text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer"
+                  />
+                  <label
+                    htmlFor="notInAnyCollection"
+                    className="text-sm font-medium text-foreground cursor-pointer"
+                  >
+                    Only include movies not in any collection
+                  </label>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="pt-4 flex gap-4">

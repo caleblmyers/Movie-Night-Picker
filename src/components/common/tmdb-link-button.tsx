@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 
@@ -13,13 +14,13 @@ interface TMDBLinkButtonProps {
 /**
  * Reusable button component for linking to TMDB movie pages
  */
-export function TMDBLinkButton({
+function TMDBLinkButtonComponent({
   movieId,
   variant = "outline",
   size = "default",
   className = "",
 }: TMDBLinkButtonProps) {
-  const tmdbUrl = `https://www.themoviedb.org/movie/${movieId}`;
+  const tmdbUrl = useMemo(() => `https://www.themoviedb.org/movie/${movieId}`, [movieId]);
 
   return (
     <Button asChild variant={variant} size={size} className={className}>
@@ -35,4 +36,6 @@ export function TMDBLinkButton({
     </Button>
   );
 }
+
+export const TMDBLinkButton = memo(TMDBLinkButtonComponent);
 

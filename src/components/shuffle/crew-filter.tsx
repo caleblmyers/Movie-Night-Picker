@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Person } from "@/types/suggest";
 import { PersonRoleType } from "@/types/suggest";
 import { PersonSearchInput } from "@/components/common/person-search-input";
@@ -9,7 +10,7 @@ interface CrewFilterProps {
   onCrewChange: (crew: Person[]) => void;
 }
 
-export function CrewFilter({ selectedCrew, onCrewChange }: CrewFilterProps) {
+function CrewFilterComponent({ selectedCrew, onCrewChange }: CrewFilterProps) {
   return (
     <PersonSearchInput
       selectedPeople={selectedCrew}
@@ -22,4 +23,6 @@ export function CrewFilter({ selectedCrew, onCrewChange }: CrewFilterProps) {
     />
   );
 }
+
+export const CrewFilter = memo(CrewFilterComponent);
 

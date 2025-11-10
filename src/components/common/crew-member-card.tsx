@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { CrewMember } from "@/types/suggest";
@@ -10,7 +11,7 @@ interface CrewMemberCardProps {
 /**
  * Reusable crew member card component with consistent styling
  */
-export function CrewMemberCard({ member }: CrewMemberCardProps) {
+function CrewMemberCardComponent({ member }: CrewMemberCardProps) {
   return (
     <Link
       href={`/person/${member.id}`}
@@ -35,4 +36,6 @@ export function CrewMemberCard({ member }: CrewMemberCardProps) {
     </Link>
   );
 }
+
+export const CrewMemberCard = memo(CrewMemberCardComponent);
 

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { CastMember } from "@/types/suggest";
@@ -10,7 +11,7 @@ interface CastMemberCardProps {
 /**
  * Reusable cast member card component with consistent styling
  */
-export function CastMemberCard({ actor }: CastMemberCardProps) {
+function CastMemberCardComponent({ actor }: CastMemberCardProps) {
   return (
     <Link
       href={`/person/${actor.id}`}
@@ -40,4 +41,6 @@ export function CastMemberCard({ actor }: CastMemberCardProps) {
     </Link>
   );
 }
+
+export const CastMemberCard = memo(CastMemberCardComponent);
 

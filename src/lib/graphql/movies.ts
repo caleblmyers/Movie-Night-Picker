@@ -72,16 +72,23 @@ export const SEARCH_MOVIES = gql`
 `;
 
 /**
- * Get a random movie
+ * Get a random movie from any source (source is randomized)
+ * If source is not provided, backend randomly selects from available sources
  */
-export const RANDOM_MOVIE = gql`
+export const RANDOM_MOVIE_FROM_SOURCE = gql`
   ${MOVIE_FRAGMENT}
-  query RandomMovie {
-    randomMovie {
+  query RandomMovieFromSource($options: TMDBOptionsInput, $source: MovieSource) {
+    randomMovieFromSource(options: $options, source: $source) {
       ...MovieFields
     }
   }
 `;
+
+/**
+ * @deprecated Use RANDOM_MOVIE_FROM_SOURCE instead
+ * Kept for backward compatibility
+ */
+export const RANDOM_MOVIE = RANDOM_MOVIE_FROM_SOURCE;
 
 /**
  * Shuffle/random movie with filters
