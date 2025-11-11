@@ -44,16 +44,11 @@ Find the perfect movie for your movie night using intelligent suggestions and ra
   - Create unlimited collections
   - View collection insights (genres, actors, year ranges, statistics)
   - Horizontal scrolling movie previews
+  - Get personalized recommendations based on your saved movies and preferences
 - **Profile**: View all your collections, ratings, and reviews in one place
 - **Movie & Person Search**: Search for movies and people with autocomplete
 - **Movie Detail Pages**: View full movie information including cast, crew, trailers, and keywords
 - **Person Detail Pages**: View actor/director profiles with their movie credits
-
-### Smart Features
-
-- **Rating Lock**: Once you write a review, your rating becomes read-only (with edit option) to maintain consistency
-- **Recommendations**: Get personalized recommendations based on your saved movies and preferences
-- **Movie Details**: Full movie information from TMDB including posters, overviews, and ratings
 
 ## 🛠️ Tech Stack
 
