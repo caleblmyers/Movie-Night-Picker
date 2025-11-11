@@ -52,20 +52,13 @@ Find the perfect movie for your movie night using intelligent suggestions and ra
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- **Next.js 15.5.6** - React framework with App Router
-- **React 19.2.0** - UI library
-- **TypeScript** - Type safety
-- **Tailwind CSS 4.1.16** - Utility-first CSS framework
-- **Apollo Client 4.0.9** - GraphQL client
-- **NextAuth.js 5.0** - Authentication
-- **Radix UI** - Accessible component primitives
-- **Lucide React** - Icon library
-
-### Backend Integration
-- **GraphQL API** - Communicates with backend via GraphQL
-- **JWT Authentication** - Secure token-based auth
-- **REST API Routes** - Next.js API routes for server-side operations
+- **Next.js 15.5.6** 
+- **React 19.2.0** 
+- **TypeScript** 
+- **Tailwind CSS** 
+- **Apollo Client**
+- **NextAuth.js 5.0**
+- **Lucide React**
 
 ### External Services
 - **TMDB API** - Movie data and images (accessed via backend, not directly from frontend)
