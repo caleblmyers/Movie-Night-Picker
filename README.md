@@ -1,6 +1,6 @@
 # Movie Night Picker
 
-A modern web application that helps you pick the perfect movie for your movie night using intelligent suggestions and random discovery. Save your favorites, rate and review movies, and organize them into collections.
+Find the perfect movie for your movie night using intelligent suggestions and random discovery. Save your favorites, rate and review movies, and organize them into collections.
 
 ![Movie Night Picker](https://img.shields.io/badge/Next.js-15.5.6-black?style=flat-square&logo=next.js)
 ![React](https://img.shields.io/badge/React-19.2.0-blue?style=flat-square&logo=react)
@@ -12,26 +12,40 @@ A modern web application that helps you pick the perfect movie for your movie ni
 ### Movie Discovery
 
 #### **SUGGEST** - Personalized Recommendations
-- Interactive selection process: Choose from options across 5 rounds
-- Select from genres, actors, movies, and year ranges
-- Aggregate your preferences to receive a personalized movie suggestion
-- Each round presents 2-4 options to refine your taste profile
+- Interactive selection process: Choose from movies across 5 rounds
+- Each round presents 4 diverse movie options
+- Select movies that interest you to build your taste profile
+- Backend automatically extracts genres, keywords, actors, directors, and year ranges from your selections
+- Receive a personalized movie suggestion based on aggregated preferences
 
 #### **SHUFFLE** - Random Discovery
 - Filter movies by multiple parameters:
-  - **Genres**: Select one or more genres
+  - **Genres**: Select one or more genres (include or exclude)
   - **Year Range**: Choose a specific time period (1950-present)
-  - **Cast Members**: Search and add specific actors/actresses
+  - **Cast & Crew**: Search and add specific actors, directors, or crew members
+  - **Streaming Providers**: Filter by availability on specific platforms
+  - **Vote Average & Count**: Set minimum ratings and vote counts
+  - **Runtime**: Filter by movie length
+  - **Language**: Filter by original language
+  - **Popularity**: Filter by movie popularity range
+  - **Production Countries**: Filter by countries of origin
+  - **Collections**: Include or exclude movies from your collections
 - Get a random movie matching your criteria
 - Perfect for discovering hidden gems
 
 ### User Features (Requires Account)
 
-- **Save Movies**: Build your personal watchlist
+- **Save Movies**: Add movies to your default "Saved Movies" collection (automatically created)
 - **Rate Movies**: Rate movies on a scale of 1-10
 - **Write Reviews**: Share your thoughts and opinions
 - **Collections**: Organize movies into custom collections (public or private)
-- **Profile**: View all your saved movies, ratings, and reviews in one place
+  - Create unlimited collections
+  - View collection insights (genres, actors, year ranges, statistics)
+  - Horizontal scrolling movie previews
+- **Profile**: View all your collections, ratings, and reviews in one place
+- **Movie & Person Search**: Search for movies and people with autocomplete
+- **Movie Detail Pages**: View full movie information including cast, crew, trailers, and keywords
+- **Person Detail Pages**: View actor/director profiles with their movie credits
 
 ### Smart Features
 
@@ -128,66 +142,6 @@ bun dev
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## 📁 Project Structure
-
-```
-movie-night-picker/
-├── src/
-│   ├── app/                    # Next.js App Router pages
-│   │   ├── api/                # API routes (Next.js API handlers)
-│   │   │   ├── auth/           # Authentication endpoints
-│   │   │   ├── movies/         # Movie operations (save, unsave, saved)
-│   │   │   ├── ratings/        # Rating endpoints
-│   │   │   └── reviews/        # Review endpoints
-│   │   ├── login/              # Login page
-│   │   ├── register/           # Registration page
-│   │   ├── profile/            # User profile page
-│   │   ├── suggest/            # Movie suggestion page
-│   │   ├── shuffle/             # Movie shuffle page
-│   │   └── page.tsx            # Home page
-│   ├── components/
-│   │   ├── providers/          # React context providers
-│   │   │   ├── apollo-provider.tsx
-│   │   │   └── session-provider.tsx
-│   │   ├── shared/             # Shared components
-│   │   │   ├── navbar.tsx
-│   │   │   ├── footer.tsx
-│   │   │   ├── loading-state.tsx
-│   │   │   └── error-state.tsx
-│   │   ├── shuffle/             # Shuffle page components
-│   │   │   ├── genre-filter.tsx
-│   │   │   ├── year-range-filter.tsx
-│   │   │   └── cast-filter.tsx
-│   │   ├── suggest/             # Suggest page components
-│   │   │   ├── selection-round.tsx
-│   │   │   ├── movie-result.tsx
-│   │   │   ├── save-movie-button.tsx
-│   │   │   └── rating-review-section.tsx
-│   │   └── ui/                  # Reusable UI components
-│   │       ├── button.tsx
-│   │       ├── input.tsx
-│   │       ├── slider.tsx
-│   │       └── ...
-│   ├── lib/
-│   │   ├── graphql/
-│   │   │   └── queries.ts      # All GraphQL queries and mutations
-│   │   ├── utils/
-│   │   │   ├── api-helpers.ts   # API route utilities
-│   │   │   ├── api-client.ts    # Client-side API utilities
-│   │   │   ├── graphql-client.ts # GraphQL request utilities
-│   │   │   ├── validation.ts    # Input validation utilities
-│   │   │   └── error-handler.ts # Error handling utilities
-│   │   ├── auth.ts              # NextAuth configuration
-│   │   ├── config.ts            # App configuration and constants
-│   │   └── tmdb-options.ts      # TMDB genre/option generators
-│   └── types/
-│       ├── suggest.ts           # TypeScript type definitions
-│       └── next-auth.d.ts       # NextAuth type extensions
-├── public/                      # Static assets
-├── .env.example                 # Environment variables template
-└── package.json
-```
-
 ## 🔌 API Integration
 
 ### Backend Requirements
@@ -197,24 +151,25 @@ The frontend communicates with a backend API that must provide:
 1. **GraphQL Endpoint** at `/graphql` with the following operations:
 
    **Queries:**
-   - `suggestMovie(preferences: MoviePreferencesInput): Movie`
-   - `shuffleMovie(genres, yearRange, cast): Movie`
-   - `getMovie(id: Int!): Movie`
-   - `searchMovies(query: String!): [Movie!]!`
-   - `randomMovie: Movie`
-   - `randomPerson: Person`
-   - `searchPeople(query: String!): [Person!]!`
-   - `me: User`
-   - `savedMovies: [SavedMovie!]!`
-   - `ratings: [Rating!]!`
-   - `reviews: [Review!]!`
-   - `collections: [Collection!]!`
+   - `suggestMovieRound(round: Int!): [Movie!]!` - Get 4 movies for a suggest round
+   - `suggestMovie(selectedMovieIds: [Int!]!): Movie` - Get personalized suggestion from selected movie IDs
+   - `shuffleMovie(...filters): Movie` - Get random movie matching filters
+   - `getMovie(id: Int!): Movie` - Get full movie details with cast, crew, trailer, keywords
+   - `searchMovies(query: String!, limit: Int): [Movie!]!` - Search movies with autocomplete
+   - `randomMovieFromSource(options, source): Movie` - Get random movie from specific source
+   - `randomActorFromSource(options, source): Person` - Get random actor from specific source
+   - `getPerson(id: Int!): Person` - Get full person details with movie credits
+   - `searchPeople(query: String!, limit: Int, options, roleType): [Person!]!` - Search people with filters
+   - `searchKeywords(query: String!, limit: Int): [Keyword!]!` - Search TMDB keywords
+   - `me: User` - Get current user profile
+   - `ratings: [Rating!]!` - Get user's ratings
+   - `reviews: [Review!]!` - Get user's reviews
+   - `collections: [Collection!]!` - Get user's collections
+   - `getCollection(id: Int!): Collection` - Get collection with insights
 
    **Mutations:**
    - `register(email, password): AuthPayload`
    - `login(email, password): AuthPayload`
-   - `saveMovie(tmdbId): SavedMovie!`
-   - `unsaveMovie(tmdbId): Boolean!`
    - `rateMovie(tmdbId, rating): Rating!`
    - `reviewMovie(tmdbId, content): Review!`
    - `deleteReview(tmdbId): Boolean!`
@@ -252,63 +207,71 @@ TMDB API (via backend)
 ### Suggest a Movie
 
 1. Navigate to **Suggest** from the home page or navbar
-2. Complete 5 rounds of selections:
-   - Round 1-5: Choose from genres, actors, movies, or year ranges
-   - Each round presents 2-4 options
-3. After completing all rounds, receive a personalized movie suggestion
-4. Save, rate, or review the suggested movie
+2. Complete 5 rounds of movie selections:
+   - Each round presents 4 diverse movie options
+   - Select the movie that interests you most
+   - Backend automatically extracts preferences from your selections
+3. After completing all 5 rounds, receive a personalized movie suggestion
+4. Save the movie to your "Saved Movies" collection, rate it, or write a review
 
 ### Shuffle & Discover
 
 1. Navigate to **Shuffle** from the home page or navbar
-2. Optionally set filters:
-   - Select genres
+2. Set core filters (always visible):
+   - Select genres (include or exclude)
    - Choose a year range (slider)
    - Search and add cast members
-3. Click **Shuffle Movie** to get a random movie matching your criteria
-4. Save, rate, or review the discovered movie
+   - Search and add crew members (directors, writers, etc.)
+3. Optionally expand advanced filters:
+   - Vote average and vote count minimums
+   - Runtime range
+   - Original language
+   - Streaming providers
+   - Popularity range
+   - Production countries
+   - Collection filters (include/exclude)
+4. Click **Shuffle Movie** to get a random movie matching your criteria
+5. Save the movie to your collections, rate it, or write a review
 
 ### Save, Rate, and Review Movies
 
 1. **Sign up** or **log in** to your account
 2. After getting a movie suggestion or shuffle result:
-   - Click **Save Movie** to add to your watchlist
+   - Click **Save Movie** to add to your default "Saved Movies" collection
    - Use the **Rating Slider** (1-10) to rate the movie
    - Write a **Review** in the text area
-3. View all saved movies, ratings, and reviews in your **Profile**
+3. View all your collections, ratings, and reviews in your **Profile**
 
 ### Collections
 
-- Create custom collections to organize your movies
-- Make collections public or private
-- Add movies to multiple collections
-- Manage collections from your profile
+- **Default Collection**: Every user gets a "Saved Movies" collection automatically
+- **Custom Collections**: Create unlimited custom collections to organize your movies
+- **Collection Features**:
+  - Make collections public or private
+  - Add movies to multiple collections
+  - View collection insights (genres, top actors, year ranges, statistics)
+  - Horizontal scrolling movie previews on profile
+- **Management**: Create, edit, and manage collections from your profile or collection pages
+- **Filtering**: Use collections as filters in the shuffle feature
 
 ## 🧪 Development
 
-### Available Scripts
-
-```bash
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm run start
-
-# Run linter
-npm run lint
-```
-
 ### Code Organization
 
-- **GraphQL Queries**: All queries and mutations are centralized in `src/lib/graphql/queries.ts`
-- **API Routes**: Server-side API handlers in `src/app/api/`
+- **GraphQL Queries**: Organized by domain in `src/lib/graphql/` (movies, people, collections, etc.)
+- **API Routes**: Server-side API handlers in `src/app/api/` (auth, ratings, reviews)
 - **Utilities**: Reusable functions in `src/lib/utils/`
-- **Components**: Organized by feature in `src/components/`
+- **Components**: Organized by feature and type:
+  - `components/common/` - Shared presentational components
+  - `components/ui/` - Reusable UI primitives (shadcn/ui)
+  - `components/shuffle/` - Shuffle page components
+  - `components/suggest/` - Suggest page components
+  - `components/collections/` - Collection management components
+  - `components/profile/` - Profile page components
+  - `components/search/` - Search components
+  - `components/shared/` - Global shared components (navbar, footer, etc.)
 - **Types**: TypeScript definitions in `src/types/`
+- **Hooks**: Custom React hooks in `src/hooks/`
 
 ### Key Features
 
@@ -318,6 +281,9 @@ npm run lint
 - **Authentication**: NextAuth.js with JWT tokens
 - **Responsive Design**: Mobile-first Tailwind CSS
 - **Accessibility**: Radix UI components for accessibility
+- **Performance**: Optimized with React.memo, useMemo, and useCallback
+- **Code Quality**: Clean, maintainable code with removed unused dependencies
+- **Component Reusability**: Shared components for consistent UI patterns
 
 ## 📝 Environment Variables
 
@@ -328,59 +294,15 @@ npm run lint
 | `AUTH_SECRET` | NextAuth.js secret key | Yes | Generated secret |
 | `NEXTAUTH_SECRET` | NextAuth.js fallback secret | Optional | Generated secret |
 
-## 🎨 Theming
-
-The application features a **movie theater theme** with:
-- Deep purple and rich red color palette
-- Gold accents
-- Gradient text effects
-- Smooth animations
-- Modern, welcoming design
-
 ## 📚 Attribution
 
 This product uses the [TMDB API](https://www.themoviedb.org) but is not endorsed or certified by TMDB.
 
 Movie data and images provided by [The Movie Database](https://www.themoviedb.org).
 
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import project in [Vercel](https://vercel.com)
-3. Add environment variables in Vercel dashboard
-4. Deploy
-
-### Other Platforms
-
-The application can be deployed to any platform that supports Next.js:
-- **Netlify**
-- **Railway**
-- **AWS Amplify**
-- **Docker** (with custom Dockerfile)
-
-Make sure to set all required environment variables in your deployment platform.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## 📄 License
 
 This project is private and proprietary.
-
-## 🆘 Support
-
-For issues or questions:
-1. Check the [Issues](../../issues) page
-2. Review the backend API documentation
-3. Ensure all environment variables are set correctly
-4. Verify the backend API is running and accessible
 
 ---
 
