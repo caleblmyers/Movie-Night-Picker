@@ -123,37 +123,6 @@ Find the perfect movie for your movie night using intelligent suggestions and ra
 - **Management**: Create, edit, and manage collections from your profile or collection pages
 - **Filtering**: Use collections as filters in the shuffle feature
 
-## 🧪 Development
-
-### Code Organization
-
-- **GraphQL Queries**: Organized by domain in `src/lib/graphql/` (movies, people, collections, etc.)
-- **API Routes**: Server-side API handlers in `src/app/api/` (auth, ratings, reviews)
-- **Utilities**: Reusable functions in `src/lib/utils/`
-- **Components**: Organized by feature and type:
-  - `components/common/` - Shared presentational components
-  - `components/ui/` - Reusable UI primitives (shadcn/ui)
-  - `components/shuffle/` - Shuffle page components
-  - `components/suggest/` - Suggest page components
-  - `components/collections/` - Collection management components
-  - `components/profile/` - Profile page components
-  - `components/search/` - Search components
-  - `components/shared/` - Global shared components (navbar, footer, etc.)
-- **Types**: TypeScript definitions in `src/types/`
-- **Hooks**: Custom React hooks in `src/hooks/`
-
-### Key Features
-
-- **Type Safety**: Full TypeScript coverage
-- **Error Handling**: Centralized error handling utilities
-- **Validation**: Input validation for API requests
-- **Authentication**: NextAuth.js with JWT tokens
-- **Responsive Design**: Mobile-first Tailwind CSS
-- **Accessibility**: Radix UI components for accessibility
-- **Performance**: Optimized with React.memo, useMemo, and useCallback
-- **Code Quality**: Clean, maintainable code with removed unused dependencies
-- **Component Reusability**: Shared components for consistent UI patterns
-
 ## 📚 Attribution
 
 This product uses the [TMDB API](https://www.themoviedb.org) but is not endorsed or certified by TMDB.
