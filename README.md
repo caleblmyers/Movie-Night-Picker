@@ -2,6 +2,8 @@
 
 Find the perfect movie for your movie night using intelligent suggestions and random discovery. Save your favorites, rate and review movies, and organize them into collections.
 
+🌐 **[Live Application](https://movie-night-picker-ochre.vercel.app/)** | 📖 [Documentation](#usage) | 🛠️ [Tech Stack](#-tech-stack)
+
 ![Movie Night Picker](https://img.shields.io/badge/Next.js-15.5.6-black?style=flat-square&logo=next.js)
 ![React](https://img.shields.io/badge/React-19.2.0-blue?style=flat-square&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)
@@ -80,127 +82,6 @@ Find the perfect movie for your movie night using intelligent suggestions and ra
 - **Backend API** running (see backend repository for setup)
   - Default: `http://localhost:4000`
   - Must expose GraphQL endpoint at `/graphql`
-
-## 🚀 Getting Started
-
-### 1. Clone the Repository
-
-```bash
-git clone <repository-url>
-cd movie-night-picker
-```
-
-### 2. Install Dependencies
-
-```bash
-npm install
-# or
-yarn install
-# or
-pnpm install
-```
-
-### 3. Environment Setup
-
-1. Copy the example environment file:
-   ```bash
-   cp .env.example .env.local
-   ```
-
-2. Edit `.env.local` and configure the following variables:
-
-   ```env
-   # Backend API Configuration
-   # The base URL of your backend API (without /graphql)
-   BACKEND_API_URL=http://localhost:4000
-   NEXT_PUBLIC_BACKEND_API_URL=http://localhost:4000
-
-   # NextAuth.js Configuration
-   # Generate a random secret: openssl rand -base64 32
-   # Or use: https://generate-secret.vercel.app/32
-   AUTH_SECRET=your-secret-key-here
-   NEXTAUTH_SECRET=your-secret-key-here
-   ```
-
-   **Important**: 
-   - `BACKEND_API_URL` is used server-side
-   - `NEXT_PUBLIC_BACKEND_API_URL` is used client-side (must be prefixed with `NEXT_PUBLIC_`)
-   - For production, update these to your production API URL
-   - Generate a secure `AUTH_SECRET` for production use
-
-### 4. Start the Development Server
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## 🔌 API Integration
-
-### Backend Requirements
-
-The frontend communicates with a backend API that must provide:
-
-1. **GraphQL Endpoint** at `/graphql` with the following operations:
-
-   **Queries:**
-   - `suggestMovieRound(round: Int!): [Movie!]!` - Get 4 movies for a suggest round
-   - `suggestMovie(selectedMovieIds: [Int!]!): Movie` - Get personalized suggestion from selected movie IDs
-   - `shuffleMovie(...filters): Movie` - Get random movie matching filters
-   - `getMovie(id: Int!): Movie` - Get full movie details with cast, crew, trailer, keywords
-   - `searchMovies(query: String!, limit: Int): [Movie!]!` - Search movies with autocomplete
-   - `randomMovieFromSource(options, source): Movie` - Get random movie from specific source
-   - `randomActorFromSource(options, source): Person` - Get random actor from specific source
-   - `getPerson(id: Int!): Person` - Get full person details with movie credits
-   - `searchPeople(query: String!, limit: Int, options, roleType): [Person!]!` - Search people with filters
-   - `searchKeywords(query: String!, limit: Int): [Keyword!]!` - Search TMDB keywords
-   - `me: User` - Get current user profile
-   - `ratings: [Rating!]!` - Get user's ratings
-   - `reviews: [Review!]!` - Get user's reviews
-   - `collections: [Collection!]!` - Get user's collections
-   - `getCollection(id: Int!): Collection` - Get collection with insights
-
-   **Mutations:**
-   - `register(email, password): AuthPayload`
-   - `login(email, password): AuthPayload`
-   - `rateMovie(tmdbId, rating): Rating!`
-   - `reviewMovie(tmdbId, content): Review!`
-   - `deleteReview(tmdbId): Boolean!`
-   - `updateName(name): User!`
-   - `createCollection(name, description, isPublic): Collection!`
-   - `updateCollection(id, name, description, isPublic): Collection!`
-   - `deleteCollection(id): Boolean!`
-   - `addMovieToCollection(collectionId, tmdbId): CollectionMovie!`
-   - `removeMovieFromCollection(collectionId, tmdbId): Boolean!`
-
-2. **Authentication**: JWT token-based authentication
-   - Tokens sent in `Authorization: Bearer <token>` header
-   - Token stored in NextAuth session and localStorage
-
-3. **TMDB Integration**: Backend must fetch movie data from TMDB API
-   - Frontend never directly accesses TMDB API
-   - All movie data comes through the backend GraphQL API
-
-### API Communication Flow
-
-```
-Frontend (Next.js)
-    ↓
-Next.js API Routes (/api/*)
-    ↓
-GraphQL Client Utilities
-    ↓
-Backend GraphQL API (http://localhost:4000/graphql)
-    ↓
-TMDB API (via backend)
-```
 
 ## 🎯 Usage
 
@@ -284,15 +165,6 @@ TMDB API (via backend)
 - **Performance**: Optimized with React.memo, useMemo, and useCallback
 - **Code Quality**: Clean, maintainable code with removed unused dependencies
 - **Component Reusability**: Shared components for consistent UI patterns
-
-## 📝 Environment Variables
-
-| Variable | Description | Required | Example |
-|----------|-------------|----------|---------|
-| `BACKEND_API_URL` | Backend API base URL (server-side) | Yes | `http://localhost:4000` |
-| `NEXT_PUBLIC_BACKEND_API_URL` | Backend API base URL (client-side) | Yes | `http://localhost:4000` |
-| `AUTH_SECRET` | NextAuth.js secret key | Yes | Generated secret |
-| `NEXTAUTH_SECRET` | NextAuth.js fallback secret | Optional | Generated secret |
 
 ## 📚 Attribution
 
