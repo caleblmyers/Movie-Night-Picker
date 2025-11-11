@@ -2,7 +2,7 @@
 
 Find the perfect movie for your movie night using intelligent suggestions and random discovery. Save your favorites, rate and review movies, and organize them into collections.
 
-🌐 **[Live Application](https://movie-night-picker-ochre.vercel.app/)** | 📖 [Documentation](#usage) | 🛠️ [Tech Stack](#-tech-stack)
+🌐 **[Live Application](https://movie-night-picker-ochre.vercel.app/)** 
 
 ![Movie Night Picker](https://img.shields.io/badge/Next.js-15.5.6-black?style=flat-square&logo=next.js)
 ![React](https://img.shields.io/badge/React-19.2.0-blue?style=flat-square&logo=react)
