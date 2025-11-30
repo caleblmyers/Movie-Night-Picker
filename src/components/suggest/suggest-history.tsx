@@ -6,7 +6,6 @@ import { Movie } from "@/types/suggest";
 import Link from "next/link";
 import Image from "next/image";
 import { SectionHeader } from "@/components/common/section-header";
-import { LoadingState } from "@/components/shared/loading-state";
 
 export function SuggestHistory() {
   const { data, loading, error } = useQuery<{ suggestHistory: Movie[] }>(

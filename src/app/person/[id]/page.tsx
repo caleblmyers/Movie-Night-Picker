@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@apollo/client/react";
 import { GET_PERSON } from "@/lib/graphql";
@@ -19,7 +19,10 @@ const MOVIES_PER_PAGE = 20;
 export default function PersonDetailPage() {
   const params = useParams();
   const personId = parseInt(params.id as string, 10);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [pageState, setPageState] = useState<{ personId: number; page: number }>({
+    personId,
+    page: 1,
+  });
 
   const { data, loading, error } = useQuery<{ getPerson: Person }>(GET_PERSON, {
     variables: { id: personId },
@@ -34,24 +37,39 @@ export default function PersonDetailPage() {
 
   // Pagination calculations
   const totalPages = Math.ceil(allMovies.length / MOVIES_PER_PAGE);
+  
+  // Compute effective page - reset to 1 when personId changes or if out of bounds
+  const currentPage = useMemo(() => {
+    // Reset when personId changes
+    if (pageState.personId !== personId) {
+      return 1;
+    }
+    // Reset if out of bounds
+    if (pageState.page > totalPages && totalPages > 0) {
+      return 1;
+    }
+    return pageState.page;
+  }, [personId, pageState, totalPages]);
+  
+  // Update state when personId changes or page is out of bounds (only if different)
+  if (pageState.personId !== personId || (currentPage !== pageState.page && currentPage === 1)) {
+    // Schedule state update for next render cycle
+    queueMicrotask(() => {
+      setPageState({ personId, page: currentPage });
+    });
+  }
+  
+  const setCurrentPage = (page: number | ((prev: number) => number)) => {
+    const newPage = typeof page === 'function' ? page(currentPage) : page;
+    setPageState({ personId, page: newPage });
+  };
+  
   const startIndex = (currentPage - 1) * MOVIES_PER_PAGE;
   const endIndex = startIndex + MOVIES_PER_PAGE;
   const paginatedMovies = useMemo(
     () => allMovies.slice(startIndex, endIndex),
     [allMovies, startIndex, endIndex]
   );
-
-  // Reset to page 1 when person changes
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [personId]);
-
-  // Reset to page 1 if current page is out of bounds
-  useEffect(() => {
-    if (currentPage > totalPages && totalPages > 0) {
-      setCurrentPage(1);
-    }
-  }, [totalPages, currentPage]);
 
   if (loading) {
     return <LoadingState message="Loading person..." />;
