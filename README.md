@@ -2,7 +2,7 @@
 
 Find the perfect movie for your movie night using intelligent suggestions and random discovery. Save your favorites, rate and review movies, and organize them into collections.
 
-🌐 **[Live Application](https://movie-night-picker-ochre.vercel.app/)** | 📖 [Documentation](#usage) | 🛠️ [Tech Stack](#-tech-stack)
+🌐 **[Live Application](https://movie-night-picker-ochre.vercel.app/)** 
 
 ![Movie Night Picker](https://img.shields.io/badge/Next.js-15.5.6-black?style=flat-square&logo=next.js)
 ![React](https://img.shields.io/badge/React-19.2.0-blue?style=flat-square&logo=react)
@@ -44,33 +44,21 @@ Find the perfect movie for your movie night using intelligent suggestions and ra
   - Create unlimited collections
   - View collection insights (genres, actors, year ranges, statistics)
   - Horizontal scrolling movie previews
+  - Get personalized recommendations based on your saved movies and preferences
 - **Profile**: View all your collections, ratings, and reviews in one place
 - **Movie & Person Search**: Search for movies and people with autocomplete
 - **Movie Detail Pages**: View full movie information including cast, crew, trailers, and keywords
 - **Person Detail Pages**: View actor/director profiles with their movie credits
 
-### Smart Features
-
-- **Rating Lock**: Once you write a review, your rating becomes read-only (with edit option) to maintain consistency
-- **Recommendations**: Get personalized recommendations based on your saved movies and preferences
-- **Movie Details**: Full movie information from TMDB including posters, overviews, and ratings
-
 ## 🛠️ Tech Stack
 
-### Frontend
-- **Next.js 15.5.6** - React framework with App Router
-- **React 19.2.0** - UI library
-- **TypeScript** - Type safety
-- **Tailwind CSS 4.1.16** - Utility-first CSS framework
-- **Apollo Client 4.0.9** - GraphQL client
-- **NextAuth.js 5.0** - Authentication
-- **Radix UI** - Accessible component primitives
-- **Lucide React** - Icon library
-
-### Backend Integration
-- **GraphQL API** - Communicates with backend via GraphQL
-- **JWT Authentication** - Secure token-based auth
-- **REST API Routes** - Next.js API routes for server-side operations
+- **Next.js 15.5.6** 
+- **React 19.2.0** 
+- **TypeScript** 
+- **Tailwind CSS** 
+- **Apollo Client**
+- **NextAuth.js 5.0**
+- **Lucide React**
 
 ### External Services
 - **TMDB API** - Movie data and images (accessed via backend, not directly from frontend)
@@ -134,37 +122,6 @@ Find the perfect movie for your movie night using intelligent suggestions and ra
   - Horizontal scrolling movie previews on profile
 - **Management**: Create, edit, and manage collections from your profile or collection pages
 - **Filtering**: Use collections as filters in the shuffle feature
-
-## 🧪 Development
-
-### Code Organization
-
-- **GraphQL Queries**: Organized by domain in `src/lib/graphql/` (movies, people, collections, etc.)
-- **API Routes**: Server-side API handlers in `src/app/api/` (auth, ratings, reviews)
-- **Utilities**: Reusable functions in `src/lib/utils/`
-- **Components**: Organized by feature and type:
-  - `components/common/` - Shared presentational components
-  - `components/ui/` - Reusable UI primitives (shadcn/ui)
-  - `components/shuffle/` - Shuffle page components
-  - `components/suggest/` - Suggest page components
-  - `components/collections/` - Collection management components
-  - `components/profile/` - Profile page components
-  - `components/search/` - Search components
-  - `components/shared/` - Global shared components (navbar, footer, etc.)
-- **Types**: TypeScript definitions in `src/types/`
-- **Hooks**: Custom React hooks in `src/hooks/`
-
-### Key Features
-
-- **Type Safety**: Full TypeScript coverage
-- **Error Handling**: Centralized error handling utilities
-- **Validation**: Input validation for API requests
-- **Authentication**: NextAuth.js with JWT tokens
-- **Responsive Design**: Mobile-first Tailwind CSS
-- **Accessibility**: Radix UI components for accessibility
-- **Performance**: Optimized with React.memo, useMemo, and useCallback
-- **Code Quality**: Clean, maintainable code with removed unused dependencies
-- **Component Reusability**: Shared components for consistent UI patterns
 
 ## 📚 Attribution
 
