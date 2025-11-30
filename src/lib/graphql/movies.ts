@@ -271,3 +271,16 @@ export const CREW_FROM_FEATURED_MOVIES = gql`
   }
 `;
 
+/**
+ * Get user's 10 most recently suggested movies
+ * Returns movies in reverse chronological order (most recent first)
+ */
+export const SUGGEST_HISTORY = gql`
+  ${MOVIE_FRAGMENT}
+  query SuggestHistory {
+    suggestHistory {
+      ...MovieFields
+    }
+  }
+`;
+

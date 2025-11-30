@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { SaveMovieButton } from "./save-movie-button";
 import { RatingReviewSection } from "./rating-review-section";
 import { MovieTrailerDisplay } from "./movie-trailer";
+import { SuggestHistory } from "./suggest-history";
 import { CardContainer } from "@/components/common/card-container";
 import { MovieCard } from "@/components/common/movie-card";
 
@@ -77,6 +78,8 @@ function MovieResultDisplayComponent({
           )}
         </div>
       </CardContainer>
+      
+      <SuggestHistory />
     </div>
   );
 }

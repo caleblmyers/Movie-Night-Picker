@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useMemo, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@apollo/client/react";
 import { GET_PERSON } from "@/lib/graphql";
@@ -9,19 +10,48 @@ import { LoadingState } from "@/components/shared/loading-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { CardContainer } from "@/components/common/card-container";
 import { SectionHeader } from "@/components/common/section-header";
-import { User, Calendar, MapPin, TrendingUp, Film } from "lucide-react";
+import { User, Calendar, MapPin, TrendingUp, Film, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+const MOVIES_PER_PAGE = 20;
 
 export default function PersonDetailPage() {
   const params = useParams();
   const personId = parseInt(params.id as string, 10);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { data, loading, error } = useQuery<{ getPerson: Person }>(GET_PERSON, {
     variables: { id: personId },
     skip: !personId || isNaN(personId),
     fetchPolicy: "cache-first",
   });
+
+  const person = data?.getPerson;
+
+  // Memoize movies array to prevent unnecessary re-renders
+  const allMovies = useMemo(() => person?.movies || [], [person?.movies]);
+
+  // Pagination calculations
+  const totalPages = Math.ceil(allMovies.length / MOVIES_PER_PAGE);
+  const startIndex = (currentPage - 1) * MOVIES_PER_PAGE;
+  const endIndex = startIndex + MOVIES_PER_PAGE;
+  const paginatedMovies = useMemo(
+    () => allMovies.slice(startIndex, endIndex),
+    [allMovies, startIndex, endIndex]
+  );
+
+  // Reset to page 1 when person changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [personId]);
+
+  // Reset to page 1 if current page is out of bounds
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(1);
+    }
+  }, [totalPages, currentPage]);
 
   if (loading) {
     return <LoadingState message="Loading person..." />;
@@ -36,7 +66,6 @@ export default function PersonDetailPage() {
     );
   }
 
-  const person = data?.getPerson;
   if (!person) {
     return (
       <div className="min-h-screen bg-background px-4 py-16">
@@ -91,8 +120,13 @@ export default function PersonDetailPage() {
     }
   };
 
-  // Movies are already sorted by release date (newest first) from the backend
-  const movies = person.movies || [];
+  const handlePreviousPage = () => {
+    setCurrentPage((prev) => Math.max(1, prev - 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+  };
 
   return (
     <div className="min-h-screen bg-background px-4 py-8 md:py-16">
@@ -213,14 +247,49 @@ export default function PersonDetailPage() {
         )}
 
         {/* Movie Credits */}
-        {movies.length > 0 && (
+        {allMovies.length > 0 && (
           <CardContainer>
             <div className="space-y-4">
               <SectionHeader icon={<Film className="h-6 w-6" />}>
-                Movie Credits ({movies.length})
+                Movie Credits ({allMovies.length})
               </SectionHeader>
+              
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between pb-4 border-b">
+                  <div className="text-sm text-muted-foreground">
+                    Showing {startIndex + 1}-{Math.min(endIndex, allMovies.length)} of {allMovies.length} movies
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handlePreviousPage}
+                      disabled={currentPage === 1}
+                      className="gap-2"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                      Previous
+                    </Button>
+                    <div className="text-sm text-muted-foreground px-4">
+                      Page {currentPage} of {totalPages}
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleNextPage}
+                      disabled={currentPage === totalPages}
+                      className="gap-2"
+                    >
+                      Next
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+              
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {movies.map((movie) => (
+                {paginatedMovies.map((movie) => (
                   <Link
                     key={movie.id}
                     href={`/movie/${movie.id}`}

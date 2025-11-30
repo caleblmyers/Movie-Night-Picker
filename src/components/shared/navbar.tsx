@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -9,9 +9,13 @@ import { AUTH_TOKEN_KEY } from "@/lib/config";
 import { User, LogOut, LogIn, UserPlus, Folder } from "lucide-react";
 import { MovieSearchBar } from "@/components/search/movie-search-bar";
 
+const RESET_SUGGEST_FLOW_EVENT = "reset-suggest-flow";
+
 export function Navbar() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
+  const isOnSuggestPage = pathname === "/suggest";
 
   const handleSignOut = async () => {
     // Clear token from localStorage
@@ -19,6 +23,14 @@ export function Navbar() {
     await signOut({ redirect: false });
     router.push("/");
     router.refresh();
+  };
+
+  const handleSuggestClick = (e: React.MouseEvent) => {
+    if (isOnSuggestPage) {
+      e.preventDefault();
+      // Dispatch custom event to reset the flow
+      window.dispatchEvent(new CustomEvent(RESET_SUGGEST_FLOW_EVENT));
+    }
   };
 
   return (
@@ -45,7 +57,7 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
-            <Link href="/suggest">
+            <Link href="/suggest" onClick={handleSuggestClick}>
               <Button variant="ghost" className="hidden sm:flex">
                 Suggest
               </Button>
