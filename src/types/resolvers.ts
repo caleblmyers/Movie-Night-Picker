@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 import { Context } from "../context";
-import { GraphQLOptionsInput } from "./index";
+import { GraphQLOptionsInput, Movie } from "./index";
 
 /**
  * Base resolver function type
@@ -107,6 +107,13 @@ export interface SuggestMovieArgs {
 
 export interface SuggestMovieRoundArgs {
   round: number;
+  selectedMovieIds?: number[];
+}
+
+export interface SuggestMovieRoundResult {
+  movies: Movie[];
+  category: string;
+  categoryLabel: string;
 }
 
 export interface ShuffleMovieArgs {

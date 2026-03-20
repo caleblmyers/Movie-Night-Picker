@@ -151,10 +151,11 @@ export const movieSchema = gql`
     suggestMovie(selectedMovieIds: [Int!]!): Movie
 
     # Get 4 movies for a suggest round
-    # Each movie represents different category combinations (genres, moods, eras, keywords, etc.)
-    # The user selects movies across rounds, and their selections are aggregated for suggestMovie
+    # Each round explores a single preference dimension (genre, era, mood, or popularity)
+    # All 4 movies in a round are comparable on that dimension — the user's pick reveals a clear preference
     # round: Round number (1 to maxRounds, see suggestMovieRounds query)
-    suggestMovieRound(round: Int!): [Movie!]!
+    # selectedMovieIds: Previously selected movie IDs — later rounds use these to adapt the anchor genre
+    suggestMovieRound(round: Int!, selectedMovieIds: [Int!]): SuggestMovieRoundResult!
 
     # Get the number of available rounds for the suggest movie flow
     suggestMovieRounds: Int!
@@ -258,6 +259,14 @@ export const movieSchema = gql`
 
     # Get all available selection options for movie picker
     movieSelectionOptions: MovieSelectionOptions!
+  }
+
+  type SuggestMovieRoundResult {
+    movies: [Movie!]!
+    # Dimension being explored: "genre", "era", "mood", "popularity", or "mixed"
+    category: String!
+    # Human-readable label for the round (e.g. "Pick a Genre", "Pick an Era")
+    categoryLabel: String!
   }
 
   type Genre {
