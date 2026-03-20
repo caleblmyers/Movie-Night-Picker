@@ -67,7 +67,7 @@ export const SEARCH_PEOPLE = gql`
  * If source is not provided, backend randomly selects from available sources
  */
 export const RANDOM_ACTOR_FROM_SOURCE = gql`
-  query RandomActorFromSource($options: TMDBOptionsInput, $source: PersonSource) {
+  query RandomActorFromSource($options: TMDBOptionsInput, $source: MovieSource) {
     randomActorFromSource(options: $options, source: $source) {
       id
       name

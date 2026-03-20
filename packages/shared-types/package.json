@@ -1,0 +1,23 @@
+{
+  "name": "@movie-night-picker/shared-types",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "dev": "echo \"shared-types: run pnpm codegen (or pnpm -r run build)\"",
+    "build": "cd ../../ && graphql-codegen --config codegen.yml",
+    "lint": "echo \"shared-types: no lint configured\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/typescript": "^5.0.0",
+    "@graphql-codegen/typescript-operations": "^5.0.0",
+    "graphql": "^16.12.0"
+  }
+}
+

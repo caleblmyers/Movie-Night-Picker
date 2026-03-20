@@ -169,7 +169,7 @@ export const SHUFFLE_MOVIE = gql`
  */
 export const DISCOVER_MOVIES = gql`
   ${MOVIE_FRAGMENT}
-  query DiscoverMovies($genres: [String!], $yearRange: [Int!], $cast: [Int!], $crew: [Int!]) {
+  query DiscoverMovies($genres: [Int!], $yearRange: [Int!], $cast: [Int!], $crew: [Int!]) {
     discoverMovies(genres: $genres, yearRange: $yearRange, cast: $cast, crew: $crew) {
       ...MovieFields
     }

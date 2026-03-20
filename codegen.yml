@@ -1,0 +1,23 @@
+overwrite: true
+
+schema:
+  - "./apps/api/src/schema/**/*.ts"
+
+documents:
+  - "./apps/web/src/lib/graphql/**/*.ts"
+
+pluckConfig:
+  modules:
+    - name: "@apollo/client"
+      identifier: gql
+    - name: "graphql-tag"
+      identifier: gql
+
+generates:
+  packages/shared-types/src/graphql/index.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+    config:
+      maybeValue: "T | null"
+
