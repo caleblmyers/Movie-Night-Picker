@@ -11,6 +11,7 @@ interface MovieSelectionRoundProps {
   round: number;
   totalRounds: number;
   movies: Movie[];
+  categoryLabel?: string;
   onSelect: (movie: Movie) => void;
   onRefresh?: () => void;
   loading?: boolean;
@@ -20,6 +21,7 @@ function MovieSelectionRoundComponent({
   round,
   totalRounds,
   movies,
+  categoryLabel,
   onSelect,
   onRefresh,
   loading = false,
@@ -77,7 +79,7 @@ function MovieSelectionRoundComponent({
           Round {round} of {totalRounds}
         </h1>
         <p className="text-lg text-muted-foreground">
-          Pick a movie that interests you
+          {categoryLabel ?? "Pick a movie that interests you"}
         </p>
       </div>
 

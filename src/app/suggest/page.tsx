@@ -33,8 +33,9 @@ export default function SuggestPage() {
     isComplete,
   } = useSuggestFlow();
 
-  const { movies, loading: loadingMovies, error: moviesError, refetch } = useRoundMovies(
-    currentRound
+  const { movies, categoryLabel, loading: loadingMovies, error: moviesError, refetch } = useRoundMovies(
+    currentRound,
+    selectedMovieIds
   );
 
   const router = useRouter();
@@ -239,6 +240,7 @@ export default function SuggestPage() {
           round={currentRound}
           totalRounds={TOTAL_ROUNDS}
           movies={movies}
+          categoryLabel={categoryLabel}
           onSelect={handleSelect}
           onRefresh={() => refetch()}
           loading={loadingMovies}

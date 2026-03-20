@@ -175,6 +175,12 @@ export interface Movie {
   }>;
 }
 
+export interface SuggestMovieRoundResult {
+  movies: Movie[];
+  category: string;
+  categoryLabel: string;
+}
+
 export interface CollectionInsights {
   totalMovies: number;
   uniqueGenres: number;

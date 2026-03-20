@@ -22,9 +22,13 @@ export const SUGGEST_MOVIE = gql`
  */
 export const SUGGEST_MOVIE_ROUND = gql`
   ${MOVIE_FRAGMENT}
-  query SuggestMovieRound($round: Int!) {
-    suggestMovieRound(round: $round) {
-      ...MovieFields
+  query SuggestMovieRound($round: Int!, $selectedMovieIds: [Int!]) {
+    suggestMovieRound(round: $round, selectedMovieIds: $selectedMovieIds) {
+      movies {
+        ...MovieFields
+      }
+      category
+      categoryLabel
     }
   }
 `;
