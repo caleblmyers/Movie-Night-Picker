@@ -1,0 +1,22 @@
+{
+  "name": "movie-night-picker-monorepo",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.30.2",
+  "scripts": {
+    "dev": "pnpm --parallel -r run dev",
+    "dev:api": "pnpm --filter api dev",
+    "dev:web": "pnpm --filter web dev",
+    "build": "pnpm -r run build",
+    "lint": "pnpm -r run lint",
+    "typecheck": "pnpm -r run typecheck",
+    "codegen": "graphql-codegen --config codegen.yml",
+    "db:migrate": "pnpm --filter api prisma:migrate",
+    "db:studio": "pnpm --filter api prisma:studio"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.0",
+    "typescript": "^5.3.3"
+  }
+}
+
