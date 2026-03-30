@@ -147,7 +147,7 @@ query {
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under [AGPL-3.0](../../LICENSE).
 
 ## TMDB API Attribution
 

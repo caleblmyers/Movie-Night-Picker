@@ -100,4 +100,4 @@ This product uses the [TMDB API](https://www.themoviedb.org) but is not endorsed
 
 ## License
 
-MIT
+[AGPL-3.0](LICENSE)
