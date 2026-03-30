@@ -4,7 +4,7 @@ Find the perfect movie for your movie night using intelligent suggestions and ra
 
 🌐 **[Live Application](https://movie-night-picker-ochre.vercel.app/)** 
 
-![Movie Night Picker](https://img.shields.io/badge/Next.js-15.5.6-black?style=flat-square&logo=next.js)
+![Movie Night Picker](https://img.shields.io/badge/Next.js-16.1.6-black?style=flat-square&logo=next.js)
 ![React](https://img.shields.io/badge/React-19.2.0-blue?style=flat-square&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1.16-38bdf8?style=flat-square&logo=tailwind-css)
@@ -52,7 +52,7 @@ Find the perfect movie for your movie night using intelligent suggestions and ra
 
 ## 🛠️ Tech Stack
 
-- **Next.js 15.5.6** 
+- **Next.js 16.1.6**
 - **React 19.2.0** 
 - **TypeScript** 
 - **Tailwind CSS** 
@@ -66,8 +66,8 @@ Find the perfect movie for your movie night using intelligent suggestions and ra
 ## 📋 Prerequisites
 
 - **Node.js** 18+ installed
-- **npm**, **yarn**, **pnpm**, or **bun** package manager
-- **Backend API** running (see backend repository for setup)
+- **pnpm** 10+ package manager
+- **Backend API** running (see `apps/api/` in this monorepo)
   - Default: `http://localhost:4000`
   - Must expose GraphQL endpoint at `/graphql`
 

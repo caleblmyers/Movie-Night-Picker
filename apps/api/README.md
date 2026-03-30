@@ -3,7 +3,7 @@
 Backend API for Movie Night Picker - A personal movie discovery and recommendation platform that helps users find, save, and organize movies using data from The Movie Database (TMDB) API.
 
 🔗 **Live Application**: [https://movie-night-picker-ochre.vercel.app/](https://movie-night-picker-ochre.vercel.app/)  
-📦 **Frontend Repository**: [https://github.com/caleblmyers/Movie-Night-Picker](https://github.com/caleblmyers/Movie-Night-Picker)
+📦 **Frontend**: See `apps/web/` in this monorepo
 
 ## Overview
 
